@@ -63,17 +63,19 @@ Ask Claude to "fix this" or "refactor it" after an audit, and it produces refact
 
 ## Installation
 
-**Option 1: Marketplace (recommended)**
+**Step 1** — Add the marketplace:
 
 ```bash
-claude install florianbuetow/claude-code
+claude plugin marketplace add florianbuetow/claude-code
 ```
 
-**Option 2: Ask Claude**
+**Step 2** — Install the plugin:
 
-> "Install the solid-principles plugin from florianbuetow/claude-code"
+```bash
+claude plugin install solid-principles
+```
 
-**Verify it works** — open any OO codebase and ask:
+**Step 3** — Restart Claude Code, then verify it works by opening any OO codebase and asking:
 
 > "Check this file for SOLID violations"
 
@@ -83,7 +85,8 @@ claude install florianbuetow/claude-code
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git
 cd claude-code
-# The plugin is now available locally
+# Load the plugin directory for this session only
+claude --plugin-dir ./plugins/solid-principles
 ```
 
 </details>
