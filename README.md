@@ -2,7 +2,7 @@
 
 A collection of Claude Code plugins for software engineering workflows.
 
-`3 plugins` · `3 skills` · `Minimal context window impact`
+`3 plugins` · `3 skills`
 
 ### Skills
 
@@ -54,7 +54,7 @@ claude --plugin-dir ./plugins/spec-writer
 
 Automated SOLID principles analysis for Claude Code.
 
-`5 principles` · `~2K tokens` · `Minimal context window impact`
+`5 principles`
 
 SOLID violations accumulate silently during development. By the time they surface — through rigid code, tangled dependencies, or brittle inheritance — refactoring is expensive.
 
@@ -93,7 +93,7 @@ Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue 
 
 System-level architecture principles analysis for Claude Code.
 
-`10 principles` · `~5K tokens` · `Minimal context window impact`
+`10 principles`
 
 SOLID covers class-level design, but architecture rot happens at a larger scale — tangled services, leaky abstractions, hidden coupling between modules, brittle failure propagation. By the time these problems surface, untangling them is far more expensive than fixing a single class.
 
@@ -280,7 +280,7 @@ No. Each document can be created independently. Start at whatever level matches 
 The skill is optimized for greenfield projects, but you can start at any level. For existing projects, `/spec-architecture` and `/spec-test` are often the most useful starting points.
 
 **How much context do the plugins use?**
-All plugins use progressive disclosure — reference material is loaded only when needed. solid-principles adds ~500 tokens per principle (~2K for all five). beyond-solid-principles adds ~500 tokens per principle (~5K for all ten). spec-writer loads one reference file per document type.
+All plugins use progressive disclosure — reference material is loaded only when needed to minimize token usage.
 
 ---
 
