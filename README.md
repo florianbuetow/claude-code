@@ -2,13 +2,14 @@
 
 A collection of Claude Code plugins for software engineering workflows.
 
-`2 plugins` · `2 skills` · `Minimal context window impact`
+`3 plugins` · `3 skills` · `Minimal context window impact`
 
 ### Skills
 
 | Skill | Description |
 |-------|-------------|
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
+| [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
 
 ---
@@ -27,6 +28,7 @@ claude plugin marketplace add florianbuetow/claude-code
 
 ```bash
 claude plugin install solid-principles
+claude plugin install beyond-solid-principles
 claude plugin install spec-writer
 ```
 
@@ -40,6 +42,7 @@ git clone https://github.com/florianbuetow/claude-code.git
 cd claude-code
 # Load a plugin directory for this session only
 claude --plugin-dir ./plugins/solid-principles
+claude --plugin-dir ./plugins/beyond-solid-principles
 claude --plugin-dir ./plugins/spec-writer
 ```
 
@@ -83,6 +86,55 @@ Check all five at once or focus on one:
 Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue description, and a concrete refactoring suggestion. Ask Claude to "fix this" or "refactor it" after an audit to get refactored code.
 
 **Languages:** Any OO language — Python, Java, TypeScript, C#, C++, Kotlin, Go, Rust. The analysis adapts to each language's idioms.
+
+---
+
+## beyond-solid-principles
+
+System-level architecture principles analysis for Claude Code.
+
+`10 principles` · `~5K tokens` · `Minimal context window impact`
+
+SOLID covers class-level design, but architecture rot happens at a larger scale — tangled services, leaky abstractions, hidden coupling between modules, brittle failure propagation. By the time these problems surface, untangling them is far more expensive than fixing a single class.
+
+This plugin lets you audit modules, services, layers, and component boundaries **on demand**, getting severity-rated findings with concrete remediation suggestions that operate at the architecture scale.
+
+| Principle | Focus |
+|-----------|-------|
+| **SoC** — Separation of Concerns | Distinct sections for distinct responsibilities |
+| **SRP-Sys** — Single Responsibility (system-level) | One business capability per module/service |
+| **DRY** — Don't Repeat Yourself | Eliminate knowledge duplication across boundaries |
+| **Demeter** — Law of Demeter | Talk only to immediate collaborators |
+| **Coupling** — Loose Coupling, High Cohesion | Minimize dependencies, maximize relatedness |
+| **Evolvability** — Build for Change | Support incremental evolution without rewrites |
+| **Resilience** — Design for Failure | Prevent cascading failures in distributed systems |
+| **KISS** — Keep It Simple | Avoid accidental complexity and over-engineering |
+| **POLA** — Principle of Least Surprise | Predictable APIs and system behavior |
+| **YAGNI** — You Aren't Gonna Need It | Don't build for hypothetical future requirements |
+
+### How to Use
+
+Check all ten at once or focus on one:
+
+| Command | What it checks |
+|---------|---------------|
+| `beyond-solid-principles` | All ten principles |
+| `sw-soc` | Separation of Concerns only |
+| `sw-srp-sys` | Single Responsibility (system-level) only |
+| `sw-dry` | DRY only |
+| `sw-demeter` | Law of Demeter only |
+| `sw-coupling` | Loose Coupling, High Cohesion only |
+| `sw-evolvability` | Build for Change only |
+| `sw-resilience` | Design for Failure only |
+| `sw-kiss` | KISS only |
+| `sw-pola` | Principle of Least Surprise only |
+| `sw-yagni` | YAGNI only |
+
+**Trigger** — Ask Claude to check architecture principles, or mention a principle by name ("check separation of concerns", "is this violating DRY?", "Law of Demeter", "loose coupling").
+
+Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue description, and a concrete remediation suggestion. Ask Claude to "fix this" or "refactor it" after an audit to get refactored code or an architecture proposal.
+
+**Languages & architectures:** Any language, any architecture style — monoliths, modular monoliths, microservices, serverless, event-driven, layered, hexagonal. The analysis adapts to the idioms and scale of the target system.
 
 ---
 
@@ -174,6 +226,23 @@ plugins/
   │               ├── lsp.md          # Liskov Substitution patterns
   │               ├── isp.md          # Interface Segregation patterns
   │               └── dip.md          # Dependency Inversion patterns
+  ├── beyond-solid-principles/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       └── beyond-solid-principles/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── soc.md          # Separation of Concerns patterns
+  │               ├── srp-sys.md      # Single Responsibility (system-level)
+  │               ├── dry.md          # Don't Repeat Yourself patterns
+  │               ├── demeter.md      # Law of Demeter patterns
+  │               ├── coupling.md     # Loose Coupling, High Cohesion
+  │               ├── evolvability.md # Build for Change patterns
+  │               ├── resilience.md   # Design for Failure patterns
+  │               ├── kiss.md         # KISS patterns
+  │               ├── pola.md         # Principle of Least Surprise
+  │               └── yagni.md        # YAGNI patterns
   └── spec-writer/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
@@ -198,6 +267,12 @@ Any OO language — Python, Java, TypeScript, C#, C++, Kotlin, Go (struct method
 **Is solid-principles too strict?**
 No. The skill includes pragmatism guidelines. A 50-line script doesn't get the same scrutiny as a large production system.
 
+**What's the difference between solid-principles and beyond-solid-principles?**
+solid-principles operates at the class level — single classes, interfaces, and inheritance hierarchies. beyond-solid-principles operates at the architecture level — modules, services, layers, and system boundaries. They complement each other: use solid-principles for OO design quality, beyond-solid-principles for structural health at scale.
+
+**Does beyond-solid-principles require a distributed system?**
+No. The principles apply to any codebase with module or package boundaries. For monoliths, the analysis focuses on dependency direction, internal layering, and package cohesion. For distributed systems, it also covers service boundaries, API contracts, failure propagation, and operational resilience.
+
 **Do I need all five spec documents?**
 No. Each document can be created independently. Start at whatever level matches your needs. The full walkthrough (`/spec`) is there for when you want the complete suite.
 
@@ -205,7 +280,7 @@ No. Each document can be created independently. Start at whatever level matches 
 The skill is optimized for greenfield projects, but you can start at any level. For existing projects, `/spec-architecture` and `/spec-test` are often the most useful starting points.
 
 **How much context do the plugins use?**
-Both plugins use progressive disclosure — reference material is loaded only when needed. solid-principles adds ~500 tokens per principle (~2K for all five). spec-writer loads one reference file per document type.
+All plugins use progressive disclosure — reference material is loaded only when needed. solid-principles adds ~500 tokens per principle (~2K for all five). beyond-solid-principles adds ~500 tokens per principle (~5K for all ten). spec-writer loads one reference file per document type.
 
 ---
 

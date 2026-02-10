@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "solid-principles",
+  "name": "claude-code-plugins",
   "version": "1.0.0",
-  "description": "Analyze code for violations of the SOLID principles of object-oriented design (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)",
+  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, and expert-guided specification writing.",
   "repository": "https://github.com/florianbuetow/claude-code",
   "owner": {
     "name": "Florian Buetow",
@@ -18,6 +18,17 @@
         "email": "2320560+florianbuetow@users.noreply.github.com"
       },
       "source": "./plugins/solid-principles",
+      "category": "development"
+    },
+    {
+      "name": "beyond-solid-principles",
+      "description": "Analyze code and architecture for violations of ten system-level software design principles: Separation of Concerns, Single Responsibility (system-level), DRY, Law of Demeter, Loose Coupling / High Cohesion, Evolvability, Resilience, KISS, Principle of Least Surprise, and YAGNI",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/beyond-solid-principles",
       "category": "development"
     },
     {

@@ -847,15 +847,15 @@ A core practical reading of that workflow for greenfield projects is:
 - **Validate frequently**: frequent execution is what turns documentation into evidence and exposes drift quickly. turn7search1  
 - **Evolve living documentation**: publish the same artefacts (and their latest run results) as the current system contract. turn7search17  
 
-### Evidence from 's 2020 practitioner survey
+### Evidence from Gojko Adzic's 2020 practitioner survey
 
-A frequently-cited empirical signal for SbE comes from 's "Specification by Example, 10 years later" survey (published 17 March 2020). He reports **514 responses**, and (importantly) notes the sampling is biased towards people already interested in the technique, so the results indicate correlations within that community rather than population-wide prevalence or causation. turn6search0
+A frequently-cited empirical signal for SbE comes from Gojko Adzic's "Specification by Example, 10 years later" survey (published 17 March 2020). He reports **514 responses**, and (importantly) notes the sampling is biased towards people already interested in the technique, so the results indicate correlations within that community rather than population-wide prevalence or causation. turn6search0
 
 Within that sample, respondents who reported **using examples as acceptance criteria** also reported a higher share of "great" product quality ("users almost never experience problems in production"): **22%** vs **8%** for respondents not using examples as acceptance criteria (with "poor" quality 7% vs 14%). turn6search0 He further reports that among those who use examples as acceptance criteria, those who **automate tests based on those examples** reported "great" quality at **26%**, versus **13%** for those who do not automate, and "poor" quality at **5%** vs **11%** respectively—again explicitly framed as correlation rather than proof of causation. 
 
 ### Success factors and common failure modes
 
-A consistent success factor in both SbE and BDD practice is **collaborative ownership of acceptance criteria** rather than treating scenario writing as a specialist QA task. In 's 2020 survey, "collaborative: delivery team together with business representatives" is the most common model for defining acceptance criteria (47%).  In Requirements Engineering research more broadly, peer review and inspections repeatedly show large defect-capture potential;  and  summarise prior evidence in which peer reviews commonly remove a large share of defects (often cited around ~60% in practice, depending on context and execution). turn3search4
+A consistent success factor in both SbE and BDD practice is **collaborative ownership of acceptance criteria** rather than treating scenario writing as a specialist QA task. In Gojko Adzic's 2020 survey, "collaborative: delivery team together with business representatives" is the most common model for defining acceptance criteria (47%).  In Requirements Engineering research more broadly, peer review and inspections repeatedly show large defect-capture potential; Barry Boehm and Victor Basili summarise prior evidence in which peer reviews commonly remove a large share of defects (often cited around ~60% in practice, depending on context and execution). turn3search4
 
 Common failure modes are also well documented:
 
@@ -865,17 +865,17 @@ Common failure modes are also well documented:
 
 ## BDD as a specification practice: concepts, tools, and empirical findings
 
-Behaviour-Driven Development (BDD) was introduced by  as a response to limitations he observed in test-driven development communication and framing, shifting emphasis toward behaviour described in a shared language and discovered via examples. turn5view0turn5view0
+Behaviour-Driven Development (BDD) was introduced by Dan North as a response to limitations he observed in test-driven development communication and framing, shifting emphasis toward behaviour described in a shared language and discovered via examples. turn5view0turn5view0
 
-A widely-quoted prioritisation captures BDD's intent: "having conversations is more important than capturing conversations is more important than automating conversations", attributed to  and repeated in both practitioner writing and official BDD guidance. turn6search1 This is not a rhetorical point: it defines *where the quality comes from*—shared understanding and discovery—while automation is the mechanism that keeps the specification continuously checked and publishable. turn7search3
+A widely-quoted prioritisation captures BDD's intent: "having conversations is more important than capturing conversations is more important than automating conversations", attributed to Liz Keogh and repeated in both practitioner writing and official BDD guidance. turn6search1 This is not a rhetorical point: it defines *where the quality comes from*—shared understanding and discovery—while automation is the mechanism that keeps the specification continuously checked and publishable. turn7search3
 
 ### Tool ecosystem that supports "executable" specifications
 
 The executable-specification ecosystem typically splits into (a) a **business-readable scenario format** and (b) the **automation "glue" layer**.
 
-On the scenario side, the most common DSL is **Gherkin**, maintained and documented by , which defines keywords like Feature/Scenario/Given/When/Then. turn7search4turn7search32
+On the scenario side, the most common DSL is **Gherkin**, maintained and documented by Cucumber, which defines keywords like Feature/Scenario/Given/When/Then. turn7search4turn7search32
 
-For .NET ecosystems, a notable recent change is that  reached end-of-life on **31 December 2024**, and the community-driven continuation is , which describes itself as compatible with the SpecFlow v4 beta with minor backward-compatible differences and provides migration guidance. turn8search1turn7search7
+For .NET ecosystems, a notable recent change is that SpecFlow reached end-of-life on **31 December 2024**, and the community-driven continuation is Reqnroll, which describes itself as compatible with the SpecFlow v4 beta with minor backward-compatible differences and provides migration guidance. turn8search1turn7search7
 
 ### Empirical findings on BDD outcomes and challenges
 
@@ -894,8 +894,8 @@ Acceptance criteria are the conditions a story/feature must satisfy to be consid
 
 Two research-grounded reminders are especially relevant when you design Level four artefacts:
 
--  argues (from use-case practice) that handling "extension conditions" (alternatives, exceptions) is often the majority of the effort—he cites a rule of thumb around **~80%** of the writing/analysis work being in extensions rather than the "main success scenario". turn2search0  
-- The  EARS case study explicitly notes that omissions—particularly requirements to handle **unwanted behaviour**—are a major source of missing requirements and costly rework, motivating structured templates that force explicit handling of such cases. turn9search4  
+- Alistair Cockburn argues (from use-case practice) that handling "extension conditions" (alternatives, exceptions) is often the majority of the effort—he cites a rule of thumb around **~80%** of the writing/analysis work being in extensions rather than the "main success scenario". turn2search0
+- The Rolls-Royce EARS case study explicitly notes that omissions—particularly requirements to handle **unwanted behaviour**—are a major source of missing requirements and costly rework, motivating structured templates that force explicit handling of such cases. turn9search4  
 
 ### Comparative toolkit: when to use which form
 
@@ -971,7 +971,7 @@ Transition table:
 
 ### What "formal" looks like in standards terms
 
-'s test documentation standard  (2008) defines a **test plan** as describing the *scope, approach, resources, and schedule* of intended test activities and explicitly includes identification of test items, features to be tested, tasks, responsibilities, and risks requiring contingency planning. turn10search26
+IEEE's test documentation standard IEEE 829 (2008) defines a **test plan** as describing the *scope, approach, resources, and schedule* of intended test activities and explicitly includes identification of test items, features to be tested, tasks, responsibilities, and risks requiring contingency planning. turn10search26
 
 The newer international baseline is the ISO/IEC/IEEE 29119 family, where ISO/IEC/IEEE 29119-3 defines templates for test documentation produced during test processes. turn9search2 The standard also clarifies that test cases include preconditions such as environment and existing data, which becomes crucial when your "specification" is also your executable test. 
 
@@ -1019,7 +1019,7 @@ This is consistent with standards-oriented expectations while remaining light en
 
 ### Exploratory testing charters alongside scripted tests
 
-Standards-aligned scripted artefacts do not eliminate the need for exploratory testing; they coexist.  describes exploratory testing as a style where test design and execution happen together, often guided by a **charter** that sets mission and tactics. turn10search0
+Standards-aligned scripted artefacts do not eliminate the need for exploratory testing; they coexist. James Bach describes exploratory testing as a style where test design and execution happen together, often guided by a **charter** that sets mission and tactics. turn10search0
 
 A practical integration pattern is: keep scripted acceptance tests for stable, business-critical behaviours; run chartered exploratory sessions for new features, risky integrations, and "unknown unknowns", then promote findings into new scenarios, decision tables, or regression tests where appropriate. turn10search4
 
@@ -1045,7 +1045,7 @@ The "I/A/D/T" method notation matches the four standard verification methods des
 
 ### Tooling: heavyweight and lightweight options
 
-For regulated or complex environments, full requirements management suites support first-class trace links. For example, IBM documentation shows linking requirements and artefacts across development and test domains in DOORS Next/Engineering Lifecycle Management. turn26search26 IBM's test management guidance also describes associating test cases to requirements repositories (a foundational RTM capability).  's Jama Connect help describes coverage and traceability in terms of requirements being "covered" by corresponding test cases and provides navigation from requirements to test artefacts. turn26search4
+For regulated or complex environments, full requirements management suites support first-class trace links. For example, IBM documentation shows linking requirements and artefacts across development and test domains in DOORS Next/Engineering Lifecycle Management. turn26search26 IBM's test management guidance also describes associating test cases to requirements repositories (a foundational RTM capability). Jama Software's Jama Connect help describes coverage and traceability in terms of requirements being "covered" by corresponding test cases and provides navigation from requirements to test artefacts. turn26search4
 
 Lightweight approaches remain common (especially in greenfield software teams) when the goal is coverage and change impact rather than compliance; RTMs are often implemented in spreadsheets or Markdown, with requirement IDs mapped to scenario IDs and CI results. turn26search2 The key success factor is not the tool—it is keeping IDs stable, links easy to update, and the workflow cheap enough that people actually maintain it. turn12view0
 
@@ -1071,7 +1071,7 @@ This matches the guidance that verification method selection should be determine
 
 Living documentation is the idea that specifications remain accurate because they are continuously validated against the running system, typically by executing the same scenarios that stakeholders read. turn4view0 The practical mechanism is simple: when documentation is generated from test runs (especially in CI), the displayed specification reflects what the system currently passes, making drift visible quickly. turn7search3
 
-Evidence that this approach produces maintainable documentation is mixed: practitioners report the benefit ("living documentation that evolves with the system over time"), but empirical work also highlights that scenario suites can become costly and parts of systems can become "frozen" if examples are hard to evolve. turn18search18 's survey further adds a meaningful correlation: teams that automate example-based acceptance criteria self-report better product quality than those who do not, suggesting that continuous validation and executable documentation are associated with better outcomes in practice. 
+Evidence that this approach produces maintainable documentation is mixed: practitioners report the benefit ("living documentation that evolves with the system over time"), but empirical work also highlights that scenario suites can become costly and parts of systems can become "frozen" if examples are hard to evolve. turn18search18 Gojko Adzic's survey further adds a meaningful correlation: teams that automate example-based acceptance criteria self-report better product quality than those who do not, suggesting that continuous validation and executable documentation are associated with better outcomes in practice. 
 
 **Maintenance practices that consistently reduce living-doc costs** (evidence-backed themes):
 
@@ -1081,7 +1081,9 @@ Evidence that this approach produces maintainable documentation is mixed: practi
 
 ### Relationship between unit, integration, and acceptance tests
 
-The "test pyramid" metaphor is commonly used to argue that a test suite should contain many small/fast tests at the base and fewer slow end-to-end UI tests at the top; 's pyramid is summarised as Unit → Service → UI tests. turn13search16
+The "test pyramid" metaphor is commonly used to argue that a test suite should contain many small/fast tests at the base and fewer slow end-to-end UI tests at the top; Mike Cohn's pyramid is summarised as Unit → Service → UI tests. turn13search16
+
+For the "testing trophy", Kent C. Dodds emphasizes static checks and integration tests more heavily than the classical pyramid, suggesting a revised emphasis on the middle layers of the test stack. turn13search18
 
 For Level four–five artefacts, the practical integration is:
 
@@ -1094,7 +1096,7 @@ For Level four–five artefacts, the practical integration is:
 
 The essential principle for NFRs is the same as for functional requirements: write them so that a specific verification method and measurable pass/fail criteria exist. turn14search8
 
-**Performance and reliability (SLO-based).** 's SRE guidance argues that insisting on 100% SLO compliance is unrealistic and can harm innovation, motivating explicit **error budgets** derived from SLOs. turn25search4
+**Performance and reliability (SLO-based).** Google's SRE guidance argues that insisting on 100% SLO compliance is unrealistic and can harm innovation, motivating explicit **error budgets** derived from SLOs. turn25search4
 
 Concrete NFR verification example:
 
