@@ -19,6 +19,17 @@
       },
       "source": "./plugins/solid-principles",
       "category": "development"
+    },
+    {
+      "name": "spec-writer",
+      "description": "An expert-guided skill for creating layered software specification documents for greenfield projects. Produces Vision, Business Requirements, Software Requirements, Architecture & Design, and Behavioral Spec & Test Verification documents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/spec-writer",
+      "category": "development"
     }
   ]
 }
