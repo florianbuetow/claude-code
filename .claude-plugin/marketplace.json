@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claude-code-plugins",
+  "name": "florianbuetow-plugins",
   "version": "1.0.0",
   "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, expert-guided specification writing, and distributed system tradeoff analysis.",
   "repository": "https://github.com/florianbuetow/claude-code",
