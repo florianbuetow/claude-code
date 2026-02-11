@@ -2,7 +2,7 @@
 
 A collection of Claude Code plugins for software engineering workflows.
 
-`3 plugins` · `3 skills`
+`4 plugins` · `4 skills`
 
 ### Skills
 
@@ -11,6 +11,7 @@ A collection of Claude Code plugins for software engineering workflows.
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
+| [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 
 ---
 
@@ -30,6 +31,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install solid-principles
 claude plugin install beyond-solid-principles
 claude plugin install spec-writer
+claude plugin install explain-system-tradeoffs
 ```
 
 **Step 3** — Restart Claude Code.
@@ -44,6 +46,7 @@ cd claude-code
 claude --plugin-dir ./plugins/solid-principles
 claude --plugin-dir ./plugins/beyond-solid-principles
 claude --plugin-dir ./plugins/spec-writer
+claude --plugin-dir ./plugins/explain-system-tradeoffs
 ```
 
 </details>
@@ -208,6 +211,63 @@ Output documents are saved as markdown files with traceability IDs that link acr
 
 ---
 
+## explain-system-tradeoffs
+
+Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts.
+
+`6 tradeoff axes` · `3 evidence tiers` · `Parallel subagent analysis` · `Evidence-based (CAP, PACELC, SRE, chaos engineering)`
+
+Every distributed system encodes its design tradeoffs in artifacts hiding in plain sight — configuration files, schema definitions, deployment manifests, timeout values, retry policies, and code patterns. A `synchronous_commit = off` in PostgreSQL, a `failure_mode_deny: false` in Envoy, a hashed shard key on time-series data — each is a decision with consequences that ripple across the system.
+
+This plugin reads those artifacts like an architectural blueprint. Instead of looking for *violations* (that's what beyond-solid-principles does), it identifies *decisions* — what the system prioritizes, what it sacrifices, whether those choices appear deliberate or accidental, and where they conflict with each other.
+
+### Tradeoff Axes
+
+| Axis | Focus | Example indicators |
+|------|-------|--------------------|
+| **Consistency** | Consistency & Availability | Replication factors, quorum settings, cache TTLs, conflict resolution, schema compatibility modes |
+| **Latency** | Latency & Throughput | GC flags, thread pool configs, Disruptor wait strategies, deadline propagation, hedged requests, compaction styles |
+| **Data** | Data Distribution | Shard keys, partition strategies, rack-aware replication, data sovereignty constraints, cross-shard complexity |
+| **Transactions** | Transaction Boundaries & Coordination | Sagas, outbox tables, schema evolution, API versioning, dependency boundaries, database-per-service |
+| **Resilience** | Resilience & Failure Isolation | Circuit breakers, retry budgets, chaos experiments with steady-state hypotheses, canary analysis templates, service mesh outlier detection |
+| **Operations** | Observability, Security & Cost | Tracing sampling rates, SLO/error-budget frameworks, mTLS posture, audit trail fidelity, multi-region cost topology |
+
+### How to Use
+
+Analyze all six axes at once or focus on one:
+
+| Command | What it analyzes |
+|---------|-----------------|
+| `explain-system-tradeoffs` | All six axes (parallel) |
+| `explain-system-consistency-tradeoffs` | Consistency & Availability only |
+| `explain-system-latency-tradeoffs` | Latency & Throughput only |
+| `explain-system-data-tradeoffs` | Data Distribution only |
+| `explain-system-transaction-tradeoffs` | Transaction Boundaries & Coordination only |
+| `explain-system-resilience-tradeoffs` | Resilience & Failure Isolation only |
+| `explain-system-operations-tradeoffs` | Observability, Security & Cost only |
+
+**Trigger** — Ask Claude to explain system tradeoffs, analyze architecture decisions, or mention a tradeoff by name ("consistency vs availability", "what are the latency tradeoffs", "CAP analysis", "PACELC").
+
+### What to Expect
+
+**Single-axis commands** run the analysis directly — Claude reads the reference for that axis, scans the codebase, and reports findings.
+
+**Full analysis** (`explain-system-tradeoffs`) launches **six parallel subagents**, one per axis. Each subagent reads its own reference file and independently scans the codebase. The main agent then collects the six per-axis reports and produces a **cross-axis synthesis** — the part that requires seeing all six axes together: where tradeoff choices on one axis conflict with choices on another (e.g., AP consistency paired with synchronous saga coordination).
+
+Each finding is backed by evidence classified into three tiers:
+
+| Tier | What it means | Examples |
+|------|---------------|---------|
+| **A — Hard commitments** | User-facing guarantees, wire-protocol requirements | SLA language, quorum rules, schema invariants |
+| **B — Mechanism evidence** | Concrete mechanisms enforcing the property | Consensus protocols, circuit breaker configs, GC flags, compaction strategies |
+| **C — Operational signatures** | What engineers actually protect in production | Dashboards, alerts, SLO definitions, runbooks, error budgets |
+
+The report distinguishes **deliberate choices** (asymmetric config, tuned values, documented rationale) from **accidental defaults** (framework defaults, copy-pasted settings, uniform config). Deliberate asymmetry — different compaction strategies per table, different TTLs per cache key, different timeout budgets per downstream call — is the hallmark of genuine tradeoff-making.
+
+**Systems:** Any distributed system — microservices, modular monoliths, event-driven, serverless. Many indicators (caching, thread pools, GC tuning, storage engines, schema evolution) also apply to non-distributed systems with performance or reliability requirements.
+
+---
+
 ## Project Structure
 
 ```
@@ -243,18 +303,31 @@ plugins/
   │               ├── kiss.md         # KISS patterns
   │               ├── pola.md         # Principle of Least Surprise
   │               └── yagni.md        # YAGNI patterns
-  └── spec-writer/
+  ├── spec-writer/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       └── spec-writer/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── vision.md       # L0 — Product Vision reference
+  │               ├── brs.md          # L1 — Business Requirements reference
+  │               ├── srs.md          # L2 — Software Requirements reference
+  │               ├── architecture.md # L3 — Architecture & Design reference
+  │               └── verification.md # L4 — Test Verification reference
+  └── explain-system-tradeoffs/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
       └── skills/
-          └── spec-writer/
+          └── explain-system-tradeoffs/
               ├── SKILL.md            # Skill definition & workflow
               └── references/
-                  ├── vision.md       # L0 — Product Vision reference
-                  ├── brs.md          # L1 — Business Requirements reference
-                  ├── srs.md          # L2 — Software Requirements reference
-                  ├── architecture.md # L3 — Architecture & Design reference
-                  └── verification.md # L4 — Test Verification reference
+                  ├── consistency.md  # Consistency & Availability axis
+                  ├── latency.md      # Latency & Throughput axis
+                  ├── data-distribution.md # Data Distribution axis
+                  ├── transactions.md # Transaction Boundaries axis
+                  ├── resilience.md   # Resilience & Failure Isolation axis
+                  └── operations.md   # Observability, Security & Cost axis
 ```
 
 ---
@@ -278,6 +351,12 @@ No. Each document can be created independently. Start at whatever level matches 
 
 **Can I use spec-writer for an existing project?**
 The skill is optimized for greenfield projects, but you can start at any level. For existing projects, `/spec-architecture` and `/spec-test` are often the most useful starting points.
+
+**What's the difference between beyond-solid-principles and explain-system-tradeoffs?**
+beyond-solid-principles finds *violations* of design principles — things that should be fixed. explain-system-tradeoffs identifies *tradeoff decisions* — things that were chosen (deliberately or not). A system can follow all design principles perfectly and still have interesting tradeoffs to understand. Use beyond-solid-principles for "what's wrong?", use explain-system-tradeoffs for "what was decided and why?"
+
+**Does explain-system-tradeoffs require a distributed system?**
+It's most useful for distributed systems, but many tradeoff indicators (caching, thread pools, GC tuning, storage engines, schema evolution) apply to any system with performance or reliability requirements.
 
 **How much context do the plugins use?**
 All plugins use progressive disclosure — reference material is loaded only when needed to minimize token usage.
