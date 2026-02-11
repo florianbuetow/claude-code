@@ -168,7 +168,23 @@ IMPORTANT: Return ONLY the per-axis report above. Do NOT produce a cross-axis
 summary or tradeoff profile — the main agent handles cross-axis synthesis.
 ```
 
-#### Step 3. Synthesize Results
+#### Step 3. Wait for All Subagents
+
+**CRITICAL — Do NOT continue analysis while subagents are running.** After
+launching the six subagents, your ONLY job is to wait for their results. Do NOT:
+- Scan the codebase yourself for any axis
+- Produce per-axis reports yourself
+- "Continue" the analysis if some subagents finish before others
+- Fill idle time by doing the subagents' work
+
+The subagents are doing the analysis. You are the synthesizer. Wait for all six
+to return before proceeding to Step 4.
+
+If a subagent fails or returns an error, note the failure and proceed with the
+remaining results. Do NOT redo the failed subagent's work yourself — report that
+the axis could not be analyzed and suggest re-running it as a single-axis command.
+
+#### Step 4. Synthesize Results
 
 After all six subagents return their results, the main agent:
 
