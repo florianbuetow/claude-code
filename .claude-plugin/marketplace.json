@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-code-plugins",
   "version": "1.0.0",
-  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, and expert-guided specification writing.",
+  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, expert-guided specification writing, and distributed system tradeoff analysis.",
   "repository": "https://github.com/florianbuetow/claude-code",
   "owner": {
     "name": "Florian Buetow",
@@ -40,6 +40,17 @@
         "email": "2320560+florianbuetow@users.noreply.github.com"
       },
       "source": "./plugins/spec-writer",
+      "category": "development"
+    },
+    {
+      "name": "explain-system-tradeoffs",
+      "description": "Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts. Analyzes six axes: Consistency & Availability, Latency & Throughput, Data Distribution, Transaction Boundaries, Resilience & Failure Isolation, and Observability, Security & Cost.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/explain-system-tradeoffs",
       "category": "development"
     }
   ]

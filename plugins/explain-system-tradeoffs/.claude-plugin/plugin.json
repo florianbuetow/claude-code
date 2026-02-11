@@ -1,0 +1,11 @@
+{
+  "name": "explain-system-tradeoffs",
+  "version": "1.0.0",
+  "description": "Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts. Analyzes six axes: Consistency & Availability, Latency & Throughput, Data Distribution, Transaction Boundaries, Resilience & Failure Isolation, and Observability, Security & Cost.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": ["distributed-systems", "tradeoffs", "architecture", "cap-theorem", "pacelc", "resilience", "observability", "system-design"]
+}
