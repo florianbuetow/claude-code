@@ -77,6 +77,11 @@ When all six axes are requested (`explain-system-tradeoffs`), use **parallel
 subagents** to analyze each axis concurrently. This is faster and produces
 better results because each subagent can focus deeply on one axis.
 
+**CRITICAL — How parallel execution works:** The Task tool runs subagents in
+parallel ONLY when multiple Task tool calls appear in the SAME response message.
+If you emit them across separate messages, they run sequentially. You MUST
+include all six Task tool calls in a single response to get concurrency.
+
 #### Step 1. Identify Target System
 
 Determine what code, configuration, or architecture to analyze:
@@ -85,22 +90,30 @@ Determine what code, configuration, or architecture to analyze:
 - When ambiguous, ask which files, directories, or services to scan.
 
 Resolve the target to a concrete set of paths before launching subagents.
+This MUST be done before Step 2 — subagents get their own isolated context
+window and cannot see the conversation history or resolve ambiguous targets.
 
 #### Step 2. Launch Six Parallel Subagents
 
-Launch all six subagents **in a single message** using the Task tool so they
-run concurrently. Each subagent receives the same target paths and produces
-an independent per-axis report.
+Emit **exactly six Task tool calls in a single response message**. This is
+what triggers concurrent execution. Do NOT emit them one at a time.
+
+Technical requirements for each Task call:
+- `subagent_type`: `"general-purpose"`
+- `description`: Short label (e.g., `"Analyze consistency tradeoffs"`)
+- `prompt`: A **fully self-contained** prompt (see template below). Each
+  subagent gets its own 200k context window and cannot see the main
+  conversation, so the prompt must include everything it needs.
 
 Each subagent prompt must include:
-- The **target paths** to analyze (resolved in Step 1).
-- The **path to its reference file** (so the subagent can read it).
-- The **evidence tier definitions** (Tier A/B/C from this SKILL.md).
-- The **per-axis report format** (see Report Format below).
-- An instruction to **return structured findings only** — no summary, no
-  cross-axis commentary (the main agent handles synthesis).
+1. The **concrete target paths** to analyze (resolved in Step 1).
+2. The **absolute path to its reference file** to read first.
+3. The **evidence tier definitions** (Tier A/B/C — copy them into the prompt).
+4. The **per-axis report format** (copy it into the prompt).
+5. An instruction to **return structured findings only** — no summary, no
+   cross-axis commentary (the main agent handles synthesis).
 
-Use the `general-purpose` subagent type for each. The six subagents are:
+The six subagents and their reference files:
 
 | Subagent | Reference to read | Focus |
 |----------|------------------|-------|
@@ -111,23 +124,30 @@ Use the `general-purpose` subagent type for each. The six subagents are:
 | Resilience & Failure Isolation | `references/resilience.md` | Circuit breakers, retries, bulkheads, chaos engineering, progressive delivery, service mesh |
 | Observability, Security & Cost | `references/operations.md` | Tracing, SLOs, mTLS, audit trails, compliance, cost/reliability topology |
 
-**Example subagent prompt** (adapt for each axis):
+**Subagent prompt template** (adapt the axis name, reference path, and focus
+for each of the six — but keep the structure identical):
 
 ```
 Analyze the distributed system tradeoffs for the CONSISTENCY & AVAILABILITY axis
 in the codebase at: <TARGET_PATHS>
 
-First, read the reference file at:
-<SKILL_DIR>/references/consistency.md
+STEP 1: Read the reference file at:
+<ABSOLUTE_PATH_TO_SKILL_DIR>/references/consistency.md
 
-Then scan the target for indicators described in the reference. For each piece of
-evidence found, record:
-- What: The specific artifact (file, config key, code pattern, API contract)
-- Tier: A (hard commitment), B (mechanism evidence), or C (operational signature)
+STEP 2: Scan the target codebase for indicators described in the reference.
+Search configuration files, code patterns, deployment manifests, and schema
+definitions. Use Glob, Grep, and Read tools to find evidence.
+
+STEP 3: For each piece of evidence found, classify it:
+- What: The specific artifact (file path, config key, code pattern)
+- Tier: A (hard commitment — SLA language, quorum rules, schema invariants),
+        B (mechanism evidence — protocols, configs, GC flags, compaction),
+        or C (operational signature — dashboards, alerts, SLOs, runbooks)
 - Reveals: Which end of the tradeoff spectrum the system leans toward
-- Deliberate vs Default: Whether intentional or accidental
+- Deliberate vs Default: Whether intentional (asymmetric config, tuned values)
+  or accidental (framework defaults, copy-pasted settings)
 
-Produce your findings in this format:
+STEP 4: Produce your findings in EXACTLY this format:
 
 ## Consistency & Availability
 
@@ -135,22 +155,24 @@ Produce your findings in this format:
 **Confidence:** HIGH | MEDIUM | LOW
 
 ### Evidence
-[Numbered list of evidence items with Tier, File, and Detail]
+[Numbered list of evidence items with Tier, File, and Detail for each]
 
 ### Assessment
 [1-2 paragraphs on the tradeoff position and whether it appears deliberate]
 
 ### Risks & Recommendations
-[Any risks found, each with Severity, Location, Issue, Recommendation]
+[Any risks found, each with: Severity (HIGH/MEDIUM/LOW), Location, Issue,
+Recommendation. If no risks found, state "No significant risks identified."]
 
-Return ONLY the per-axis report above. Do not produce a cross-axis summary.
+IMPORTANT: Return ONLY the per-axis report above. Do NOT produce a cross-axis
+summary or tradeoff profile — the main agent handles cross-axis synthesis.
 ```
 
 #### Step 3. Synthesize Results
 
-After all six subagents complete, the main agent:
+After all six subagents return their results, the main agent:
 
-1. **Collects** the six per-axis reports.
+1. **Collects** the six per-axis reports from the subagent results.
 2. **Presents** them sequentially to the user.
 3. **Produces the cross-axis synthesis** (see Summary section in Report Format).
    This is the main agent's unique contribution — it identifies tensions and
