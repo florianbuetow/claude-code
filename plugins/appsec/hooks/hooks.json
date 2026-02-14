@@ -1,0 +1,25 @@
+{
+  "description": "AppSec hooks: review plans for security, detect hardcoded secrets",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review the implementation plan that was just approved for security concerns. Check for: missing authentication/authorization on new endpoints, input validation gaps, data exposure risks, missing encryption for sensitive data, third-party integration trust assumptions, and potential injection points. If security concerns are found, output a brief security advisory with specific issues and recommendations. If the plan looks security-sound, output nothing."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Quick check: scan the file that was just written or edited for patterns that look like hardcoded secrets. Look for: API keys (strings starting with sk-, pk-, AKIA, ghp_, xox), high-entropy strings assigned to variables named key/secret/token/password/credential, connection strings with embedded passwords, private key blocks (BEGIN RSA/EC/PRIVATE KEY). If a potential secret is found, warn immediately with the line number. If the file is clean, say nothing."
+          }
+        ]
+      }
+    ]
+  }
+}

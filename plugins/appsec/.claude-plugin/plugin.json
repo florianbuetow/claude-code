@@ -1,0 +1,22 @@
+{
+  "name": "appsec",
+  "version": "0.1.0",
+  "description": "Comprehensive application security toolbox for Claude Code. 50 tools across 6 frameworks (OWASP, STRIDE, PASTA, LINDDUN, MITRE ATT&CK, SANS/CWE), red team simulation with 6 attacker personas, and interactive security education.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "appsec",
+    "threat-modeling",
+    "STRIDE",
+    "OWASP",
+    "red-team",
+    "PASTA",
+    "LINDDUN",
+    "MITRE-ATT&CK",
+    "DREAD"
+  ]
+}
