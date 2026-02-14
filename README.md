@@ -1,5 +1,7 @@
 # Claude Code Plugins
 
+![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
+
 A collection of Claude Code plugins for software engineering workflows.
 
 `4 plugins` · `4 skills`
