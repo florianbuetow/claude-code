@@ -19,7 +19,7 @@ lead to full account compromise within minutes.
 
 ## Supported Flags
 
-Read `shared/schemas/flags.md` for the full flag specification. This skill
+Read `../../shared/schemas/flags.md` for the full flag specification. This skill
 supports all cross-cutting flags. Key behaviors:
 
 | Flag | Secrets-Specific Behavior |
@@ -86,8 +86,8 @@ gitleaks detect --source <target> --report-format json --report-path /dev/stdout
 trufflehog git --json file://<target>
 ```
 
-Normalize scanner output to the findings schema (see `shared/schemas/findings.md`).
-Use the severity mapping from `shared/schemas/scanners.md`.
+Normalize scanner output to the findings schema (see `../../shared/schemas/findings.md`).
+Use the severity mapping from `../../shared/schemas/scanners.md`.
 
 ### Step 4: Claude Analysis
 
@@ -110,7 +110,7 @@ At `--depth deep` or `--depth expert`:
 
 ### Step 5: Report
 
-Output findings using the format from `shared/schemas/findings.md`.
+Output findings using the format from `../../shared/schemas/findings.md`.
 
 Each finding must include:
 - **id**: `SEC-001`, `SEC-002`, etc.
@@ -160,7 +160,7 @@ reading. Report these findings with `confidence: medium`.
 
 Use finding ID prefix **SEC** (e.g., `SEC-001`, `SEC-002`).
 
-All findings follow the schema in `shared/schemas/findings.md` with:
+All findings follow the schema in `../../shared/schemas/findings.md` with:
 - `references.cwe`: `"CWE-798"` (hardcoded credentials) or `"CWE-312"` (cleartext storage)
 - `references.owasp`: `"A07:2021"` (Identification and Authentication Failures)
 - `metadata.tool`: `"secrets"`

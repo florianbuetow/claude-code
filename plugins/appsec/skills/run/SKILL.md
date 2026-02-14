@@ -168,6 +168,25 @@ Capture scanner output. Parse JSON results into the findings schema format.
 Scanner findings get `scanner.confirmed: true` and the scanner's name in
 `scanner.name`.
 
+**Error handling for scanners:**
+
+- **Non-zero exit code**: Many scanners exit non-zero when they find issues
+  (e.g., `npm audit` exits 1 when vulnerabilities exist). This is normal.
+  Only treat an exit code as a failure if the output is not valid JSON or
+  is empty.
+- **Malformed JSON output**: If a scanner produces output that cannot be
+  parsed as JSON, log the scanner name and skip it. Do not abort the run.
+  Include the scanner in the `TOOLS FAILED` section of the output.
+- **Timeout**: If a scanner does not return within 120 seconds, skip it
+  and note the timeout. Include it in `TOOLS FAILED`.
+- **Scanner not found**: If a scanner from the plan is not installed (the
+  Bash command fails with "command not found"), note it in `SCANNERS MISSING`
+  and continue.
+- Track all scanner errors for the output summary:
+  ```
+  scanner_errors = []  # list of {scanner, error_type, details}
+  ```
+
 If `--depth quick` is set, STOP HERE. Output scanner findings only and
 skip Phases 3 and 4.
 
@@ -191,6 +210,15 @@ Before dispatching, resolve the scope to a concrete file list:
 | `file:<path>` | The single file |
 | `path:<dir>` | `find <dir> -type f` (filtered) |
 | `full` | All files in repository |
+
+**Empty scope handling**: If the resolved file list is empty (e.g.,
+`--scope changed` on a clean working tree, or `--scope staged` with nothing
+staged), do NOT silently proceed with an empty analysis. Instead:
+
+1. Inform the user that the scope resolved to zero files.
+2. Suggest alternatives: `--scope full` for the entire repo, `--scope branch`
+   for all branch changes, or stage some changes first.
+3. Do NOT dispatch any subagents or scanners. Exit early.
 
 #### Subagent Prompt Template
 
@@ -282,6 +310,27 @@ finding using DREAD. Return ONLY a JSON array of findings with prefix "RT".
 ### Phase 5: Consolidation (Main Agent)
 
 After ALL subagents (category skills and optionally red team agents) return:
+
+**Subagent failure handling**: Before merging, check each subagent's result:
+
+- **Subagent returned empty output or errored**: Record the skill name and
+  error. Do NOT redo the subagent's work in the main agent context — this
+  would consume the main context window and produce lower quality results.
+  Instead, note the gap.
+- **Subagent returned malformed output**: If the output is not valid JSON
+  or does not match the findings schema, attempt to extract any structured
+  findings from the output. If extraction fails, record the skill as failed.
+- **Track all failures** in a `tools_failed` list for the output summary.
+  Each entry should include the tool name and the reason for failure.
+
+Include a `TOOLS FAILED` section in the output if any subagents failed:
+```
+TOOLS FAILED:
+  <tool_name>  <reason>
+  <tool_name>  <reason>
+```
+
+This makes gaps visible so the user can rerun specific tools or investigate.
 
 #### 1. Merge Findings
 

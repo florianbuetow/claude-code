@@ -14,7 +14,7 @@ description: >
 Confirm that a security fix actually resolves the reported vulnerability.
 Re-runs the specific check -- scanner rule or Claude analysis -- that
 originally detected the issue. Outputs a clear verdict: FIXED or STILL
-VULNERABLE with explanation. Updates the finding record in `.appsec/findings/`.
+VULNERABLE with explanation. Updates the finding record in `.appsec/findings.json`.
 
 ## Supported Flags
 
@@ -36,7 +36,7 @@ Read `../../shared/schemas/flags.md` for the full flag specification.
 
 Resolve which findings need verification:
 
-1. **By finding ID**: User provides e.g., `INJ-001`. Load from `.appsec/findings/`.
+1. **By finding ID**: User provides e.g., `INJ-001`. Load from `.appsec/findings.json`.
 2. **By status**: Find all findings with status `fix-applied` that have not yet been verified.
 3. **By scope**: Find all findings whose `location.file` falls within the resolved scope.
 4. **All pending**: If no specific target, verify all `fix-applied` findings.
@@ -125,12 +125,12 @@ The vulnerability at `<file>:<line>` has NOT been resolved.
 
 ### Step 6: Update Finding Records
 
-Update each finding in `.appsec/findings/`:
+Update each finding in `.appsec/findings.json`:
 
 - **FIXED**: Set status to `verified-fixed`. Add `verified_at` timestamp and `verification.method`.
 - **STILL VULNERABLE**: Set status to `fix-failed`. Add `verification.reason` explaining why. Preserve the original finding so `/appsec:fix` can be re-run.
 
-Copy verified-fixed findings to `.appsec/findings/fixed-history.json` for regression tracking (used by `/appsec:regression`).
+Copy verified-fixed findings to `.appsec/fixed-history.json` for regression tracking (used by `/appsec:regression`).
 
 ### Step 7: Summary
 

@@ -94,23 +94,40 @@ Return your findings as a JSON array. Each finding must include all fields shown
   {
     "id": "SC-001",
     "title": "Short description of the supply chain weakness",
-    "persona": "supply-chain",
-    "file": "path/to/relevant/file",
-    "line": 42,
-    "description": "Detailed explanation of the weakness and how a supply chain attacker would exploit it. Include the specific attack scenario.",
-    "attack_scenario": "Step-by-step description of how exploitation works from the attacker's perspective, starting from a compromised dependency.",
+    "severity": "high",
+    "confidence": "high",
+    "location": {
+      "file": "path/to/relevant/file",
+      "line": 42,
+      "function": "functionOrSection",
+      "snippet": "the vulnerable configuration or code"
+    },
+    "description": "Detailed explanation of the weakness and how a supply chain attacker would exploit it.",
+    "impact": "Step-by-step description of how exploitation works from the attacker's perspective, starting from a compromised dependency.",
+    "fix": {
+      "summary": "Specific fix or mitigation for this weakness.",
+      "diff": "- vulnerable configuration\n+ fixed configuration"
+    },
+    "references": {
+      "cwe": "CWE-xxx",
+      "owasp": "A08:2021",
+      "mitre_attck": "Txxxx"
+    },
     "dread": {
       "damage": 8,
       "reproducibility": 9,
       "exploitability": 7,
       "affected_users": 8,
-      "discoverability": 6
+      "discoverability": 6,
+      "score": 7.6
     },
-    "dread_score": 7.6,
-    "severity": "HIGH",
-    "confidence": 85,
-    "remediation": "Specific fix or mitigation for this weakness.",
-    "references": ["Links to relevant advisories, documentation, or attack descriptions"]
+    "metadata": {
+      "tool": "red-team",
+      "framework": "red-team",
+      "category": "supply-chain",
+      "persona": "supply-chain",
+      "depth": "expert"
+    }
   }
 ]
 ```

@@ -24,7 +24,7 @@ full flag specification. This skill supports the following flags.
 
 | Flag | Skill-Specific Behavior |
 |------|------------------------|
-| `--scope` | Not used directly. Findings are sourced from prior analysis or `.appsec/findings/`. |
+| `--scope` | Not used directly. Findings are sourced from prior analysis or `.appsec/findings.json`. |
 | `--depth` | Controls enrichment depth. `standard` maps techniques. `deep` builds kill chains. `expert` adds threat actor TTPs and DREAD scoring. |
 | `--severity` | Filter input findings before mapping. Only findings at or above this severity are processed. |
 | `--format` | Applied to final output. |
@@ -46,7 +46,7 @@ Collect existing findings from one or more sources, checked in priority order:
 
 1. **Current conversation context**: If findings are present from a prior
    analysis step (e.g., `/appsec:owasp` or `/appsec:stride`), use those.
-2. **Findings directory**: Check `.appsec/findings/` for persisted `*.json` files.
+2. **Findings file**: Check `.appsec/findings.json` for persisted findings.
 3. **User-specified file**: If the user provides a path, read and parse it.
 
 If no findings are available, inform the user and suggest running

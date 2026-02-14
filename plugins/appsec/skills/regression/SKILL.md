@@ -12,7 +12,7 @@ description: >
 # Security Regression Detection
 
 Verify that previously fixed vulnerabilities have not been reintroduced.
-Reads the fix history from `.appsec/findings/fixed-history.json`, checks
+Reads the fix history from `.appsec/fixed-history.json`, checks
 whether vulnerable patterns have returned or fixes have been removed, and
 reports any regressions. Designed to run as a gate check before merges or
 releases.
@@ -35,7 +35,7 @@ Read `../../shared/schemas/flags.md` for the full flag specification.
 
 ### Step 1: Load Fix History
 
-Read `.appsec/findings/fixed-history.json`. This file contains all findings that have been verified as fixed by `/appsec:verify`. Each entry includes:
+Read `.appsec/fixed-history.json`. This file contains all findings that have been verified as fixed by `/appsec:verify`. Each entry includes:
 
 1. **Original finding**: Full finding object (ID, CWE, severity, location, description).
 2. **Vulnerable snippet**: The original vulnerable code pattern.
@@ -153,7 +153,7 @@ For each REGRESSION and DEGRADED result, emit a formal finding using `../../shar
 - Add `metadata.regression: true` to indicate this is a reintroduced vulnerability.
 - Severity for regressions should be at least as high as the original, since this was a known and previously fixed issue.
 
-Save regression findings to `.appsec/findings/` with status `regression`.
+Save regression findings to `.appsec/findings.json` with status `regression`.
 
 ## Output Format
 
