@@ -1,3 +1,6 @@
 **/.DS_Store
 
 scratch/
+.beads/
+.gitattributes
+AGENTS.md
