@@ -17,7 +17,7 @@ clear syntactic fingerprints in source code.
 
 ## Supported Flags
 
-Read `shared/schemas/flags.md` for the full flag specification. This skill
+Read `../../shared/schemas/flags.md` for the full flag specification. This skill
 supports all cross-cutting flags. Key behaviors:
 
 | Flag | Injection-Specific Behavior |
@@ -96,8 +96,8 @@ bandit -r <target> -f json -q
 gosec -fmt json ./...
 ```
 
-Normalize scanner output to the findings schema (see `shared/schemas/findings.md`).
-Use the severity mapping from `shared/schemas/scanners.md`.
+Normalize scanner output to the findings schema (see `../../shared/schemas/findings.md`).
+Use the severity mapping from `../../shared/schemas/scanners.md`.
 
 ### Step 4: Claude Analysis
 
@@ -121,7 +121,7 @@ At `--depth deep` or `--depth expert`, trace data flow across files:
 
 ### Step 5: Report
 
-Output findings using the format from `shared/schemas/findings.md`.
+Output findings using the format from `../../shared/schemas/findings.md`.
 
 Each finding must include:
 - **id**: `INJ-001`, `INJ-002`, etc.
@@ -168,7 +168,7 @@ reading. Report these findings with `confidence: medium`.
 
 Use finding ID prefix **INJ** (e.g., `INJ-001`, `INJ-002`).
 
-All findings follow the schema in `shared/schemas/findings.md` with:
+All findings follow the schema in `../../shared/schemas/findings.md` with:
 - `references.owasp`: `"A03:2021"`
 - `references.stride`: `"T"` (Tampering), `"I"` (Info Disclosure), or `"E"` (Elevation of Privilege)
 - `metadata.tool`: `"injection"`

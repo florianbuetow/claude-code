@@ -37,8 +37,8 @@ Read `../../shared/schemas/flags.md` for the full flag specification.
 
 Collect all available security data:
 
-1. **Findings**: Read all files from `.appsec/findings/`. Parse each finding object.
-2. **Fixed history**: Read `.appsec/findings/fixed-history.json` if it exists.
+1. **Findings**: Read `.appsec/findings.json`. Parse each finding object from the array.
+2. **Fixed history**: Read `.appsec/fixed-history.json` if it exists.
 3. **Scanner results**: Check for raw scanner output in `.appsec/scanners/`.
 4. **Model data**: Check `.appsec/model/` for threat model artifacts.
 5. **Previous reports**: Check `.appsec/reports/` for trend comparison.

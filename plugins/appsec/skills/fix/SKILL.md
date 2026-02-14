@@ -35,12 +35,12 @@ Read `../../shared/schemas/flags.md` for the full flag specification.
 
 Resolve what to fix from user input. Accept any of these forms:
 
-1. **Finding ID**: e.g., `INJ-001`. Read from `.appsec/findings/` to load the finding.
+1. **Finding ID**: e.g., `INJ-001`. Read from `.appsec/findings.json` to load the finding.
 2. **File and line**: e.g., `src/db/queries.ts:45`. Scan findings for a match, or analyze the location directly.
 3. **Description**: e.g., "the SQL injection in the user lookup". Search findings by title/description.
 4. **Batch mode**: No specific target means fix all findings in scope, ordered by severity (critical first).
 
-If no findings exist in `.appsec/findings/`, analyze the target location directly to identify the vulnerability before generating a fix.
+If no findings exist in `.appsec/findings.json`, analyze the target location directly to identify the vulnerability before generating a fix.
 
 ### Step 2: Understand the Vulnerability
 
@@ -122,7 +122,7 @@ Then ask: "Apply this fix?" If the user confirms (or `--fix` flag was passed fro
 
 After applying a fix:
 
-1. Update the finding in `.appsec/findings/` with status `fix-applied`.
+1. Update the finding in `.appsec/findings.json` with status `fix-applied`.
 2. Add `fix.applied_at` timestamp and `fix.diff` with the actual change made.
 3. Inform the user to run `/appsec:verify` to confirm the fix resolves the issue.
 

@@ -17,7 +17,7 @@ ratings, code locations, and concrete remediation steps.
 
 ## Supported Flags
 
-All flags from `shared/schemas/flags.md` are supported:
+All flags from `../../shared/schemas/flags.md` are supported:
 
 | Flag | Relevant Behavior |
 |------|-------------------|
@@ -63,7 +63,7 @@ examples, scanner coverage, and false positive guidance for each vulnerability p
 
 Parse `--scope` flag and resolve to a concrete file list:
 
-1. Apply scope resolution per `shared/schemas/flags.md`.
+1. Apply scope resolution per `../../shared/schemas/flags.md`.
 2. Filter to files relevant to authentication:
    - Route handlers, middleware, and controllers (login, register, password reset endpoints)
    - Authentication modules and services
@@ -97,7 +97,7 @@ For each available scanner:
 1. Execute against the scoped file list.
 2. Parse JSON output.
 3. Filter to authentication-related rules only.
-4. Normalize findings to the schema in `shared/schemas/findings.md`.
+4. Normalize findings to the schema in `../../shared/schemas/findings.md`.
 5. Set `scanner.confirmed: true` for scanner-detected findings.
 
 ### 4. Claude Analysis
@@ -117,7 +117,7 @@ Regardless of scanner availability, perform manual code analysis:
 ### 5. Report Findings
 
 Format output per `--format` flag. Each finding uses the schema from
-`shared/schemas/findings.md` with these specifics:
+`../../shared/schemas/findings.md` with these specifics:
 
 - **ID prefix**: `AUTH` (e.g., `AUTH-001`, `AUTH-002`)
 - **references.owasp**: `A07:2021`
@@ -169,7 +169,7 @@ for detailed regex patterns and code examples.
 
 ## Scanner Integration
 
-Refer to `shared/schemas/scanners.md` for full scanner details.
+Refer to `../../shared/schemas/scanners.md` for full scanner details.
 
 **Primary**: semgrep (broad auth rule coverage across languages)
 **Secondary**: bandit (Python), gosec (Go), gitleaks (hardcoded credentials)
@@ -180,7 +180,7 @@ parent agent prompt. Do not re-parse user input.
 
 ## Output Format
 
-All findings conform to the schema defined in `shared/schemas/findings.md`.
+All findings conform to the schema defined in `../../shared/schemas/findings.md`.
 
 **ID prefix**: `AUTH` (registered in the ID Prefix Registry as OWASP A07)
 

@@ -87,30 +87,48 @@ Return your findings as a JSON array. Each finding must include all fields shown
   {
     "id": "APT-001",
     "title": "Short description of the attack chain or weakness",
-    "persona": "nation-state",
-    "type": "attack-chain | persistence | lateral-movement | exfiltration | crypto-weakness | zero-day-potential",
-    "files": ["path/to/file1", "path/to/file2", "path/to/file3"],
-    "lines": [42, 118, 203],
+    "severity": "critical",
+    "confidence": "high",
+    "location": {
+      "file": "path/to/primary/file",
+      "line": 42,
+      "function": "functionName",
+      "snippet": "the vulnerable code"
+    },
+    "description": "Detailed explanation of the complete attack path, how each weakness enables the next, and what the final impact is. Describe what an APT operator would actually do at each step.",
+    "impact": "What the APT achieves through this chain — persistent access, data exfiltration scope, lateral movement reach.",
     "chain": [
       {"step": 1, "weakness": "Description of first link", "file": "path/to/file1", "line": 42},
       {"step": 2, "weakness": "Description of second link", "file": "path/to/file2", "line": 118},
       {"step": 3, "weakness": "Description of third link and final impact", "file": "path/to/file3", "line": 203}
     ],
-    "description": "Detailed explanation of the complete attack path, how each weakness enables the next, and what the final impact is. Describe what an APT operator would actually do at each step.",
-    "kill_chain_phase": "persistence | privilege-escalation | lateral-movement | exfiltration | impact",
+    "fix": {
+      "summary": "Breaking any single link neutralizes the chain. Priority: fix the weakest link.",
+      "diff": "- vulnerable code\n+ fixed code"
+    },
+    "references": {
+      "cwe": "CWE-xxx",
+      "owasp": "Axx:2021",
+      "mitre_attck": "T1190"
+    },
     "dread": {
       "damage": 9,
       "reproducibility": 7,
       "exploitability": 6,
       "affected_users": 9,
-      "discoverability": 5
+      "discoverability": 5,
+      "score": 7.2
     },
-    "dread_score": 7.2,
-    "severity": "HIGH",
-    "confidence": 75,
-    "remediation": "Specific mitigations for each link in the chain. Breaking any single link should neutralize the chain.",
-    "mitre_attack": ["T1190", "T1078", "T1048"],
-    "references": ["Links to relevant techniques, advisories, or research"]
+    "metadata": {
+      "tool": "red-team",
+      "framework": "red-team",
+      "category": "nation-state",
+      "persona": "nation-state",
+      "depth": "expert",
+      "type": "attack-chain",
+      "kill_chain_phase": "persistence",
+      "mitre_attack": ["T1190", "T1078", "T1048"]
+    }
   }
 ]
 ```

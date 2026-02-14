@@ -18,7 +18,7 @@ Claude's architectural reasoning is the primary value.
 
 ## Supported Flags
 
-Read `shared/schemas/flags.md` for the full flag specification. This skill
+Read `../../shared/schemas/flags.md` for the full flag specification. This skill
 supports all cross-cutting flags. Key behaviors:
 
 | Flag | Insecure Design-Specific Behavior |
@@ -152,7 +152,7 @@ At `--depth deep` or `--depth expert`, construct a lightweight threat model:
 
 ### Step 5: Report
 
-Output findings using the format from `shared/schemas/findings.md`.
+Output findings using the format from `../../shared/schemas/findings.md`.
 
 Each finding must include:
 - **id**: `DESGN-001`, `DESGN-002`, etc.
@@ -216,7 +216,7 @@ is reasoning-based.
 
 Use finding ID prefix **DESGN** (e.g., `DESGN-001`, `DESGN-002`).
 
-All findings follow the schema in `shared/schemas/findings.md` with:
+All findings follow the schema in `../../shared/schemas/findings.md` with:
 - `references.owasp`: `"A04:2021"`
 - `references.stride`: One or more of `"S"`, `"T"`, `"R"`, `"I"`, `"D"`, `"E"`
 - `metadata.tool`: `"insecure-design"`

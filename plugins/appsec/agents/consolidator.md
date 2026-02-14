@@ -81,30 +81,45 @@ Return the consolidated report as a single JSON object. Do not include any text 
       "id": "CONSOLIDATED-001",
       "original_ids": ["SC-003", "APT-001"],
       "title": "Merged or deduplicated finding title",
-      "severity": "CRITICAL",
-      "dread_score": 8.4,
+      "severity": "critical",
+      "confidence": "high",
+      "location": {
+        "file": "path/to/primary/file",
+        "line": 42
+      },
+      "description": "Consolidated description combining the most detailed observations from each contributing agent.",
+      "impact": "What is achievable through this finding.",
       "dread": {
         "damage": 9,
         "reproducibility": 8,
         "exploitability": 7,
         "affected_users": 9,
-        "discoverability": 9
+        "discoverability": 9,
+        "score": 8.4
       },
-      "confidence": 90,
-      "personas": ["supply-chain", "nation-state"],
-      "files": ["path/to/file1", "path/to/file2"],
-      "lines": [42, 118],
-      "description": "Consolidated description combining the most detailed observations from each contributing agent.",
-      "dedup_note": "Merged SC-003 and APT-001: both identify the same unsigned auto-update mechanism, APT-001 additionally chains it with credential access.",
-      "cross_references": ["CONSOLIDATED-004", "CONSOLIDATED-012"],
-      "remediation": "Specific remediation steps."
+      "fix": {
+        "summary": "Specific remediation steps."
+      },
+      "references": {
+        "cwe": "CWE-xxx",
+        "owasp": "Axx:2021"
+      },
+      "metadata": {
+        "tool": "red-team",
+        "framework": "red-team",
+        "category": "consolidated",
+        "personas": ["supply-chain", "nation-state"],
+        "dedup_note": "Merged SC-003 and APT-001: both identify the same unsigned auto-update mechanism, APT-001 additionally chains it with credential access.",
+        "cross_references": ["CONSOLIDATED-004", "CONSOLIDATED-012"],
+        "additional_files": ["path/to/file2"]
+      }
     }
   ],
   "attack_chains": [
     {
       "id": "CHAIN-001",
       "title": "Description of the full attack path",
-      "severity": "CRITICAL",
+      "severity": "critical",
       "dread_score": 8.8,
       "steps": [
         {"finding": "CONSOLIDATED-001", "role": "Initial access via compromised dependency"},
