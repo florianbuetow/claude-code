@@ -283,7 +283,11 @@ STEP 5: Write findings using the AGGREGATE OUTPUT format from the findings schem
 {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/{TOOL_NAME}.json
 
 Use the Write tool. The file must be a JSON object with fields:
-  tool, total_findings, by_severity (object with critical/high/medium/low counts), findings (array)
+  tool, total_findings, by_severity (object with critical/high/medium/low counts),
+  notes (optional string), findings (array)
+
+The notes field is optional. If the skill produces narrative assessment beyond
+structured findings, include it here.
 
 If zero findings, write: {"tool":"{TOOL_NAME}","total_findings":0,"by_severity":{"critical":0,"high":0,"medium":0,"low":0},"findings":[]}
 
