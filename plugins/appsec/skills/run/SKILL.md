@@ -152,54 +152,61 @@ timestamp for future reuse.
 
 ### Phase 2: Run Scanners (Main Agent)
 
-Run detected scanners in the main agent context using Bash. Launch ALL
-scanner commands in parallel Bash calls within a SINGLE response.
+Create the output directory, then run detected scanners in the main agent
+context using Bash. Launch ALL scanner commands in parallel Bash calls
+within a SINGLE response.
+
+```bash
+mkdir -p reports/appsec/scanners
+```
 
 For each detected scanner, use the invocation pattern from
 [`../../shared/schemas/scanners.md`](../../shared/schemas/scanners.md).
+Redirect ALL scanner output to files — the main agent NEVER reads scanner
+JSON content.
 
 **Scanner dispatch pattern:**
 
-```
-# Run each scanner in parallel Bash calls
-semgrep scan --config auto --json --quiet <scope_path>
-gitleaks detect --source <scope_path> --report-format json --no-banner
-npm audit --json    (if Node.js project)
-pip-audit --format json    (if Python project)
-trivy fs --format json <scope_path>    (if installed)
+```bash
+# Run each scanner in parallel Bash calls — redirect output to files
+semgrep scan --config auto --json --quiet <scope_path> > reports/appsec/scanners/semgrep.json 2>&1
+gitleaks detect --source <scope_path> --report-format json --no-banner > reports/appsec/scanners/gitleaks.json 2>&1
+npm audit --json > reports/appsec/scanners/npm-audit.json 2>&1           # if Node.js project
+pip-audit --format json > reports/appsec/scanners/pip-audit.json 2>&1    # if Python project
+trivy fs --format json <scope_path> > reports/appsec/scanners/trivy.json 2>&1   # if installed
 ```
 
-Capture scanner output. Parse JSON results into the findings schema format.
-Scanner findings get `scanner.confirmed: true` and the scanner's name in
-`scanner.name`.
+After ALL scanners complete, check exit codes and file sizes ONLY. Do NOT
+read or parse scanner JSON files in the main agent context.
+
+```bash
+# Check each scanner result — exit code + file size only
+ls -l reports/appsec/scanners/*.json
+```
+
+Build a scanner status list from exit codes and file sizes:
+
+- **Exit code 0 or 1 AND file size > 0**: Mark as `OK`.
+- **Exit code > 1 AND file size > 0**: Mark as `PARTIAL (ran with warnings)`.
+- **File size 0 or file missing**: Mark as `FAILED (no output)`.
+- **Exit code 127 (command not found)**: Mark as `MISSING`.
 
 **Error handling for scanners:**
 
 - **Non-zero exit code**: Many scanners exit non-zero when they find issues
   (e.g., `npm audit` exits 1 when vulnerabilities exist). This is normal.
-  Only treat an exit code as a failure if the output is not valid JSON or
-  is empty.
-- **Malformed JSON output**: If a scanner produces output that cannot be
-  parsed as JSON, log the scanner name and skip it. Do not abort the run.
-  Include the scanner in the `TOOLS FAILED` section of the output.
+  Only treat it as a failure if the output file is empty (0 bytes).
 - **Timeout**: If a scanner does not return within 120 seconds, skip it
-  and note the timeout. Include it in `TOOLS FAILED`.
-- **Scanner not found**: If a scanner from the plan is not installed (the
-  Bash command fails with "command not found"), note it in `SCANNERS MISSING`
-  and continue.
-- **Scanner error responses**: If the JSON output contains an `"error"` or
-  `"errors"` top-level key, treat it as a scanner failure (e.g.,
-  `{"error": "semgrep requires login"}` is NOT a clean scan). Check stderr
-  for error messages even when stdout has valid JSON.
-- **Scanner status**: Report each scanner as: `OK (N findings)` /
-  `PARTIAL (ran with warnings)` / `FAILED (reason)` — not binary OK/FAIL.
-- Track all scanner errors for the output summary:
+  and note the timeout. Mark as `FAILED (timeout)`.
+- **Scanner not found**: If a scanner from the plan is not installed (exit
+  code 127), note it in `SCANNERS MISSING` and continue.
+- Track all scanner statuses for the consolidator:
   ```
-  scanner_errors = []  # list of {scanner, error_type, details}
+  scanner_status = []  # list of {scanner, status, file_path, file_size}
   ```
 
-If `--depth quick` is set, STOP HERE. Output scanner findings only and
-skip Phases 3 and 4.
+If `--depth quick` is set, skip Phases 3 and 4. Jump directly to Phase 5
+and launch the consolidator subagent with scanner results only.
 
 ### Phase 3: Dispatch Category Skills (Parallel Subagents)
 
@@ -243,9 +250,16 @@ For specific scope types, provide actionable error messages:
 
 #### Subagent Prompt Template
 
+Before dispatching, create the output directory:
+
+```bash
+mkdir -p reports/appsec/skills
+```
+
 Each subagent Task call must include a FULLY self-contained prompt.
 Subagents get their own isolated context window and cannot see the main
-conversation.
+conversation. Subagents write their findings to a file and return ONLY
+a one-line status summary.
 
 ```
 Analyze the following files for {TOOL_DESCRIPTION} vulnerabilities:
@@ -261,12 +275,19 @@ STEP 2: Follow the workflow defined in that skill to analyze the listed files.
 STEP 3: Read the findings schema at:
 {ABSOLUTE_PATH_TO_PLUGIN}/shared/schemas/findings.md
 
-STEP 4: Output findings in the schema format. Set metadata.tool to "{TOOL_NAME}"
+STEP 4: Produce findings in the schema format. Set metadata.tool to "{TOOL_NAME}"
 and metadata.framework to "{FRAMEWORK}".
+
+STEP 5: Write the complete JSON findings array to:
+{ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/{TOOL_NAME}.json
+Use the Write tool. The file must contain a valid JSON array of finding objects.
 
 FLAGS: --scope {SCOPE} --depth {DEPTH} --severity {SEVERITY}
 
-IMPORTANT: Return ONLY the findings list. Do NOT produce a summary or
+IMPORTANT: After writing the file, return ONLY a one-line status in this exact format:
+"{TOOL_NAME}: N findings (Xc Xh Xm Xl)"
+where N is the total count and Xc/Xh/Xm/Xl are counts per severity.
+Do NOT return the findings themselves. Do NOT produce a summary or
 cross-tool analysis. The orchestrator handles consolidation.
 ```
 
@@ -283,8 +304,14 @@ Do NOT emit Task calls one at a time. Do NOT wait between dispatches.
 ### Phase 4: Red Team Simulation (Expert Mode Only)
 
 If `--depth expert` is set and `--skip-redteam` is NOT set, launch red
-team agents AFTER Phase 3 consolidation completes. Red team agents receive
-the consolidated findings to build multi-step attack chains.
+team agents AFTER Phase 3 subagents complete. Red team agents read prior
+findings from files to build multi-step attack chains.
+
+Before dispatching, create the output directory:
+
+```bash
+mkdir -p reports/appsec/redteam
+```
 
 #### Red Team Agent Registry
 
@@ -315,106 +342,141 @@ perspective:
 FILES:
 {FILE_LIST}
 
-PRIOR FINDINGS (from automated analysis):
-{CONSOLIDATED_FINDINGS_JSON}
+STEP 1: Read prior findings from these directories using the Read tool:
+- {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/scanners/*.json
+- {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/*.json
+These contain the automated analysis results. Use Glob to list the files, then
+read each one.
 
-Read the findings schema at:
+STEP 2: Read the findings schema at:
 {ABSOLUTE_PATH_TO_PLUGIN}/shared/schemas/findings.md
 
-Read the DREAD scoring framework at:
+STEP 3: Read the DREAD scoring framework at:
 {ABSOLUTE_PATH_TO_PLUGIN}/shared/frameworks/dread.md
 
-Attempt to chain vulnerabilities into multi-step attack scenarios. Score each
-finding using DREAD. Return ONLY a JSON array of findings with prefix "RT".
+STEP 4: Attempt to chain vulnerabilities into multi-step attack scenarios.
+Score each finding using DREAD.
+
+STEP 5: Write your findings as a JSON array (prefix "RT") to:
+{ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/redteam/{PERSONA_NAME}.json
+Use the Write tool. The file must contain a valid JSON array of finding objects.
+
+IMPORTANT: After writing the file, return ONLY a one-line status in this exact format:
+"{PERSONA_NAME}: N findings (Xc Xh Xm Xl)"
+Do NOT return the findings themselves.
 ```
 
-### Phase 5: Consolidation (Main Agent)
+### Phase 5: Consolidation (Consolidator Subagent)
 
-After ALL subagents (category skills and optionally red team agents) return:
+After ALL subagents (category skills and optionally red team agents) return,
+the main agent builds a status summary and launches ONE consolidator subagent.
 
-**Subagent failure handling**: Before merging, check each subagent's result:
+#### Build Status Summary
 
-- **Subagent returned empty output or errored**: Record the skill name and
-  error. Do NOT redo the subagent's work in the main agent context — this
-  would consume the main context window and produce lower quality results.
-  Instead, note the gap.
-- **Subagent returned malformed output**: If the output is not valid JSON
-  or does not match the findings schema:
-  1. Check if the output contains a JSON code block (``` markers). If so,
-     extract and parse that block.
-  2. If no parseable JSON is found, record the skill as FAILED with the
-     first 200 characters of output as the error reason.
-  3. Any findings extracted from malformed output MUST have confidence set
-     to `low` and a note: "Extracted from malformed subagent output —
-     verify manually."
-  4. Include extracted findings in a TOOLS DEGRADED section, distinct from
-     TOOLS FAILED.
-- **Track all failures** in a `tools_failed` list for the output summary.
-  Each entry should include the tool name and the reason for failure.
+From each subagent's one-line status return, build two lists:
 
-Include a `TOOLS FAILED` section in the output if any subagents failed:
 ```
-TOOLS FAILED:
-  <tool_name>  <reason>
-  <tool_name>  <reason>
+tools_ok = []      # e.g. ["injection: 3 findings (0c 1h 2m 0l)", ...]
+tools_failed = []  # e.g. ["crypto: empty output", "ssrf: error ..."]
 ```
 
-This makes gaps visible so the user can rerun specific tools or investigate.
+A subagent that returned an empty string, errored, or did not match the
+expected status format goes into `tools_failed`. Do NOT re-read any
+findings files in the main agent context.
 
-#### 1. Merge Findings
+Also include scanner statuses from Phase 2:
 
-Collect findings from:
-- Scanner output (Phase 2)
-- Category skill subagents (Phase 3)
-- Red team agents (Phase 4, if run)
+```
+scanners_ok = []      # e.g. ["semgrep: OK", "npm-audit: OK"]
+scanners_failed = []  # e.g. ["gitleaks: FAILED (timeout)"]
+scanners_missing = [] # e.g. ["trivy", "bandit"]
+```
 
-#### 2. Deduplicate
+#### Launch Consolidator Subagent
 
-Two findings are duplicates if they share the same `location.file` AND
-`location.line` (or overlapping line ranges). When duplicates exist:
+Launch a single consolidator subagent with the following FULLY self-contained
+prompt. This subagent reads all result files, merges, deduplicates, and
+produces the final report.
+
+```
+You are the appsec consolidator. Your job is to merge all security findings
+from scanners, category skills, and red team agents into a single deduplicated
+report.
+
+STEP 1: Read the findings schema at:
+{ABSOLUTE_PATH_TO_PLUGIN}/shared/schemas/findings.md
+
+STEP 2: Read all JSON result files from these directories using Glob + Read:
+- {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/scanners/*.json
+- {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/*.json
+- {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/redteam/*.json  (if directory exists)
+
+For scanner files: each scanner produces its own JSON format. Parse each
+scanner's native format and convert findings to the standard schema. Set
+scanner.confirmed to true and scanner.name to the scanner name (derived
+from the filename, e.g. "semgrep.json" -> "semgrep").
+
+For skill and red team files: these already use the standard schema format.
+
+If any file contains malformed JSON that cannot be parsed, log the filename
+in a TOOLS DEGRADED list and skip it. Continue processing other files.
+
+STEP 3: Deduplicate findings.
+Two findings are duplicates if they share the same location.file AND
+location.line (or overlapping line ranges). When duplicates exist:
 - Keep the finding with the higher severity.
-- Merge cross-framework references.
+- Merge cross-framework references from both.
 - Prefer scanner-confirmed findings over heuristic-only.
-- Note the duplicate in the retained finding's description.
+- Note the duplicate source in the retained finding's description.
 
-#### 3. Cross-Reference
+STEP 4: Cross-reference each finding. Populate:
+- references.cwe: CWE identifier
+- references.owasp: OWASP Top 10 category
+- references.stride: STRIDE category letter(s)
+- references.mitre_attck: ATT&CK technique ID
+- references.sans_cwe25: SANS/CWE Top 25 rank if applicable
 
-For each finding, populate cross-framework references:
-- `references.cwe`: CWE identifier
-- `references.owasp`: OWASP Top 10 category
-- `references.stride`: STRIDE category letter(s)
-- `references.mitre_attck`: ATT&CK technique ID
-- `references.sans_cwe25`: SANS/CWE Top 25 rank if applicable
-
-#### 4. Rank
-
-Sort findings: critical > high > medium > low. Within the same severity,
-sort by confidence (high > medium > low). Within the same confidence,
+STEP 5: Rank findings.
+Sort: critical > high > medium > low. Within the same severity, sort by
+confidence (high > medium > low). Within the same confidence,
 scanner-confirmed findings rank higher.
 
-#### 5. Apply Severity Filter
+STEP 6: Apply severity filter.
+{SEVERITY_FILTER_INSTRUCTION}
 
-If `--severity` is set, remove findings below the threshold.
+STEP 7: Write consolidated output files using the Write tool:
+- {ABSOLUTE_PATH_TO_PROJECT}/.appsec/findings.json — the full findings array
+  in the aggregate schema format (for downstream skills like /appsec:status,
+  /appsec:fix)
+- {ABSOLUTE_PATH_TO_PROJECT}/.appsec/last-run.json — run metadata:
+  {{"timestamp": "<ISO 8601>", "scope": "{SCOPE}", "depth": "{DEPTH}",
+    "tools_run": [...], "tools_failed": [...], "scanners_used": [...],
+    "scanners_missing": [...], "total_findings": N,
+    "by_severity": {{"critical": N, "high": N, "medium": N, "low": N}}}}
 
-#### 6. Write State
+STEP 8: Return the formatted report in {FORMAT} format.
 
-Write consolidated findings to `.appsec/findings.json` for use by
-`/appsec:status` and future scans.
+TOOL STATUS (from orchestrator):
+Tools OK: {TOOLS_OK_LIST}
+Tools failed: {TOOLS_FAILED_LIST}
+Scanners OK: {SCANNERS_OK_LIST}
+Scanners failed: {SCANNERS_FAILED_LIST}
+Scanners missing: {SCANNERS_MISSING_LIST}
 
-### Phase 6: Output
+CONTEXT:
+Scope: {SCOPE}
+Depth: {DEPTH}
+Stack: {DETECTED_STACK}
 
-Present the consolidated report in the requested `--format`.
+For TEXT format (default), use this exact template:
 
-#### Text Format (default)
-
-```
 =====================================================
               APPSEC RUN -- Security Scan
 =====================================================
 
-SCOPE: <scope description>
-DEPTH: <quick|standard|deep|expert>
-STACK: <detected languages, frameworks>
+SCOPE: {SCOPE_DESCRIPTION}
+DEPTH: {DEPTH}
+STACK: {DETECTED_STACK}
 SCANNERS: <scanner1> OK (N findings)  <scanner2> PARTIAL (warnings)  <scanner3> N/A
 WARNINGS:                   (only if any category fell back to pattern-based analysis)
   <category>: No scanner installed. Detection is pattern-based only (higher false-negative risk).
@@ -443,41 +505,44 @@ FINDINGS: <total> (<critical> critical, <high> high, <medium> medium, <low> low)
 
   ...
 
-TOOLS RUN: <list of tools/categories that ran>
-TOOLS SKIPPED: <list of tools skipped and why>
-SCANNERS MISSING: <scanners that would help but are not installed>
+TOOLS RUN: <list of tools/categories from Tools OK>
+TOOLS FAILED: <list from Tools failed, with reasons>
+TOOLS DEGRADED: <list of files with malformed JSON, if any>
+SCANNERS MISSING: <list from Scanners missing>
 
 =====================================================
   <total> findings saved to .appsec/findings.json
   Run /appsec:explain <ID> for details on any finding
   Run /appsec:run --fix to auto-generate fixes
 =====================================================
+
+For JSON format: output the aggregate format from the findings schema.
+For SARIF format: output SARIF 2.1.0 for GitHub Security tab integration.
+For MARKDOWN format: output a Markdown report with headings, tables, and
+code blocks.
+
+IMPORTANT: Return ONLY the formatted report. The orchestrator will present
+it directly to the user.
 ```
 
-#### JSON Format
+### Phase 6: Output
 
-Output the aggregate format from `shared/schemas/findings.md` with all
-fields populated.
-
-#### SARIF Format
-
-Output SARIF 2.1.0 format for GitHub Security tab integration. Each
-finding maps to a SARIF result with location, message, and rule metadata.
-
-#### Markdown Format
-
-Output a Markdown report with headings, tables, and code blocks suitable
-for wiki or README inclusion.
+Present the consolidator subagent's returned output directly to the user.
+The consolidator already produces the final formatted report (text, JSON,
+SARIF, or Markdown), so no reformatting is needed in the main agent.
 
 ## Caching and State
 
-After each run, write state to `.appsec/`:
+After each run, state is written to `.appsec/`:
 
-| File | Content |
-|------|---------|
-| `.appsec/start-assessment.json` | Stack detection, scanner availability, execution plan |
-| `.appsec/findings.json` | Consolidated findings from this run |
-| `.appsec/last-run.json` | Timestamp, scope, depth, tools used, finding count |
+| File | Written By | Content |
+|------|-----------|---------|
+| `.appsec/start-assessment.json` | Phase 1 (main agent) | Stack detection, scanner availability, execution plan |
+| `.appsec/findings.json` | Phase 5 (consolidator subagent) | Consolidated findings from this run |
+| `.appsec/last-run.json` | Phase 5 (consolidator subagent) | Timestamp, scope, depth, tools used, finding count |
+
+Intermediate results persist in `reports/appsec/` (subdirectories:
+`scanners/`, `skills/`, `redteam/`) until the next run overwrites them.
 
 This state powers `/appsec:status` and enables delta detection on
 subsequent runs.
