@@ -210,7 +210,7 @@ Do NOT retry or redo it yourself.
 
 ### Phase 4: Red Team Simulation (6 Agents in Parallel)
 
-Unless `--skip-redteam` is set, launch ALL 6 red team agents in parallel.
+Unless `--skip-redteam` is set, launch ALL 6 red team attacker agents in parallel.
 
 **CRITICAL**: All 6 Task tool calls MUST appear in the SAME response.
 
