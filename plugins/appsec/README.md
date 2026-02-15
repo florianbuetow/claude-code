@@ -2,7 +2,7 @@
 
 Comprehensive application security toolbox for Claude Code.
 
-62 skills across 8 security frameworks, 6 red team attacker personas, 18 detection pattern references, and interactive security education.
+62 skills across 8 security frameworks, 6 red team attacker personas + consolidator, 18 detection pattern references, and interactive security education.
 
 ## Installation
 

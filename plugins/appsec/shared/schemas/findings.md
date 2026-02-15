@@ -81,7 +81,7 @@ All appsec skills output findings in this standardized format. This ensures cons
 | `fix.diff` | string | Unified diff showing the fix. |
 | `references.cwe` | string | CWE identifier (e.g., `CWE-89`). |
 | `references.owasp` | string | OWASP Top 10 category (e.g., `A03:2021`). |
-| `references.stride` | string | STRIDE category letter(s): `S`, `T`, `R`, `I`, `D`, `E`. |
+| `references.stride` | string | Primary STRIDE category letter: `S`, `T`, `R`, `I`, `D`, or `E`. Use the single most relevant letter. |
 | `references.api_top10` | string | OWASP API Top 10 category (e.g., `API1:2023`). |
 | `references.mitre_attck` | string | MITRE ATT&CK technique ID (e.g., `T1190`). |
 | `references.sans_cwe25` | number | Position in SANS/CWE Top 25 list (1-25). |

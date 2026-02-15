@@ -119,7 +119,7 @@ All skills support `--scope`, `--severity`, `--depth`, `--format`, `--fix`, and 
 
 **Education:** `/appsec:learn` (guided walkthroughs), `/appsec:glossary` (quick reference)
 
-**Hook:** Automatically reviews plans on `ExitPlanMode` and checks for hardcoded secrets on file writes.
+**Hook:** Automatically reviews plans on `ExitPlanMode` and checks for hardcoded secrets on file writes and edits.
 
 **Languages & stacks:** Any - Python, JavaScript/TypeScript, Java, Go, C#, Ruby, PHP, Rust. Detects and uses installed scanners (semgrep, bandit, gitleaks, trivy, etc.) with Claude analysis fallback.
 
