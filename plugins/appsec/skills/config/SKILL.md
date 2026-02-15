@@ -115,6 +115,8 @@ enabled_personas:
 Check if `.appsec/config.yaml` exists using Glob. If it exists, read it.
 If not, use all defaults.
 
+If the config file exists but cannot be parsed as valid YAML, warn the user: `Warning: .appsec/config.yaml has invalid YAML. Using defaults. Run /appsec:config to fix.` If the file contains unknown keys (possible typos), warn: `Warning: Unknown config key '<key>'. Did you mean '<closest-match>'?`
+
 ### Step 2: Parse User Intent
 
 Determine what the user wants:

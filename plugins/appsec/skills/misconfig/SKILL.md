@@ -16,7 +16,7 @@ unnecessary features, and directory listing.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 Key flags for this skill:
@@ -98,7 +98,7 @@ For each detected scanner, run against the scoped files:
 - **semgrep**: `semgrep scan --config auto --json --quiet <target>`
 
 Normalize scanner output to the findings schema per
-[`shared/schemas/scanners.md`](../../shared/schemas/scanners.md).
+[`../../shared/schemas/scanners.md`](../../shared/schemas/scanners.md).
 
 ### Step 4 -- Claude Analysis
 
@@ -114,7 +114,7 @@ For each match:
 ### Step 5 -- Report Findings
 
 Output findings using the schema from
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 
 Use the **MSCFG** prefix for finding IDs (e.g., `MSCFG-001`, `MSCFG-002`).
 
@@ -144,7 +144,7 @@ Use the **MSCFG** prefix for finding IDs (e.g., `MSCFG-001`, `MSCFG-002`).
 
 ## Scanner Integration
 
-See [`shared/schemas/scanners.md`](../../shared/schemas/scanners.md) for full scanner
+See [`../../shared/schemas/scanners.md`](../../shared/schemas/scanners.md) for full scanner
 invocation details. This skill primarily uses:
 
 | Scanner | What It Catches |
@@ -162,7 +162,7 @@ patterns in `references/detection-patterns.md` and reports findings with
 ## Output Format
 
 All findings use the schema defined in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 
 **ID Prefix**: `MSCFG` (e.g., `MSCFG-001`)
 

@@ -1,5 +1,7 @@
 # OWASP API Security Top 10 (2023)
 
+> **Note:** This reference is based on the 2023 edition. Check the [official OWASP API Security project](https://owasp.org/API-Security/) for the current list.
+
 ## Overview
 
 APIs expose business logic and data directly, creating a different attack surface than browser-based web apps. The OWASP API Security Top 10 targets authorization granularity, data-access patterns, and resource consumption issues unique to API architectures. While the Web Top 10 focuses on rendering-layer and session-layer risks, the API Top 10 addresses machine-consumable interfaces that lack traditional UI-based protections.

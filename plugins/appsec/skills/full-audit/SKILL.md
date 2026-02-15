@@ -200,6 +200,14 @@ has returned.** Do NOT:
 If a subagent fails, note the failure. Include it in the report as a gap.
 Do NOT retry or redo it yourself.
 
+### Timeout Handling
+
+- **Individual subagent timeout**: 5 minutes. If a subagent has not returned after 5 minutes, mark it as TIMED OUT and proceed without its results.
+- **PASTA pipeline timeout**: 15 minutes total for all 7 stages.
+- **Total audit timeout**: 30 minutes for all phases combined.
+- **Progress reporting**: After each subagent returns, output a brief progress line: `[audit] Completed: <skill-name> (<N> findings). Waiting for <M> more subagents.`
+- **Timed-out subagents**: List in the report under a TIMED OUT section, distinct from TOOLS FAILED.
+
 ### Phase 4: Red Team Simulation (6 Agents in Parallel)
 
 Unless `--skip-redteam` is set, launch ALL 6 red team agents in parallel.

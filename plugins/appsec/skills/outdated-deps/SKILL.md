@@ -17,7 +17,7 @@ analysis for configuration hygiene, supply chain risks, and contextual assessmen
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 Key flags for this skill:
@@ -103,7 +103,7 @@ manifests:
 - **cargo-audit**: `cargo audit --json` (from Cargo.toml directory)
 
 Normalize scanner output to the findings schema per
-[`shared/schemas/scanners.md`](../../shared/schemas/scanners.md).
+[`../../shared/schemas/scanners.md`](../../shared/schemas/scanners.md).
 
 **Important**: Run scanners from the correct working directory. Dependency scanners
 require being in the project root or the directory containing the manifest file.
@@ -129,7 +129,7 @@ Merge Claude findings with scanner findings, deduplicating by package name and v
 ### Step 5 -- Report Findings
 
 Output findings using the schema from
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 
 Use the **DEP** prefix for finding IDs (e.g., `DEP-001`, `DEP-002`).
 
@@ -164,7 +164,7 @@ Group findings by category:
 
 ## Scanner Integration
 
-See [`shared/schemas/scanners.md`](../../shared/schemas/scanners.md) for full scanner
+See [`../../shared/schemas/scanners.md`](../../shared/schemas/scanners.md) for full scanner
 invocation details. This skill primarily uses:
 
 | Scanner | What It Catches |
@@ -189,7 +189,7 @@ When scanners are unavailable:
 ## Output Format
 
 All findings use the schema defined in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 
 **ID Prefix**: `DEP` (e.g., `DEP-001`)
 

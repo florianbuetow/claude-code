@@ -68,7 +68,7 @@ Return the consolidated report as a single JSON object. Do not include any text 
     "total_input_findings": 24,
     "duplicates_removed": 5,
     "final_finding_count": 19,
-    "agents_consolidated": ["supply-chain", "nation-state", "insider-threat"],
+    "agents_consolidated": ["supply-chain", "nation-state", "insider"],
     "severity_summary": {
       "critical": 2,
       "high": 7,

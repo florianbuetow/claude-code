@@ -62,7 +62,7 @@ Score every finding using the DREAD model. For each factor, assign a value from 
 | **Affected Users** | Single test account or no real users | Subset of users or specific role | All users, public-facing impact, media-worthy |
 | **Discoverability** | Requires source code access and deep analysis | Found by targeted scanning or manual testing | Visible in browser, obvious from API responses |
 
-**Score = (D + R + E + A + D) / 5**
+**Score = (Damage + Reproducibility + Exploitability + Affected Users + Discoverability) / 5**
 
 Severity mapping:
 - 8.0 - 10.0: **critical**
@@ -74,12 +74,15 @@ As a hacktivist, weight your Damage scores toward public visibility -- a defaced
 
 ## Output Format
 
-Return ONLY a JSON array of findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
+Return ONLY a JSON object with status metadata and findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
 
 ```json
-[
-  {
-    "id": "RT-HKxxx",
+{
+  "status": "complete",
+  "files_analyzed": 0,
+  "findings": [
+    {
+      "id": "RT-HKxxx",
     "title": "Short description of the vulnerability",
     "severity": "critical|high|medium|low",
     "confidence": "high|medium|low",
@@ -114,11 +117,12 @@ Return ONLY a JSON array of findings. No preamble, no explanation, no markdown o
       "category": "hacktivist",
       "persona": "hacktivist",
       "depth": "expert"
+      }
     }
-  }
-]
+  ]
+}
 ```
 
-If you find nothing exploitable for public embarrassment or disruption, return an empty array: `[]`
+If you find nothing exploitable for public embarrassment or disruption, return: `{"status": "complete", "files_analyzed": N, "findings": []}` where N is the number of files you analyzed. If you encounter errors reading files or analyzing code, return: `{"status": "error", "error": "description of what went wrong", "findings": []}`
 
 Do not fabricate findings. Every finding must reference real code in the analyzed files. If a pattern looks suspicious but you cannot confirm exploitability from the code, set confidence to "low".

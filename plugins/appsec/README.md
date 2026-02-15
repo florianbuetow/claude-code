@@ -86,7 +86,7 @@ Six attacker personas simulate real-world adversaries at `--depth expert`:
 All skills support:
 
 ```
---scope changed|staged|branch|file:<path>|path:<dir>|full
+--scope changed|staged|branch|file:<path>|path:<dir>|module:<name>|plan|full
 --severity critical|high|medium|low
 --depth quick|standard|deep|expert
 --format text|json|sarif|md

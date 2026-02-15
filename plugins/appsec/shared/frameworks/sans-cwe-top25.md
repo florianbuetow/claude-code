@@ -1,5 +1,7 @@
 # SANS/CWE Top 25 Most Dangerous Software Weaknesses (2023)
 
+> **Note:** This reference is based on the 2023 edition. The CWE Top 25 is published annually — check the [official MITRE CWE Top 25 page](https://cwe.mitre.org/top25/) for the current list.
+
 ## Overview
 
 The CWE Top 25 is a list of the most dangerous software weaknesses, published annually by MITRE in collaboration with SANS. Unlike the OWASP Top 10, which focuses on web application risk categories, the CWE Top 25 identifies specific, code-level weakness types ranked by prevalence and severity using real-world CVE data from the National Vulnerability Database (NVD).
