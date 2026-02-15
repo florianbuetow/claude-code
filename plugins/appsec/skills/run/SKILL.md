@@ -52,6 +52,11 @@ Look for `.appsec/start-assessment.json`. If it exists and is fresh (less
 than 24 hours old, and manifest files have not changed since), load it and
 skip to Step 1.5.
 
+The cached assessment is also stale if any of:
+- Scanner availability has changed (a new scanner was installed or one was removed)
+- `.appsec/config.yaml` has been modified since the assessment
+- The current git branch differs from the branch recorded in the assessment
+
 If no cache exists or it is stale, run Steps 1.2 through 1.4.
 
 #### Step 1.2: Detect Tech Stack
@@ -182,6 +187,12 @@ Scanner findings get `scanner.confirmed: true` and the scanner's name in
 - **Scanner not found**: If a scanner from the plan is not installed (the
   Bash command fails with "command not found"), note it in `SCANNERS MISSING`
   and continue.
+- **Scanner error responses**: If the JSON output contains an `"error"` or
+  `"errors"` top-level key, treat it as a scanner failure (e.g.,
+  `{"error": "semgrep requires login"}` is NOT a clean scan). Check stderr
+  for error messages even when stdout has valid JSON.
+- **Scanner status**: Report each scanner as: `OK (N findings)` /
+  `PARTIAL (ran with warnings)` / `FAILED (reason)` — not binary OK/FAIL.
 - Track all scanner errors for the output summary:
   ```
   scanner_errors = []  # list of {scanner, error_type, details}
@@ -219,6 +230,16 @@ staged), do NOT silently proceed with an empty analysis. Instead:
 2. Suggest alternatives: `--scope full` for the entire repo, `--scope branch`
    for all branch changes, or stage some changes first.
 3. Do NOT dispatch any subagents or scanners. Exit early.
+
+For specific scope types, provide actionable error messages:
+- `--scope file:<path>`: If the file does not exist, report "File not found:
+  \<path\>" and suggest similar filenames using Glob.
+- `--scope path:<dir>`: If the directory does not exist, report "Directory
+  not found: \<dir\>".
+- `--scope module:<name>`: If the module cannot be located, report "Module
+  not found: \<name\>".
+- `--scope branch`: If on the base branch with no divergence, report "No
+  commits ahead of base branch."
 
 #### Subagent Prompt Template
 
@@ -318,8 +339,16 @@ After ALL subagents (category skills and optionally red team agents) return:
   would consume the main context window and produce lower quality results.
   Instead, note the gap.
 - **Subagent returned malformed output**: If the output is not valid JSON
-  or does not match the findings schema, attempt to extract any structured
-  findings from the output. If extraction fails, record the skill as failed.
+  or does not match the findings schema:
+  1. Check if the output contains a JSON code block (``` markers). If so,
+     extract and parse that block.
+  2. If no parseable JSON is found, record the skill as FAILED with the
+     first 200 characters of output as the error reason.
+  3. Any findings extracted from malformed output MUST have confidence set
+     to `low` and a note: "Extracted from malformed subagent output —
+     verify manually."
+  4. Include extracted findings in a TOOLS DEGRADED section, distinct from
+     TOOLS FAILED.
 - **Track all failures** in a `tools_failed` list for the output summary.
   Each entry should include the tool name and the reason for failure.
 
@@ -386,7 +415,10 @@ Present the consolidated report in the requested `--format`.
 SCOPE: <scope description>
 DEPTH: <quick|standard|deep|expert>
 STACK: <detected languages, frameworks>
-SCANNERS: <scanner1> OK  <scanner2> OK  <scanner3> N/A
+SCANNERS: <scanner1> OK (N findings)  <scanner2> PARTIAL (warnings)  <scanner3> N/A
+WARNINGS:                   (only if any category fell back to pattern-based analysis)
+  <category>: No scanner installed. Detection is pattern-based only (higher false-negative risk).
+  Recommended: Install <scanner-names> for reliable detection.
 
 FINDINGS: <total> (<critical> critical, <high> high, <medium> medium, <low> low)
 

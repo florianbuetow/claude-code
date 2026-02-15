@@ -17,7 +17,7 @@ deniability should be preserved. This is the inverse of STRIDE Repudiation.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Non-Repudiation-Specific Behavior |
@@ -37,7 +37,7 @@ documentation. This skill supports all cross-cutting flags.
 Non-repudiation in a privacy context occurs when the system creates irrefutable
 proof that a specific user performed a sensitive action, in situations where
 plausible deniability should be available. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full LINDDUN framework reference including the relationship between LINDDUN N
 and STRIDE R.
 
@@ -81,7 +81,7 @@ what a legal adversary or data breach could reveal about user behavior.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `NREP-NNN` id, title, severity (based on activity sensitivity
 and irrefutability of proof), location with snippet, description of evidence
 created, impact (what can be proven if logs are subpoenaed), fix (selective
@@ -131,7 +131,7 @@ logging, retention limits, or anonymous channels), and CWE/LINDDUN references.
 Use finding ID prefix **NREP** (e.g., `NREP-001`, `NREP-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-779` (Logging of Excessive Data)
 - `references.owasp`: `A09:2021` (Security Logging & Monitoring Failures -- excessive audit trail)
 - `metadata.tool`: `"non-repudiation-privacy"`

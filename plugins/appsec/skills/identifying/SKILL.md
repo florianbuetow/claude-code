@@ -16,7 +16,7 @@ date, gender) can uniquely identify individuals. Re-identification attacks on
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Identifiability-Specific Behavior |
@@ -35,7 +35,7 @@ documentation. This skill supports all cross-cutting flags.
 
 Identifiability occurs when a person can be identified from data that is supposed
 to be anonymous or pseudonymous. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full LINDDUN framework reference including re-identification attack patterns and
 regulatory definitions.
 
@@ -76,7 +76,7 @@ estimate uniqueness across the population.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `IDENT-NNN` id, title, severity (based on directness of
 identification and data sensitivity), location with snippet, description of what
 enables identification, impact (re-identification harm), fix (anonymization,
@@ -128,7 +128,7 @@ generalization, or suppression), and CWE/LINDDUN references.
 Use finding ID prefix **IDENT** (e.g., `IDENT-001`, `IDENT-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-359` or `CWE-200` as appropriate
 - `references.owasp`: `A02:2021` (Cryptographic Failures -- weak anonymization)
 - `metadata.tool`: `"identifying"`

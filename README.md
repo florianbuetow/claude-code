@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins for software engineering workflows.
 
-`5 plugins` · `5 skills`
+`5 plugins` · `66+ skills`
 
 ### Skills
 

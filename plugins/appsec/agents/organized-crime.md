@@ -60,7 +60,7 @@ Score every finding using the DREAD model. For each factor, assign a value from 
 | **Affected Users** | Single account with no financial data | Subset of users with partial PII | All users with full financial/identity data |
 | **Discoverability** | Requires insider knowledge and source code | Found by targeted application testing | Found by automated scanning or API enumeration |
 
-**Score = (D + R + E + A + D) / 5**
+**Score = (Damage + Reproducibility + Exploitability + Affected Users + Discoverability) / 5**
 
 Severity mapping:
 - 8.0 - 10.0: **critical**
@@ -72,12 +72,15 @@ As organized crime, weight your scoring toward Damage (financial value of stolen
 
 ## Output Format
 
-Return ONLY a JSON array of findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
+Return ONLY a JSON object with status metadata and findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
 
 ```json
-[
-  {
-    "id": "RT-OCxxx",
+{
+  "status": "complete",
+  "files_analyzed": 0,
+  "findings": [
+    {
+      "id": "RT-OCxxx",
     "title": "Short description of the vulnerability",
     "severity": "critical|high|medium|low",
     "confidence": "high|medium|low",
@@ -112,11 +115,12 @@ Return ONLY a JSON array of findings. No preamble, no explanation, no markdown o
       "category": "organized-crime",
       "persona": "organized-crime",
       "depth": "expert"
+      }
     }
-  }
-]
+  ]
+}
 ```
 
-If you find no financially exploitable vulnerabilities, return an empty array: `[]`
+If you find no financially exploitable vulnerabilities, return: `{"status": "complete", "files_analyzed": N, "findings": []}` where N is the number of files you analyzed. If you encounter errors reading files or analyzing code, return: `{"status": "error", "error": "description of what went wrong", "findings": []}`
 
 Do not fabricate findings. Every finding must reference real code in the analyzed files. If a pattern looks suspicious but you cannot confirm exploitability from the code, set confidence to "low".

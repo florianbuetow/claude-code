@@ -17,7 +17,7 @@ sensitive information.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Detectability-Specific Behavior |
@@ -36,7 +36,7 @@ documentation. This skill supports all cross-cutting flags.
 
 Detectability occurs when an adversary can determine that an item of interest
 exists, even without accessing its content. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full LINDDUN framework reference including detectability patterns, timing
 side channels, and traffic analysis threats.
 
@@ -78,7 +78,7 @@ determine what an adversary can infer from response patterns and metadata.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `DTCT-NNN` id, title, severity (based on sensitivity of
 detectable information and ease of observation), location with snippet, description
 of what can be detected and through which channel, impact (what an observer infers),
@@ -127,7 +127,7 @@ fix (uniform responses, constant-time ops, or padding), and CWE/LINDDUN referenc
 Use finding ID prefix **DTCT** (e.g., `DTCT-001`, `DTCT-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-203` (Observable Discrepancy) or `CWE-208` (Observable Timing Discrepancy)
 - `references.owasp`: `A05:2021` (Security Misconfiguration -- information leakage in responses)
 - `metadata.tool`: `"detecting"`

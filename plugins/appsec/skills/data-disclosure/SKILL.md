@@ -17,7 +17,7 @@ and indirect disclosure (third-party sharing, over-collection).
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Disclosure-Specific Behavior |
@@ -36,7 +36,7 @@ documentation. This skill supports all cross-cutting flags.
 
 Disclosure of information in the LINDDUN context refers specifically to
 unauthorized access to personal data. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full LINDDUN framework reference including the distinction between LINDDUN
 disclosure (personal data focus) and STRIDE information disclosure (general
 system information).
@@ -78,7 +78,7 @@ exits the application boundary and map the full disclosure surface.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `DDSCL-NNN` id, title, severity (based on data sensitivity
 and exposure scope), location with snippet, description of what personal data is
 disclosed and through which channel, impact (unauthorized data access), fix
@@ -130,7 +130,7 @@ disclosed and through which channel, impact (unauthorized data access), fix
 Use finding ID prefix **DDSCL** (e.g., `DDSCL-001`, `DDSCL-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-200`, `CWE-311`, or `CWE-532` as appropriate
 - `references.owasp`: `A01:2021` (Broken Access Control) or `A02:2021` (Cryptographic Failures)
 - `metadata.tool`: `"data-disclosure"`

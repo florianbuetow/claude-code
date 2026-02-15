@@ -64,6 +64,8 @@ If `scanner.name` is present and the scanner is available:
 2. If the scanner no longer reports the finding at that location, mark as FIXED.
 3. If the scanner still reports, mark as STILL VULNERABLE with scanner output.
 
+**Scanner version awareness**: If the scanner version or configuration has changed since the original detection, note this in the verification result: `FIXED (note: scanner version changed since original detection — re-verify recommended).` This prevents false FIXED verdicts from rule changes.
+
 #### Claude-Detected Findings
 
 If the finding was detected by Claude analysis (no scanner, or scanner not available):

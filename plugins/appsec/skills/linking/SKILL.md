@@ -15,7 +15,7 @@ or time periods -- even when the system is fully encrypted and authenticated.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Linkability-Specific Behavior |
@@ -35,7 +35,7 @@ documentation. This skill supports all cross-cutting flags.
 Linkability occurs when an adversary can determine that two or more items of
 interest (data records, messages, actions, users) are related, even without
 knowing the identity of the data subject. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full LINDDUN framework reference including cross-framework mappings and
 regulatory context.
 
@@ -77,7 +77,7 @@ across the codebase and model what correlations an adversary can derive.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `LINK-NNN` id, title, severity (based on correlation potential
 and data sensitivity), location with snippet, description of what can be linked,
 impact (profile an adversary can build), fix (pseudonymization or isolation), and
@@ -129,7 +129,7 @@ CWE/LINDDUN references.
 Use finding ID prefix **LINK** (e.g., `LINK-001`, `LINK-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-359` or `CWE-212` as appropriate
 - `references.owasp`: `A01:2021` (Broken Access Control -- cross-context leakage)
 - `metadata.tool`: `"linking"`

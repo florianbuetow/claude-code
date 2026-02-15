@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "florianbuetow-plugins",
   "version": "1.0.0",
-  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, expert-guided specification writing, and distributed system tradeoff analysis.",
+  "description": "A collection of Claude Code plugins for software engineering workflows: application security analysis, SOLID principles analysis, system-level architecture principles analysis, expert-guided specification writing, and distributed system tradeoff analysis.",
   "repository": "https://github.com/florianbuetow/claude-code",
   "owner": {
     "name": "Florian Buetow",
@@ -52,6 +52,17 @@
       },
       "source": "./plugins/explain-system-tradeoffs",
       "category": "development"
+    },
+    {
+      "name": "appsec",
+      "description": "Comprehensive application security toolbox for Claude Code. 62 skills across 8 frameworks (OWASP Top 10, OWASP API Top 10, STRIDE, PASTA, LINDDUN, MITRE ATT&CK, SANS/CWE Top 25, DREAD), red team simulation with 6 attacker personas, and interactive security education.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/appsec",
+      "category": "security"
     }
   ]
 }

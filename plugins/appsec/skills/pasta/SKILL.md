@@ -18,6 +18,19 @@ decomposition (Stage 3), and so on through risk analysis (Stage 7).
 
 **Do NOT run stages in parallel. Do NOT skip stages. Do NOT reorder stages.**
 
+### Stage Failure Handling
+
+If a stage fails (returns empty output, errors, or times out):
+
+1. **Record the failure**: stage number, error details, partial output if any.
+2. **Check if remaining stages can proceed**:
+   - Stages 1–3 are foundational. If any fails, STOP the pipeline and report partial results from completed stages.
+   - Stages 4–7 can run with degraded input from prior stages. Note the gap explicitly in their output.
+3. **Present completed stage outputs** to the user with clear status markers:
+   - `Stage 3: COMPLETED (12 components identified)`
+   - `Stage 4: FAILED — [reason]. Stages 5–7 ran with reduced context.`
+4. **NEVER discard completed stage outputs** due to a later stage failure.
+
 ## Supported Flags
 
 Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for the

@@ -17,7 +17,7 @@ equivalent and is unique to privacy threat modeling.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Unawareness-Specific Behavior |
@@ -36,7 +36,7 @@ documentation. This skill supports all cross-cutting flags.
 
 Unawareness occurs when data subjects do not know how their personal data is
 collected, processed, or shared. Read
-[`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
+[`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md) for the
 full framework reference including transparency obligations and consent requirements.
 
 **Privacy Property Violated**: Transparency / Informed Consent |
@@ -76,7 +76,7 @@ verify each has a corresponding consent mechanism and privacy policy disclosure.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `UNAWR-NNN` id, title, severity (based on whether users are
 unaware of collection, sharing, or both), location with snippet, description of
 what data practice users are unaware of, impact (uninformed consent consequences),
@@ -127,7 +127,7 @@ fix (consent gate, privacy notice, or user control), and CWE/LINDDUN references.
 Use finding ID prefix **UNAWR** (e.g., `UNAWR-001`, `UNAWR-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-1021` (Improper Restriction of Rendered UI Layers)
 - `references.owasp`: `A04:2021` (Insecure Design -- missing privacy by design)
 - `metadata.tool`: `"unawareness"`

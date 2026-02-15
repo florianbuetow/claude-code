@@ -53,7 +53,7 @@ Resolve which files to check for regressions:
 2. **Changed scope**: Only files with uncommitted changes. Useful during development.
 3. **Full scope**: Check every file referenced in fix history. Most thorough, for release gates.
 
-Intersect the scope file list with files referenced in fix history. Only check files that both (a) have historical fixes and (b) fall within scope. If scope includes files without fix history, skip them silently.
+Intersect the scope file list with files referenced in fix history. Only check files that both (a) have historical fixes and (b) fall within scope. If scope includes files without fix history, skip them, but report in the summary: `Files in scope without fix history: N (skipped).`
 
 ### Step 3: Check for Pattern Reintroduction
 

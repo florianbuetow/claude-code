@@ -77,7 +77,7 @@ Score each finding using the DREAD model. Evaluate every factor from the perspec
 - **Affected Users (0-10):** How many people or systems are impacted? Every developer and CI run = 9-10. Only production deployment = 5-7. Only specific optional configuration = 1-3.
 - **Discoverability (0-10):** How easy is this to find? Visible in package.json scripts section = 8-10. Requires reading build system internals = 4-6. Hidden in transitive dependency behavior = 1-3.
 
-**DREAD Score** = (D + R + E + A + D) / 5
+**DREAD Score** = (Damage + Reproducibility + Exploitability + Affected Users + Discoverability) / 5
 
 Severity mapping:
 - 8.0 - 10.0 = CRITICAL
@@ -87,12 +87,17 @@ Severity mapping:
 
 ## Output Format
 
-Return your findings as a JSON array. Each finding must include all fields shown below. Do not include any text outside the JSON block.
+Return your findings as a JSON object with status metadata. Each finding must include all fields shown below. Do not include any text outside the JSON block.
+
+If you find no supply chain weaknesses, return: `{"status": "complete", "files_analyzed": N, "findings": []}` where N is the number of files you analyzed. If you encounter errors reading files or analyzing code, return: `{"status": "error", "error": "description of what went wrong", "findings": []}`
 
 ```json
-[
-  {
-    "id": "SC-001",
+{
+  "status": "complete",
+  "files_analyzed": 0,
+  "findings": [
+    {
+      "id": "SC-001",
     "title": "Short description of the supply chain weakness",
     "severity": "high",
     "confidence": "high",
@@ -127,7 +132,8 @@ Return your findings as a JSON array. Each finding must include all fields shown
       "category": "supply-chain",
       "persona": "supply-chain",
       "depth": "expert"
+      }
     }
-  }
-]
+  ]
+}
 ```

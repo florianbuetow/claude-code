@@ -16,7 +16,7 @@ category has no STRIDE equivalent and is unique to privacy threat modeling.
 
 ## Supported Flags
 
-Read [`shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
+Read [`../../shared/schemas/flags.md`](../../shared/schemas/flags.md) for full flag
 documentation. This skill supports all cross-cutting flags.
 
 | Flag | Non-Compliance-Specific Behavior |
@@ -34,7 +34,7 @@ documentation. This skill supports all cross-cutting flags.
 **LINDDUN N2 -- Non-compliance**
 
 Non-compliance occurs when data processing activities violate applicable privacy
-regulations. Read [`shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md)
+regulations. Read [`../../shared/frameworks/linddun.md`](../../shared/frameworks/linddun.md)
 for the full framework reference including regulatory mappings.
 
 **Privacy Property Violated**: Regulatory Compliance |
@@ -73,7 +73,7 @@ verify compliance at every stage from collection through deletion.
 
 ### Step 3 -- Report Findings
 
-Output findings per [`shared/schemas/findings.md`](../../shared/schemas/findings.md).
+Output findings per [`../../shared/schemas/findings.md`](../../shared/schemas/findings.md).
 Each finding needs: `NCMPL-NNN` id, title, severity (based on regulatory penalty
 risk and affected data subjects), location with snippet, description of unmet
 regulatory requirement, impact (penalties and liability), fix (technical control
@@ -127,7 +127,7 @@ implementation), and CWE/LINDDUN/regulatory article references.
 Use finding ID prefix **NCMPL** (e.g., `NCMPL-001`, `NCMPL-002`).
 
 All findings follow the schema in
-[`shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
+[`../../shared/schemas/findings.md`](../../shared/schemas/findings.md) with:
 - `references.cwe`: `CWE-359` (Exposure of Private Information)
 - `references.owasp`: `A04:2021` (Insecure Design -- missing regulatory controls)
 - `metadata.tool`: `"non-compliance"`

@@ -60,7 +60,7 @@ Score every finding using the DREAD model. For each factor, assign a value from 
 | **Affected Users** | Only the attacker's own data | Other users in the same role/team | All users across all roles, including admins |
 | **Discoverability** | Requires source code access and deep analysis | Found by inspecting API responses and network traffic | Obvious from the UI or API documentation |
 
-**Score = (D + R + E + A + D) / 5**
+**Score = (Damage + Reproducibility + Exploitability + Affected Users + Discoverability) / 5**
 
 Severity mapping:
 - 8.0 - 10.0: **critical**
@@ -72,12 +72,15 @@ As an insider, your Exploitability scores reflect that you already have a valid 
 
 ## Output Format
 
-Return ONLY a JSON array of findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
+Return ONLY a JSON object with status metadata and findings. No preamble, no explanation, no markdown outside the JSON. Each finding must conform to the findings schema:
 
 ```json
-[
-  {
-    "id": "RT-INxxx",
+{
+  "status": "complete",
+  "files_analyzed": 0,
+  "findings": [
+    {
+      "id": "RT-INxxx",
     "title": "Short description of the vulnerability",
     "severity": "critical|high|medium|low",
     "confidence": "high|medium|low",
@@ -112,11 +115,12 @@ Return ONLY a JSON array of findings. No preamble, no explanation, no markdown o
       "category": "insider",
       "persona": "insider",
       "depth": "expert"
+      }
     }
-  }
-]
+  ]
+}
 ```
 
-If you find no privilege escalation, exfiltration, or persistence paths, return an empty array: `[]`
+If you find no privilege escalation, exfiltration, or persistence paths, return: `{"status": "complete", "files_analyzed": N, "findings": []}` where N is the number of files you analyzed. If you encounter errors reading files or analyzing code, return: `{"status": "error", "error": "description of what went wrong", "findings": []}`
 
 Do not fabricate findings. Every finding must reference real code in the analyzed files. If a pattern looks suspicious but you cannot confirm exploitability from the code, set confidence to "low".
