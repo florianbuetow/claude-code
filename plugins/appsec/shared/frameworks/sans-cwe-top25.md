@@ -1,6 +1,6 @@
-# SANS/CWE Top 25 Most Dangerous Software Weaknesses (2023)
+# SANS/CWE Top 25 Most Dangerous Software Weaknesses (2024)
 
-> **Note:** This reference is based on the 2023 edition. The CWE Top 25 is published annually — check the [official MITRE CWE Top 25 page](https://cwe.mitre.org/top25/) for the current list.
+> **Note:** This reference is based on the 2024 edition. The CWE Top 25 is published annually — check the [official MITRE CWE Top 25 page](https://cwe.mitre.org/top25/) for the current list.
 
 ## Overview
 
@@ -14,7 +14,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ## Memory Safety Weaknesses
 
-### Rank 1: CWE-787 — Out-of-bounds Write
+### Rank 2: CWE-787 — Out-of-bounds Write
 
 **Description**: The software writes data past the end or before the beginning of an allocated buffer. This can cause data corruption, crashes, or arbitrary code execution.
 
@@ -33,7 +33,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 7: CWE-125 — Out-of-bounds Read
+### Rank 6: CWE-125 — Out-of-bounds Read
 
 **Description**: The software reads data past the end or before the beginning of an allocated buffer. This can leak sensitive information from memory (e.g., Heartbleed).
 
@@ -52,7 +52,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 4: CWE-416 — Use After Free
+### Rank 8: CWE-416 — Use After Free
 
 **Description**: The software references memory after it has been freed, leading to undefined behavior, crashes, or code execution.
 
@@ -71,7 +71,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 12: CWE-476 — NULL Pointer Dereference
+### Rank 21: CWE-476 — NULL Pointer Dereference
 
 **Description**: The software dereferences a pointer that is expected to be valid but is NULL, causing a crash or denial of service.
 
@@ -90,7 +90,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 14: CWE-190 — Integer Overflow or Wraparound
+### Rank 23: CWE-190 — Integer Overflow or Wraparound
 
 **Description**: An integer value is incremented past its maximum value, wrapping around to a small or negative value. This often leads to buffer overflows when the result is used for memory allocation or bounds checking.
 
@@ -109,7 +109,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 17: CWE-119 — Improper Restriction of Operations within the Bounds of a Memory Buffer
+### Rank 20: CWE-119 — Improper Restriction of Operations within the Bounds of a Memory Buffer
 
 **Description**: Parent category for buffer errors. The software performs operations on a memory buffer without properly restricting read/write to intended boundaries.
 
@@ -130,7 +130,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ## Injection Weaknesses
 
-### Rank 2: CWE-79 — Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)
+### Rank 1: CWE-79 — Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)
 
 **Description**: The application includes user-controlled data in web page output without proper neutralization, allowing attackers to execute scripts in victims' browsers.
 
@@ -171,7 +171,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 5: CWE-78 — Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)
+### Rank 7: CWE-78 — Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)
 
 **Description**: The application constructs OS commands using user-controlled input without proper sanitization.
 
@@ -191,7 +191,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 23: CWE-94 — Improper Control of Generation of Code (Code Injection)
+### Rank 11: CWE-94 — Improper Control of Generation of Code (Code Injection)
 
 **Description**: The application constructs code segments using user-controlled input, allowing attackers to inject and execute arbitrary code.
 
@@ -211,7 +211,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 16: CWE-77 — Improper Neutralization of Special Elements used in a Command (Command Injection)
+### Rank 13: CWE-77 — Improper Neutralization of Special Elements used in a Command (Command Injection)
 
 **Description**: General command injection where user input is incorporated into a command without neutralization. Broader than CWE-78 (OS-specific).
 
@@ -233,7 +233,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ## Authentication and Authorization Weaknesses
 
-### Rank 11: CWE-862 — Missing Authorization
+### Rank 9: CWE-862 — Missing Authorization
 
 **Description**: The software does not perform an authorization check when a user attempts to access a resource or perform an action.
 
@@ -253,7 +253,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 24: CWE-863 — Incorrect Authorization
+### Rank 18: CWE-863 — Incorrect Authorization
 
 **Description**: The software performs authorization checks but does so incorrectly, allowing attackers to bypass intended access restrictions.
 
@@ -273,7 +273,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 20: CWE-306 — Missing Authentication for Critical Function
+### Rank 25: CWE-306 — Missing Authentication for Critical Function
 
 **Description**: The software does not require authentication for functionality that requires a verified identity.
 
@@ -293,7 +293,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 13: CWE-287 — Improper Authentication
+### Rank 14: CWE-287 — Improper Authentication
 
 **Description**: The software does not properly verify that a user is who they claim to be.
 
@@ -314,9 +314,30 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
+### Rank 15: CWE-269 — Improper Privilege Management
+
+**Description**: The software does not properly manage the assignment, modification, tracking, or revocation of privileges.
+
+**Code-Level Indicators**:
+- Applications running with elevated privileges unnecessarily
+- Service accounts with more permissions than needed
+- Missing privilege drop after initialization
+- Role changes not requiring re-authentication
+- Privilege inheritance through object relationships not reviewed
+- Missing separation of duties in critical operations
+
+**Cross-Framework Mappings**:
+- OWASP: A01 Broken Access Control, A04 Insecure Design
+- STRIDE: Elevation of Privilege
+- ATT&CK: T1548 Abuse Elevation Control Mechanism
+
+**Severity**: High — excess privileges amplify the impact of any compromise.
+
+---
+
 ## Data Handling Weaknesses
 
-### Rank 6: CWE-20 — Improper Input Validation
+### Rank 12: CWE-20 — Improper Input Validation
 
 **Description**: The software does not validate or incorrectly validates input, allowing attackers to craft input that is not expected by the rest of the application.
 
@@ -337,7 +358,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 8: CWE-22 — Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)
+### Rank 5: CWE-22 — Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)
 
 **Description**: The software uses user-controlled input to construct file paths without properly neutralizing sequences like `../` that can resolve outside the intended directory.
 
@@ -358,7 +379,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 15: CWE-502 — Deserialization of Untrusted Data
+### Rank 16: CWE-502 — Deserialization of Untrusted Data
 
 **Description**: The application deserializes data from untrusted sources without verification, potentially allowing attackers to execute arbitrary code or manipulate application state.
 
@@ -376,6 +397,27 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 - ATT&CK: T1190 Exploit Public-Facing App, T1059 Command and Scripting
 
 **Severity**: Critical — commonly leads to remote code execution.
+
+---
+
+### Rank 17: CWE-200 — Exposure of Sensitive Information to an Unauthorized Actor
+
+**Description**: The product exposes sensitive information — such as credentials, PII, system internals, or configuration details — to an actor not explicitly authorized to access it.
+
+**Code-Level Indicators**:
+- Stack traces, database errors, or file paths in error responses
+- PII (SSNs, credit card numbers) rendered in page output or logs
+- Inconsistent error messages enabling user/account enumeration
+- Debug or verbose logging left active in production
+- Timing differences revealing data existence (side-channel)
+- API responses returning more fields than the caller needs
+
+**Cross-Framework Mappings**:
+- OWASP: A01 Broken Access Control
+- STRIDE: Information Disclosure
+- ATT&CK: T1552 Unsecured Credentials, T1110 Brute Force
+
+**Severity**: Medium to High — enables reconnaissance and credential harvesting.
 
 ---
 
@@ -401,7 +443,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ## Configuration Weaknesses
 
-### Rank 18: CWE-798 — Use of Hard-coded Credentials
+### Rank 22: CWE-798 — Use of Hard-coded Credentials
 
 **Description**: The software contains hard-coded credentials such as passwords, API keys, or cryptographic keys embedded in source code.
 
@@ -422,36 +464,9 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 25: CWE-276 — Incorrect Default Permissions
-
-**Description**: The software sets insecure default permissions during installation or file creation, allowing unauthorized access.
-
-**Code-Level Indicators**:
-- File creation with world-readable/writable permissions (`chmod 777`, `0o777`)
-- `umask(0)` before file operations
-- Directories created with overly permissive access
-- Configuration files with sensitive data readable by all users
-- Docker containers running as root
-- Cloud storage buckets with public access by default
-
-**Cross-Framework Mappings**:
-- OWASP: A05 Security Misconfiguration
-- STRIDE: Information Disclosure, Tampering, Elevation of Privilege
-- ATT&CK: T1552 Unsecured Credentials
-
-**Severity**: Medium to High — depends on the sensitivity of the exposed resources.
-
----
-
-### Rank 25 (cont.): CWE-732 — Incorrect Permission Assignment for Critical Resource
-
-**Note**: While not in the 2023 Top 25 list, this is closely related to CWE-276 and frequently encountered. It covers cases where permissions are explicitly set incorrectly (not just defaults).
-
----
-
 ## Other Weaknesses
 
-### Rank 9: CWE-352 — Cross-Site Request Forgery (CSRF)
+### Rank 4: CWE-352 — Cross-Site Request Forgery (CSRF)
 
 **Description**: The application does not verify that a state-changing request was intentionally submitted by the authenticated user, allowing attackers to forge requests.
 
@@ -493,45 +508,24 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ---
 
-### Rank 21: CWE-362 — Concurrent Execution Using Shared Resource with Improper Synchronization (Race Condition)
+### Rank 24: CWE-400 — Uncontrolled Resource Consumption
 
-**Description**: The software contains a sequence of operations that requires exclusive access to a shared resource, but a timing window exists where another process can modify the resource.
+**Description**: The product fails to properly control the allocation and maintenance of limited resources — such as memory, CPU, file descriptors, or database connections — allowing an attacker to influence consumption and cause exhaustion, leading to denial of service.
 
 **Code-Level Indicators**:
-- Check-then-act patterns without locking (TOCTOU)
-- Shared mutable state without synchronization
-- File operations that check existence before create/write
-- Financial operations without transaction isolation
-- Counter increments without atomic operations
-- Session state modified by concurrent requests
+- Unlimited thread, socket, or connection creation without throttling
+- Infinite or uncontrolled loops consuming CPU or memory
+- Resources (files, sockets, connections) not closed after use, especially in error paths
+- No rate limiting or size limits on incoming requests
+- Lost resource references preventing cleanup (handle leaks)
+- Recursive operations without depth limits
 
 **Cross-Framework Mappings**:
 - OWASP: A04 Insecure Design
-- STRIDE: Tampering, Elevation of Privilege
-- ATT&CK: T1068 Exploitation for Privilege Escalation
+- STRIDE: Denial of Service
+- ATT&CK: T1498 Network Denial of Service, T1499 Endpoint Denial of Service
 
-**Severity**: Medium to High — often exploitable in financial transactions and authentication flows.
-
----
-
-### Rank 22: CWE-269 — Improper Privilege Management
-
-**Description**: The software does not properly manage the assignment, modification, tracking, or revocation of privileges.
-
-**Code-Level Indicators**:
-- Applications running with elevated privileges unnecessarily
-- Service accounts with more permissions than needed
-- Missing privilege drop after initialization
-- Role changes not requiring re-authentication
-- Privilege inheritance through object relationships not reviewed
-- Missing separation of duties in critical operations
-
-**Cross-Framework Mappings**:
-- OWASP: A01 Broken Access Control, A04 Insecure Design
-- STRIDE: Elevation of Privilege
-- ATT&CK: T1548 Abuse Elevation Control Mechanism
-
-**Severity**: High — excess privileges amplify the impact of any compromise.
+**Severity**: Medium to High — causes service degradation or outage; severity depends on resource criticality.
 
 ---
 
@@ -539,31 +533,31 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 | CWE | Name | OWASP Top 10 | STRIDE | ATT&CK |
 |-----|------|-------------|--------|--------|
-| CWE-787 | Out-of-bounds Write | A03 Injection | T, E | T1190 |
 | CWE-79 | Cross-site Scripting | A03 Injection | T, I, E | T1203, T1185 |
+| CWE-787 | Out-of-bounds Write | A03 Injection | T, E | T1190 |
 | CWE-89 | SQL Injection | A03 Injection | T, I, E | T1190, T1059 |
-| CWE-416 | Use After Free | A04 Insecure Design | T, E | T1190, T1068 |
-| CWE-78 | OS Command Injection | A03 Injection | T, E | T1059 |
-| CWE-20 | Improper Input Validation | A03 Injection | T | T1190 |
-| CWE-125 | Out-of-bounds Read | A02 Crypto Failures | I | T1005 |
-| CWE-22 | Path Traversal | A01 Access Control | I, T | T1005 |
 | CWE-352 | Cross-Site Request Forgery | A01 Access Control | E | T1204 |
-| CWE-434 | Unrestricted Upload | A04 Insecure Design | T, E | T1505.003 |
+| CWE-22 | Path Traversal | A01 Access Control | I, T | T1005 |
+| CWE-125 | Out-of-bounds Read | A02 Crypto Failures | I | T1005 |
+| CWE-78 | OS Command Injection | A03 Injection | T, E | T1059 |
+| CWE-416 | Use After Free | A04 Insecure Design | T, E | T1190, T1068 |
 | CWE-862 | Missing Authorization | A01 Access Control | E, I | T1548 |
-| CWE-476 | NULL Pointer Dereference | A04 Insecure Design | D | T1498 |
-| CWE-287 | Improper Authentication | A07 Auth Failures | S | T1078, T1110 |
-| CWE-190 | Integer Overflow | A03 Injection | T, E | T1190 |
-| CWE-502 | Deserialization | A08 Integrity Failures | T, E | T1190, T1059 |
-| CWE-77 | Command Injection | A03 Injection | T, E | T1059 |
-| CWE-119 | Memory Buffer Errors | A03 Injection | T, E, I | T1190 |
-| CWE-798 | Hard-coded Credentials | A07 Auth Failures | S, I | T1552, T1078 |
-| CWE-918 | SSRF | A10 SSRF | I, E | T1190, T1005 |
-| CWE-306 | Missing Authentication | A07 Auth Failures | S | T1078 |
-| CWE-362 | Race Condition | A04 Insecure Design | T, E | T1068 |
-| CWE-269 | Improper Privilege Mgmt | A01 Access Control | E | T1548 |
+| CWE-434 | Unrestricted Upload | A04 Insecure Design | T, E | T1505.003 |
 | CWE-94 | Code Injection | A03 Injection | T, E | T1059 |
+| CWE-20 | Improper Input Validation | A03 Injection | T | T1190 |
+| CWE-77 | Command Injection | A03 Injection | T, E | T1059 |
+| CWE-287 | Improper Authentication | A07 Auth Failures | S | T1078, T1110 |
+| CWE-269 | Improper Privilege Mgmt | A01 Access Control | E | T1548 |
+| CWE-502 | Deserialization | A08 Integrity Failures | T, E | T1190, T1059 |
+| CWE-200 | Sensitive Info Exposure | A01 Access Control | I | T1552, T1110 |
 | CWE-863 | Incorrect Authorization | A01 Access Control | E | T1548 |
-| CWE-276 | Incorrect Default Perms | A05 Misconfiguration | I, T, E | T1552 |
+| CWE-918 | SSRF | A10 SSRF | I, E | T1190, T1005 |
+| CWE-119 | Memory Buffer Errors | A03 Injection | T, E, I | T1190 |
+| CWE-476 | NULL Pointer Dereference | A04 Insecure Design | D | T1498 |
+| CWE-798 | Hard-coded Credentials | A07 Auth Failures | S, I | T1552, T1078 |
+| CWE-190 | Integer Overflow | A03 Injection | T, E | T1190 |
+| CWE-400 | Resource Consumption | A04 Insecure Design | D | T1498, T1499 |
+| CWE-306 | Missing Authentication | A07 Auth Failures | S | T1078 |
 
 **STRIDE key**: S=Spoofing, T=Tampering, R=Repudiation, I=Information Disclosure, D=Denial of Service, E=Elevation of Privilege
 
@@ -573,7 +567,7 @@ The CWE Top 25 is a list of the most dangerous software weaknesses, published an
 
 ```json
 {
-  "framework": "CWE Top 25 (2023)",
+  "framework": "CWE Top 25 (2024)",
   "cwe_id": "CWE-89",
   "cwe_name": "SQL Injection",
   "rank": 3,
