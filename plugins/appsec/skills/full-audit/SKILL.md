@@ -226,9 +226,13 @@ Use the Write tool. The file must be a JSON object with fields:
   notes (string with narrative assessment, evidence, or context your skill produces),
   findings (array)
 
-The "notes" field is REQUIRED for the full audit. Include any narrative assessment,
-evidence, or context your skill produces. The report assembler will include this
-verbatim in the report section for your framework/tool.
+NOTE: The "notes" field is a full-audit extension to the standard aggregate
+output format. It is REQUIRED for full-audit (the report assembler uses it
+for verbatim report sections) but optional in other contexts like /appsec:run.
+
+Include any narrative assessment, evidence, or context your skill produces.
+The report assembler will include this verbatim in the report section for
+your framework/tool.
 
 If zero findings, write: {"tool":"{TOOL_NAME}","total_findings":0,"by_severity":{"critical":0,"high":0,"medium":0,"low":0},"notes":"<your narrative assessment>","findings":[]}
 
@@ -280,8 +284,12 @@ STEP 3: Read the previous stage output at:
 {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/pasta-stage-{N-1}.json
 (Skip this step for Stage 1 -- there is no prior stage.)
 
-STEP 4: Follow the workflow defined in the skill. Use the previous stage's
-output as input context for your analysis.
+If the previous stage file does not exist or cannot be parsed, return ONLY:
+  "pasta-stage-{N}: FAILED - prior stage file missing or malformed. PASTA chain broken at stage {N}."
+Do NOT proceed with analysis.
+
+STEP 4: Follow the workflow defined in the skill. Use both the "notes" narrative
+and "findings" array from the previous stage as input context for your analysis.
 
 STEP 5: Write your output using the AGGREGATE OUTPUT format to:
 {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/pasta-stage-{N}.json
@@ -414,13 +422,17 @@ Record the tool name and the first 100 characters of the response as the error r
 
 Do NOT re-read any findings files in the main agent context.
 
-Also include scanner statuses from Phase 1.3:
+Also include scanner statuses from Phase 1.3.
 
+Build SCANNERS_STATUS as a formatted list:
 ```
-scanners_ok = []      # e.g. ["semgrep: OK", "npm-audit: OK"]
-scanners_failed = []  # e.g. ["gitleaks: FAILED (timeout)"]
-scanners_missing = [] # e.g. ["trivy", "bandit"]
+scanners_ok = ["semgrep: OK (reports/appsec/scanners/semgrep.json)", ...]
+scanners_failed = ["gitleaks: FAILED (timeout)", ...]
+scanners_missing = ["trivy", "bandit", ...]
 ```
+
+Pass the scanner file paths so the report assembler can read each scanner JSON
+file and count findings for the Scanners Used table.
 
 #### Launch Report Assembler Subagent
 
@@ -588,6 +600,15 @@ D2 from data-disclosure, U from unawareness, N2 from non-compliance)
 
 ## Cross-Framework Analysis
 
+NOTE: Do NOT deduplicate findings across frameworks. Each framework section
+preserves its own findings verbatim. Document overlaps in the Cross-Framework
+Analysis section instead. This is by design -- the full audit shows what EACH
+framework independently found, not a merged view.
+
+For the Cross-Framework Analysis appendix, use each finding's metadata.framework
+field to identify which frameworks detected each finding. A finding may appear
+in multiple framework sections if discovered independently by different tools.
+
 ### Finding Overlap
 <Table showing findings that appear in multiple frameworks>
 
@@ -623,7 +644,7 @@ For any tool/framework that has no corresponding file (it was skipped via
 with a note: "This analysis was not performed. Reason: <reason>."
 
 STEP 5: Write the report to:
-{ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/{YYYYMMDD}_report.md
+{ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/{YYYYMMDD}_appsec_report.md
 
 Use the Write tool. If --output was specified, use that filename instead
 (still in the reports/appsec/ directory).
@@ -643,7 +664,7 @@ Write:
     "tools_run": [...], "tools_failed": [...], "scanners_used": [...],
     "scanners_missing": [...], "total_findings": N,
     "by_severity": {{"critical": N, "high": N, "medium": N, "low": N}},
-    "report_file": "reports/appsec/{YYYYMMDD}_report.md"}}
+    "report_file": "reports/appsec/{YYYYMMDD}_appsec_report.md"}}
 
 TOOL STATUS (from orchestrator):
 Tools OK: {TOOLS_OK_LIST}
@@ -661,7 +682,7 @@ Output filename: {OUTPUT_FILENAME}
 Frameworks skipped: {SKIP_FRAMEWORKS_LIST}
 
 IMPORTANT: After writing all files, return a short completion summary:
-"Report written to reports/appsec/{YYYYMMDD}_report.md — N total findings
+"Report written to reports/appsec/{YYYYMMDD}_appsec_report.md — N total findings
 (Xc critical, Xh high, Xm medium, Xl low). State saved to .appsec/."
 Do NOT return the report content itself.
 ```
@@ -677,7 +698,7 @@ After each run, state is written to `.appsec/`:
 
 Intermediate results persist in `reports/appsec/` (subdirectories:
 `scanners/`, `skills/`, `redteam/`) until the next run overwrites them.
-The dated report lives at `reports/appsec/<YYYYMMDD>_report.md`.
+The dated report lives at `reports/appsec/<YYYYMMDD>_appsec_report.md`.
 
 This state powers `/appsec:status` and enables delta detection on
 subsequent runs.
@@ -690,7 +711,7 @@ user, then show follow-up options:
 ```
 Full audit complete.
 
-Report: reports/appsec/<YYYYMMDD>_report.md
+Report: reports/appsec/<YYYYMMDD>_appsec_report.md
 Findings: <total> (<critical> critical, <high> high, <medium> medium, <low> low)
 Frameworks: OWASP, STRIDE, PASTA, LINDDUN, SANS/CWE Top 25
 Red Team: <N> attack chains identified
