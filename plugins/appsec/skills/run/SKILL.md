@@ -152,9 +152,10 @@ timestamp for future reuse.
 
 ### Phase 2: Run Scanners (Main Agent)
 
-Create the output directory, then run detected scanners in the main agent
-context using Bash. Launch ALL scanner commands in parallel Bash calls
-within a SINGLE response.
+Run detected scanners in the main agent context using Bash. Launch ALL
+scanner commands in parallel Bash calls within a SINGLE response.
+
+Before launching scanners, create the output directory:
 
 ```bash
 mkdir -p reports/appsec/scanners
@@ -278,9 +279,13 @@ STEP 3: Read the findings schema at:
 STEP 4: Produce findings in the schema format. Set metadata.tool to "{TOOL_NAME}"
 and metadata.framework to "{FRAMEWORK}".
 
-STEP 5: Write the complete JSON findings array to:
+STEP 5: Write findings using the AGGREGATE OUTPUT format from the findings schema to:
 {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/{TOOL_NAME}.json
-Use the Write tool. The file must contain a valid JSON array of finding objects.
+
+Use the Write tool. The file must be a JSON object with fields:
+  tool, total_findings, by_severity (object with critical/high/medium/low counts), findings (array)
+
+If zero findings, write: {"tool":"{TOOL_NAME}","total_findings":0,"by_severity":{"critical":0,"high":0,"medium":0,"low":0},"findings":[]}
 
 FLAGS: --scope {SCOPE} --depth {DEPTH} --severity {SEVERITY}
 
@@ -357,12 +362,20 @@ STEP 3: Read the DREAD scoring framework at:
 STEP 4: Attempt to chain vulnerabilities into multi-step attack scenarios.
 Score each finding using DREAD.
 
-STEP 5: Write your findings as a JSON array (prefix "RT") to:
+STEP 5: Write findings using the AGGREGATE OUTPUT format from the findings schema to:
 {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/redteam/{PERSONA_NAME}.json
-Use the Write tool. The file must contain a valid JSON array of finding objects.
+
+Use the Write tool. The file must be a JSON object with fields:
+  tool, total_findings, by_severity (object with critical/high/medium/low counts), findings (array)
+
+If zero findings, write: {"tool":"{PERSONA_NAME}","total_findings":0,"by_severity":{"critical":0,"high":0,"medium":0,"low":0},"findings":[]}
+
+Use "RT" prefix for finding IDs.
 
 IMPORTANT: After writing the file, return ONLY a one-line status in this exact format:
 "{PERSONA_NAME}: N findings (Xc Xh Xm Xl)"
+where N is the total count and Xc/Xh/Xm/Xl are counts per severity (critical, high, medium, low).
+Example: "insider: 4 findings (1c 2h 1m 0l)"
 Do NOT return the findings themselves.
 ```
 
@@ -380,9 +393,14 @@ tools_ok = []      # e.g. ["injection: 3 findings (0c 1h 2m 0l)", ...]
 tools_failed = []  # e.g. ["crypto: empty output", "ssrf: error ..."]
 ```
 
-A subagent that returned an empty string, errored, or did not match the
-expected status format goes into `tools_failed`. Do NOT re-read any
-findings files in the main agent context.
+A subagent result goes into `tools_failed` if:
+- The Task tool returned an error or exception message
+- The subagent returned an empty string
+- The subagent's output does not match the pattern "{TOOL_NAME}: N findings (...)"
+
+Record the tool name and the first 100 characters of the response as the error reason.
+
+Do NOT re-read any findings files in the main agent context.
 
 Also include scanner statuses from Phase 2:
 
@@ -411,10 +429,13 @@ STEP 2: Read all JSON result files from these directories using Glob + Read:
 - {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/skills/*.json
 - {ABSOLUTE_PATH_TO_PROJECT}/reports/appsec/redteam/*.json  (if directory exists)
 
-For scanner files: each scanner produces its own JSON format. Parse each
-scanner's native format and convert findings to the standard schema. Set
-scanner.confirmed to true and scanner.name to the scanner name (derived
-from the filename, e.g. "semgrep.json" -> "semgrep").
+For scanner files: each scanner produces its own JSON format. Read the scanner
+registry and format reference at:
+{ABSOLUTE_PATH_TO_PLUGIN}/shared/schemas/scanners.md
+
+Convert scanner findings to the standard schema format. Set scanner.confirmed
+to true and scanner.name to the scanner name (derived from the filename,
+e.g. "semgrep.json" -> "semgrep").
 
 For skill and red team files: these already use the standard schema format.
 
@@ -442,9 +463,16 @@ confidence (high > medium > low). Within the same confidence,
 scanner-confirmed findings rank higher.
 
 STEP 6: Apply severity filter.
-{SEVERITY_FILTER_INSTRUCTION}
+If SEVERITY_FILTER is set to a value other than "low" or empty, remove all
+findings with severity below that threshold. Severity ranking from highest to
+lowest: critical > high > medium > low. If no filter, include all findings.
 
-STEP 7: Write consolidated output files using the Write tool:
+STEP 7: Write consolidated output files using the Write tool.
+
+First ensure the output directory exists:
+  mkdir -p {ABSOLUTE_PATH_TO_PROJECT}/.appsec
+
+Then write:
 - {ABSOLUTE_PATH_TO_PROJECT}/.appsec/findings.json — the full findings array
   in the aggregate schema format (for downstream skills like /appsec:status,
   /appsec:fix)
