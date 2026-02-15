@@ -10,7 +10,7 @@ description: >
 # SANS/CWE Top 25 Dispatcher
 
 Analyze scoped code directly against the SANS/CWE Top 25 Most Dangerous
-Software Weaknesses (2023). Unlike the OWASP and STRIDE dispatchers, this
+Software Weaknesses (2024). Unlike the OWASP and STRIDE dispatchers, this
 skill does NOT dispatch individual subagents per category. Instead it reads
 the full framework reference, determines which CWEs are relevant to the
 scoped code based on languages and patterns, checks each applicable CWE
