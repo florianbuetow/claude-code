@@ -68,8 +68,8 @@ codebase. Each CWE category has language-specific applicability:
 | Memory Safety | CWE-787, CWE-125, CWE-416, CWE-476, CWE-190, CWE-119 | C, C++, Rust (unsafe blocks), or any code with FFI/native bindings |
 | Injection | CWE-79, CWE-89, CWE-78, CWE-94, CWE-77 | Any language with user input handling, database queries, shell execution, or template rendering |
 | Auth/AuthZ | CWE-862, CWE-863, CWE-306, CWE-287 | Any code with authentication, authorization, session management, or API endpoints |
-| Data Handling | CWE-20, CWE-22, CWE-502, CWE-918, CWE-352, CWE-434, CWE-362 | Any code handling user input, files, URLs, serialization, or concurrent access |
-| Configuration | CWE-798, CWE-276, CWE-269 | Any code with credentials, permissions, privilege management, or deployment config |
+| Data Handling | CWE-20, CWE-22, CWE-502, CWE-200, CWE-918, CWE-352, CWE-434, CWE-400 | Any code handling user input, files, URLs, serialization, or resource allocation |
+| Configuration | CWE-798, CWE-269 | Any code with credentials, privilege management, or deployment config |
 
 If `--only` is specified, skip the relevance check and analyze only the
 listed CWEs.
@@ -125,8 +125,8 @@ Organize confirmed findings into the five CWE category groups:
 | Memory Safety | `memory-safety` | CWE-787, CWE-125, CWE-416, CWE-476, CWE-190, CWE-119 |
 | Injection | `injection` | CWE-79, CWE-89, CWE-78, CWE-94, CWE-77 |
 | Auth/AuthZ | `auth` | CWE-862, CWE-863, CWE-306, CWE-287 |
-| Data Handling | `data-handling` | CWE-20, CWE-22, CWE-502, CWE-918, CWE-352, CWE-434, CWE-362 |
-| Configuration | `config` | CWE-798, CWE-276, CWE-269 |
+| Data Handling | `data-handling` | CWE-20, CWE-22, CWE-502, CWE-200, CWE-918, CWE-352, CWE-434, CWE-400 |
+| Configuration | `config` | CWE-798, CWE-269 |
 
 Within each group, sort findings by CWE rank (lower rank = more dangerous).
 
