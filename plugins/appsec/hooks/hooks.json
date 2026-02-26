@@ -1,5 +1,6 @@
 {
-  "PostToolUse": [
+  "hooks": {
+    "PostToolUse": [
     {
       "matcher": "ExitPlanMode",
       "hooks": [
@@ -19,4 +20,5 @@
       ]
     }
   ]
+  }
 }
