@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins for software engineering workflows.
 
-`5 plugins` · `66+ skills`
+`6 plugins` · `70+ skills`
 
 ### Skills
 
@@ -14,6 +14,7 @@ A collection of Claude Code plugins for software engineering workflows.
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
+| [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 
 ---
@@ -35,6 +36,7 @@ claude plugin install appsec
 claude plugin install solid-principles
 claude plugin install beyond-solid-principles
 claude plugin install spec-writer
+claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
 ```
 
@@ -51,6 +53,7 @@ claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/solid-principles
 claude --plugin-dir ./plugins/beyond-solid-principles
 claude --plugin-dir ./plugins/spec-writer
+claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
 ```
 
@@ -283,6 +286,51 @@ Output documents are saved as markdown files with traceability IDs that link acr
 
 ---
 
+## spec-dd
+
+Specification-driven development workflow for Claude Code.
+
+`4 phases` · `4 reference guides` · `Advisory quality gates` · `Language-aware reviews`
+
+Tests are a firewall between specification and implementation. You never modify tests during implementation — if the code can't pass the tests, the implementation approach is wrong, not the tests.
+
+This plugin orchestrates a spec-first discipline: define behavioral specifications, derive test scenarios, plan implementation, and verify alignment across all artifacts and code. It acts as a workflow navigator with advisory quality gates — guiding you through each phase, surfacing gaps and ambiguity, and offering handoff prompts for coding agents when it's time to write actual code.
+
+### Workflow Phases
+
+| Phase | Command | What it does |
+|-------|---------|-------------|
+| 1 | `/spec-dd:spec` | Write behavioral specification — unambiguous requirements, edge cases, acceptance criteria |
+| 2 | `/spec-dd:test` | Derive test scenarios (Given/When/Then) from spec only — no implementation knowledge |
+| 3 | *(handoff)* | Propose prompt for coding agent to write test code |
+| 4 | `/spec-dd:impl` | Plan implementation approach — map every test scenario to a technical approach |
+| 5 | *(handoff)* | Propose prompt for coding agent to implement code |
+| 6 | `/spec-dd:review` | Verify alignment across all artifacts and code, run tests |
+
+### How to Use
+
+| Command | What it does |
+|---------|-------------|
+| `/spec-dd` | Auto-detect phase, assess current state, recommend next step |
+| `/spec-dd:spec` | Work on the behavioral specification |
+| `/spec-dd:test` | Work on the test specification |
+| `/spec-dd:impl` | Work on the implementation specification |
+| `/spec-dd:review` | Run alignment review, execute tests, produce report |
+
+All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). Without one, the skill lists available features and asks you to choose.
+
+**Auto-detect router** — `/spec-dd` without a phase scans `docs/specs/` for existing artifacts, assesses which phases are complete, identifies gaps, and recommends the next action.
+
+**Advisory quality gates** — The skill flags issues (unresolved ambiguity, missing traceability, coverage gaps) and recommends addressing them, but you can override and proceed.
+
+**Language-aware** — Auto-detects your project's language and ecosystem (package.json, requirements.txt, go.mod, Cargo.toml, etc.) to ensure test scenarios are realistic and implementation patterns are idiomatic.
+
+**Test execution** — During review, detects and runs your project's test runner (Makefile, justfile, pytest, go test, cargo test, npm test, mvn test, gradle test).
+
+**Artifacts** — All documents live in `docs/specs/`: `<feature>-specification.md`, `<feature>-test-specification.md`, `<feature>-implementation-specification.md`, `<feature>-implementation-review.md`.
+
+---
+
 ## explain-system-tradeoffs
 
 Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts.
@@ -397,6 +445,18 @@ plugins/
   │               ├── srs.md          # L2 - Software Requirements reference
   │               ├── architecture.md # L3 - Architecture & Design reference
   │               └── verification.md # L4 - Test Verification reference
+  ├── spec-dd/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── spec-dd/
+  │           ├── SKILL.md            # Skill definition & phase router
+  │           └── references/
+  │               ├── specification.md          # Behavioral specification guide
+  │               ├── test-specification.md     # Test specification guide
+  │               ├── implementation-specification.md # Implementation specification guide
+  │               └── review.md                 # Alignment review guide
   └── explain-system-tradeoffs/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
@@ -433,6 +493,12 @@ No. Each document can be created independently. Start at whatever level matches 
 
 **Can I use spec-writer for an existing project?**
 The skill is optimized for greenfield projects, but you can start at any level. For existing projects, `/spec-architecture` and `/spec-test` are often the most useful starting points.
+
+**What's the difference between spec-writer and spec-dd?**
+spec-writer creates specification *documents* for greenfield projects — layered from vision through architecture to test plans. spec-dd orchestrates a *development workflow* — it assumes you have (or are writing) a behavioral spec and guides you through deriving tests, planning implementation, and verifying alignment. Use spec-writer when starting a new project and need formal specs. Use spec-dd when you have requirements and want to enforce a spec-first development discipline.
+
+**Does spec-dd write code?**
+No. spec-dd produces specification documents, assesses quality, surfaces gaps, and offers handoff prompts for coding agents. When it's time to write test code or implementation code, it proposes a prompt you can give to a coding agent.
 
 **What's the difference between beyond-solid-principles and explain-system-tradeoffs?**
 beyond-solid-principles finds *violations* of design principles - things that should be fixed. explain-system-tradeoffs identifies *tradeoff decisions* - things that were chosen (deliberately or not). A system can follow all design principles perfectly and still have interesting tradeoffs to understand. Use beyond-solid-principles for "what's wrong?", use explain-system-tradeoffs for "what was decided and why?"
