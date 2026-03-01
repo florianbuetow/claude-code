@@ -1,0 +1,11 @@
+{
+  "name": "spec-dd",
+  "version": "1.0.0",
+  "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline: write behavioral specifications, derive test scenarios, plan implementation, and verify alignment across all artifacts and code. Acts as a workflow navigator with advisory quality gates between phases.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": ["specification", "spec-driven", "behavioral-testing", "test-specification", "implementation-specification", "quality-gates", "workflow", "sdd", "bdd", "tdd"]
+}
