@@ -187,6 +187,7 @@ Confirmation that no test modifications are needed.
 **The skill:**
 - Checks document alignment: specification <-> test specification <-> implementation specification
 - Checks code alignment: actual test files and source code against the spec documents
+- **Runs tests:** Detects the project's test runner (Makefile, justfile, package.json scripts, pytest, go test, cargo test, etc.) and executes all available tests locally. Reports pass/fail results.
 - Identifies: coverage gaps, misalignments, unresolved ambiguities, undocumented behavior
 - Produces a review report
 
@@ -199,6 +200,9 @@ Cross-check between the three spec documents.
 
 ## Code Alignment
 Actual test code vs test specification. Actual implementation vs implementation specification.
+
+## Test Execution
+Test runner detected, command used, pass/fail results, failure details if any.
 
 ## Coverage Report
 Gaps, misalignments, unresolved items.
