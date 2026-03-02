@@ -8,17 +8,17 @@
 
 The alignment review is the final quality check in specification-driven
 development. It verifies that all artifacts — behavioral specification, test
-specification, implementation specification — are consistent with each other
-AND with the actual code in the project.
+specification, test implementation specification — are consistent with each
+other AND with the actual code in the project (both test code and feature code).
 
 Alignment operates across three layers:
 
 1. **Spec <-> Test Spec** — Do the test scenarios fully cover the behavioral
    requirements?
-2. **Test Spec <-> Impl Spec** — Does the implementation plan address every
-   test scenario without requiring test modifications?
-3. **Specs <-> Actual Code** — Does the code match what the specifications
-   describe?
+2. **Test Spec <-> Test Impl Spec** — Does the test implementation plan address
+   every test scenario?
+3. **Specs <-> Actual Code** — Does the test code and feature code match what
+   the specifications describe?
 
 Gaps can exist in both directions. Missing coverage (a spec requirement with no
 test) is as important as undocumented behavior (code that no spec describes).
@@ -41,25 +41,24 @@ Walk the coverage matrix in the test specification. Every spec requirement ID
 should appear. Requirements with no corresponding test scenario are gaps.
 Test scenarios that reference no spec requirement are orphans.
 
-### Test Specification <-> Implementation Specification
+### Test Specification <-> Test Implementation Specification
 
 | Check | What to verify |
 |-------|---------------|
-| **Scenario coverage** | Every test scenario has a corresponding implementation approach |
-| **Test immutability** | The implementation approach does not require modifying any existing test |
-| **No orphan impl** | No implementation behavior exists without a corresponding test scenario |
+| **Scenario coverage** | Every test scenario has a corresponding test implementation approach |
+| **Test isolation** | Each test can run independently without depending on other tests |
+| **No orphan tests** | No test implementation exists without a corresponding test scenario |
 
-Walk the test scenario mapping table in the implementation specification.
-Every test scenario ID from the test spec should appear. Implementation
-approaches that would require changing tests indicate a misalignment — the
-implementation must change, not the tests.
+Walk the test scenario mapping table in the test implementation specification.
+Every test scenario ID from the test spec should appear. Test implementations
+that reference no spec scenario are orphans.
 
-### Specification <-> Implementation Specification
+### Specification <-> Test Implementation Specification
 
 | Check | What to verify |
 |-------|---------------|
-| **Constraints respected** | The implementation approach is consistent with constraints in the behavioral spec (performance, platform, regulatory) |
-| **Non-goals respected** | Non-goals from the spec are not implemented — no scope creep |
+| **Constraints respected** | The test approach is consistent with constraints in the behavioral spec (performance, platform, regulatory) |
+| **Non-goals respected** | Non-goals from the spec are not tested, unless as explicit negative tests |
 
 ## Code Alignment Checks
 
@@ -79,17 +78,17 @@ implementation files related to the feature.
 - **Flag unimplemented tests:** test scenarios from the test spec with no
   corresponding test code. These are coverage gaps.
 
-### Actual Implementation vs Implementation Specification
+### Actual Test Code vs Test Implementation Specification
 
-- Scan the project for source files related to the feature.
-- Check that components, modules, or functions described in the impl spec
-  exist in the code.
-- **Flag undocumented code:** implementation code that does not correspond to
-  any section of the impl spec. This is undocumented behavior.
-- **Flag unimplemented specs:** impl spec sections with no corresponding code.
-  These are incomplete implementations.
+- Scan the project for test files related to the feature.
+- Check that test functions described in the test impl spec exist in the code.
+- **Flag undocumented tests:** test functions that do not correspond to any
+  entry in the test impl spec. These may be valid additions but should be
+  documented.
+- **Flag unimplemented test specs:** test impl spec entries with no
+  corresponding test code. These are coverage gaps.
 
-### Actual Implementation vs Test Specification
+### Actual Feature Code vs Behavioral Specification
 
 - Verify that all tests pass (requires running the test suite — see below).
 - Flag implementation behavior not covered by any test.
@@ -153,8 +152,9 @@ The review may recommend revisiting an earlier phase based on findings:
 | Finding severity | Affected layer | Recommendation |
 |-----------------|----------------|----------------|
 | CRITICAL | Spec <-> Test Spec | Revisit Phase 1 (specification) or Phase 2 (test specification) |
-| CRITICAL | Test Spec <-> Impl Spec | Revisit Phase 4 (implementation specification) |
-| CRITICAL | Code alignment | Revisit Phase 5 (implementation handoff) — the code needs rework |
+| CRITICAL | Test Spec <-> Test Impl Spec | Revisit Phase 3 (test implementation specification) |
+| CRITICAL | Test code alignment | Revisit Phase 4 (test implementation handoff) — the test code needs rework |
+| CRITICAL | Feature code alignment | Revisit Phase 5 (feature implementation handoff) — the feature code needs rework |
 | WARNING only | Any layer | Note findings in the report but do not block completion |
 
 CRITICAL findings mean the feature is not ready. The review report should
@@ -183,8 +183,8 @@ Use this template:
 |-------|--------|---------|
 | Spec -> Test Spec coverage | PASS/FAIL | <summary of gaps or "Full coverage"> |
 | Test Spec -> Spec traceability | PASS/FAIL | <orphan tests or "All traced"> |
-| Test Spec -> Impl Spec coverage | PASS/FAIL | <unmapped scenarios or "All mapped"> |
-| Impl Spec -> Test Spec (no orphans) | PASS/FAIL | <orphan impl or "No orphans"> |
+| Test Spec -> Test Impl Spec coverage | PASS/FAIL | <unmapped scenarios or "All mapped"> |
+| Test Impl Spec -> Test Spec (no orphans) | PASS/FAIL | <orphan test impl or "No orphans"> |
 | Spec constraints respected | PASS/FAIL | <violated constraints or "All respected"> |
 | Non-goals respected | PASS/FAIL | <scope creep or "No scope creep"> |
 
@@ -192,8 +192,8 @@ Use this template:
 
 | Check | Status | Details |
 |-------|--------|---------|
-| Test code vs Test Spec | PASS/FAIL | <unimplemented or undocumented tests> |
-| Implementation vs Impl Spec | PASS/FAIL | <unimplemented or undocumented code> |
+| Test code vs Test Impl Spec | PASS/FAIL | <unimplemented or undocumented tests> |
+| Feature code vs Behavioral Spec | PASS/FAIL | <unimplemented or undocumented code> |
 | Undocumented behavior | PASS/FAIL | <untested code paths or "None found"> |
 
 ## Test Execution
@@ -235,8 +235,8 @@ Use this template:
 ## Review Checklist
 
 - [ ] Read all three specification documents for the feature
-- [ ] Build coverage matrix: spec requirements -> test scenarios -> impl approaches
-- [ ] Check for orphan tests and orphan implementations
+- [ ] Build coverage matrix: spec requirements -> test scenarios -> test impl approaches
+- [ ] Check for orphan tests and orphan test implementations
 - [ ] Verify non-goals are not implemented
 - [ ] Scan project for actual test and source files; verify against specs
 - [ ] Run the test suite and record results
