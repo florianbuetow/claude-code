@@ -1,4 +1,4 @@
-# Claude Code Plugins
+# Claude Code Plugins and Skills
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
@@ -290,11 +290,11 @@ Output documents are saved as markdown files with traceability IDs that link acr
 
 Specification-driven development workflow for Claude Code.
 
-`4 phases` · `4 reference guides` · `Advisory quality gates` · `Language-aware reviews`
+`6 phases` · `4 reference guides` · `Advisory quality gates` · `Language-aware reviews`
 
 Tests are a firewall between specification and implementation. You never modify tests during implementation — if the code can't pass the tests, the implementation approach is wrong, not the tests.
 
-This plugin orchestrates a spec-first discipline: define behavioral specifications, derive test scenarios, plan implementation, and verify alignment across all artifacts and code. It acts as a workflow navigator with advisory quality gates — guiding you through each phase, surfacing gaps and ambiguity, and offering handoff prompts for coding agents when it's time to write actual code.
+This plugin orchestrates a spec-first discipline: define behavioral specifications, derive test scenarios, plan test implementation, implement tests (verify they fail), implement features (make tests pass), and verify alignment across all artifacts and code. It acts as a workflow navigator with advisory quality gates — guiding you through each phase, surfacing gaps and ambiguity, and offering handoff prompts for coding agents when it's time to write actual code.
 
 ### Workflow Phases
 
@@ -302,9 +302,9 @@ This plugin orchestrates a spec-first discipline: define behavioral specificatio
 |-------|---------|-------------|
 | 1 | `/spec-dd:spec` | Write behavioral specification — unambiguous requirements, edge cases, acceptance criteria |
 | 2 | `/spec-dd:test` | Derive test scenarios (Given/When/Then) from spec only — no implementation knowledge |
-| 3 | *(handoff)* | Propose prompt for coding agent to write test code |
-| 4 | `/spec-dd:impl` | Plan implementation approach — map every test scenario to a technical approach |
-| 5 | *(handoff)* | Propose prompt for coding agent to implement code |
+| 3 | `/spec-dd:test-impl` | Map every test scenario to a technical approach for test implementation |
+| 4 | *(handoff)* | Implement tests and verify they fail (feature code doesn't exist yet) |
+| 5 | *(handoff)* | Make all tests pass by implementing the required features |
 | 6 | `/spec-dd:review` | Verify alignment across all artifacts and code, run tests |
 
 ### How to Use
@@ -314,7 +314,7 @@ This plugin orchestrates a spec-first discipline: define behavioral specificatio
 | `/spec-dd` | Auto-detect phase, assess current state, recommend next step |
 | `/spec-dd:spec` | Work on the behavioral specification |
 | `/spec-dd:test` | Work on the test specification |
-| `/spec-dd:impl` | Work on the implementation specification |
+| `/spec-dd:test-impl` | Work on the test implementation specification |
 | `/spec-dd:review` | Run alignment review, execute tests, produce report |
 
 All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). Without one, the skill lists available features and asks you to choose.
@@ -323,11 +323,11 @@ All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). 
 
 **Advisory quality gates** — The skill flags issues (unresolved ambiguity, missing traceability, coverage gaps) and recommends addressing them, but you can override and proceed.
 
-**Language-aware** — Auto-detects your project's language and ecosystem (package.json, requirements.txt, go.mod, Cargo.toml, etc.) to ensure test scenarios are realistic and implementation patterns are idiomatic.
+**Language-aware** — Auto-detects your project's language and ecosystem (package.json, requirements.txt, go.mod, Cargo.toml, etc.) to ensure test scenarios are realistic and test implementation patterns are idiomatic.
 
 **Test execution** — During review, detects and runs your project's test runner (Makefile, justfile, pytest, go test, cargo test, npm test, mvn test, gradle test).
 
-**Artifacts** — All documents live in `docs/specs/`: `<feature>-specification.md`, `<feature>-test-specification.md`, `<feature>-implementation-specification.md`, `<feature>-implementation-review.md`.
+**Artifacts** — All documents live in `docs/specs/`: `<feature>-specification.md`, `<feature>-test-specification.md`, `<feature>-test-implementation-specification.md`, `<feature>-implementation-review.md`.
 
 ---
 
@@ -453,10 +453,10 @@ plugins/
   │       └── spec-dd/
   │           ├── SKILL.md            # Skill definition & phase router
   │           └── references/
-  │               ├── specification.md          # Behavioral specification guide
-  │               ├── test-specification.md     # Test specification guide
-  │               ├── implementation-specification.md # Implementation specification guide
-  │               └── review.md                 # Alignment review guide
+  │               ├── specification.md                    # Behavioral specification guide
+  │               ├── test-specification.md               # Test specification guide
+  │               ├── test-implementation-specification.md # Test implementation specification guide
+  │               └── review.md                           # Alignment review guide
   └── explain-system-tradeoffs/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
