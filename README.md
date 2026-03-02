@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of Claude Code plugins for software engineering workflows.
+A collection of Claude Code plugins and skills for software engineering workflows.
 
 `6 plugins` · `70+ skills`
 
@@ -495,7 +495,7 @@ No. Each document can be created independently. Start at whatever level matches 
 The skill is optimized for greenfield projects, but you can start at any level. For existing projects, `/spec-architecture` and `/spec-test` are often the most useful starting points.
 
 **What's the difference between spec-writer and spec-dd?**
-spec-writer creates specification *documents* for greenfield projects — layered from vision through architecture to test plans. spec-dd orchestrates a *development workflow* — it assumes you have (or are writing) a behavioral spec and guides you through deriving tests, planning implementation, and verifying alignment. Use spec-writer when starting a new project and need formal specs. Use spec-dd when you have requirements and want to enforce a spec-first development discipline.
+spec-writer creates specification *documents* for greenfield projects — layered from vision through architecture to test plans. spec-dd orchestrates a *development workflow* — it assumes you have (or are writing) a behavioral spec and guides you through deriving tests, planning test implementation, implementing tests (verify they fail), implementing features (make tests pass), and verifying alignment. Use spec-writer when starting a new project and need formal specs. Use spec-dd when you have requirements and want to enforce a spec-first development discipline.
 
 **Does spec-dd write code?**
 No. spec-dd produces specification documents, assesses quality, surfaces gaps, and offers handoff prompts for coding agents. When it's time to write test code or implementation code, it proposes a prompt you can give to a coding agent.
