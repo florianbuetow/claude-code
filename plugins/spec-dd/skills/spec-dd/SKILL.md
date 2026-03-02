@@ -3,10 +3,10 @@ name: spec-dd
 description: >
   This skill should be used when the user asks to "write specifications",
   "create test specifications", "specification-driven development", "spec-first",
-  "behavioral specs", "derive test scenarios", "implementation specification",
+  "behavioral specs", "derive test scenarios", "test implementation specification",
   "check specification alignment", "review specs", or "spec-dd". Also triggers
-  when the user mentions "SDD", "spec-driven", "behavioral testing workflow",
-  "test-first design", or asks about writing specifications before code,
+  when the user mentions "SDD", "SDD-TDD", "spec-driven", "behavioral testing
+  workflow", "test-first design", or asks about writing specifications before code,
   deriving tests from specs, or verifying implementation against specifications.
   Supports a full workflow walkthrough or focusing on individual phases.
 ---
@@ -14,11 +14,12 @@ description: >
 # Specification-Driven Development
 
 Orchestrate a spec-first development workflow: behavioral specification, test
-scenario derivation, implementation planning, and cross-artifact alignment
-review. The skill guides writing behavioral specifications, derives test
-scenarios, plans implementation approaches, and verifies alignment across all
-artifacts and code. Quality gates between phases are advisory — the skill flags
-issues and recommends addressing them, but the user can override and proceed.
+scenario derivation, test implementation planning, test implementation, feature
+implementation, and cross-artifact alignment review. The skill guides writing
+behavioral specifications, derives test scenarios, plans test implementation
+approaches, and verifies alignment across all artifacts and code. Quality gates
+between phases are advisory — the skill flags issues and recommends addressing
+them, but the user can override and proceed.
 
 ## Commands
 
@@ -27,7 +28,7 @@ issues and recommends addressing them, but the user can override and proceed.
 | `/spec-dd` | Auto-detect phase, assess state, recommend next step | All references |
 | `/spec-dd:spec` | Behavioral Specification | `references/specification.md` |
 | `/spec-dd:test` | Test Specification | `references/test-specification.md` |
-| `/spec-dd:impl` | Implementation Specification | `references/implementation-specification.md` |
+| `/spec-dd:test-impl` | Test Implementation Specification | `references/test-implementation-specification.md` |
 | `/spec-dd:review` | Alignment Review | `references/review.md` |
 
 All commands accept an optional feature name argument (e.g., `/spec-dd:spec user-auth`).
@@ -42,7 +43,7 @@ All artifacts live in `docs/specs/` with one set of files per feature:
 |----------|----------|
 | Behavioral Specification | `docs/specs/<feature>-specification.md` |
 | Test Specification | `docs/specs/<feature>-test-specification.md` |
-| Implementation Specification | `docs/specs/<feature>-implementation-specification.md` |
+| Test Implementation Specification | `docs/specs/<feature>-test-implementation-specification.md` |
 | Implementation Review | `docs/specs/<feature>-implementation-review.md` |
 
 ## First Steps
@@ -52,7 +53,7 @@ When any command is invoked:
 1. **Read the relevant reference file** from `references/` BEFORE doing anything else.
    - `/spec-dd:spec` -> read `references/specification.md`
    - `/spec-dd:test` -> read `references/test-specification.md`
-   - `/spec-dd:impl` -> read `references/implementation-specification.md`
+   - `/spec-dd:test-impl` -> read `references/test-implementation-specification.md`
    - `/spec-dd:review` -> read `references/review.md`
    - `/spec-dd` -> read whichever reference applies to the recommended phase
 
@@ -164,81 +165,85 @@ Boundary conditions derived from the specification's edge cases section.
 Summary confirming every acceptance criterion is covered.
 ```
 
-## Phase 3: Test Code (Handoff)
+## Phase 3: Test Implementation Specification (`/spec-dd:test-impl`)
 
-**Purpose:** Actual test code is written by a coding agent following the test
-specification. This skill does NOT write test code.
+**Reference:** Read `references/test-implementation-specification.md` before starting.
 
-**Workflow:**
+**Purpose:** Map every test scenario to a technical approach for implementing it
+as actual test code.
 
-1. Announce readiness for test implementation.
-2. Summarize what the test specification contains and where it lives
-   (`docs/specs/<feature>-test-specification.md`).
-3. Offer to propose a prompt for the coding agent. The prompt should:
-   - Reference the test specification document
-   - Instruct the agent to use the project's test framework and conventions
-   - Specify the detected language and ecosystem
-4. Wait for test code to be written before proceeding.
-
-## Phase 4: Implementation Specification (`/spec-dd:impl`)
-
-**Reference:** Read `references/implementation-specification.md` before starting.
-
-**Purpose:** Describe the technical approach for satisfying each test scenario.
-
-**Pre-check:** Verify that `<feature>-test-specification.md` exists and that
-actual test files exist in the project. If either is missing, advise the user
-which prior phase to complete first. Proceed if the user overrides.
+**Pre-check:** Verify that `<feature>-test-specification.md` exists. If it does
+not, advise the user to complete Phase 2 first. Proceed if the user overrides.
 
 **Workflow:**
 
-1. Guide the user through describing the implementation approach for the
-   selected feature.
-2. Use language-aware patterns, idioms, and architecture appropriate for the
-   detected stack.
-3. Map every test scenario from the test specification to a corresponding
-   implementation approach.
-4. Verify that the approach does not require modifying existing tests — tests
-   are a firewall between specification and implementation.
-5. Produce or update `docs/specs/<feature>-implementation-specification.md`.
+1. Guide the user through describing the technical approach for implementing
+   each test scenario as actual test code.
+2. Use language-aware patterns: test framework selection, fixture strategies,
+   mock/stub approaches, test file organization.
+3. Map every test scenario from the test specification to specific test
+   functions, test classes, or test modules.
+4. Describe shared fixtures, test data factories, and setup/teardown strategies.
+5. Verify completeness: every Given/When/Then scenario has a corresponding
+   test implementation approach.
+6. Produce or update `docs/specs/<feature>-test-implementation-specification.md`.
 
-**Advisory gate:** Implementation spec addresses all test scenarios without
-requiring test modifications before proceeding to Phase 5.
+**Advisory gate:** Every test scenario mapped to a test implementation approach
+before proceeding to Phase 4.
 
 **Artifact template:**
 
 ```markdown
-# <Feature> - Implementation Specification
+# <Feature> - Test Implementation Specification
 
-## Technical Approach
-High-level design decisions and rationale.
+## Test Framework & Conventions
+Detected stack, test framework, test runner, conventions.
 
-## Component Design
-Language-aware patterns and idioms for the detected stack.
+## Test Structure
+How tests are organized: files, classes/modules, naming conventions.
 
 ## Test Scenario Mapping
-How each test scenario from the test specification will be satisfied.
+Map each test scenario to a test function/method with setup and assertion strategy.
 
-## Dependencies & Constraints
-External dependencies, performance constraints, integration points.
+## Fixtures & Test Data
+Shared fixtures, factories, test data approach, setup/teardown.
 
 ## Alignment Check
-Confirmation that no test modifications are needed.
+Confirmation that every test scenario has a test implementation approach.
 ```
 
-## Phase 5: Implementation Code (Handoff)
+## Phase 4: Test Implementation (Handoff)
 
-**Purpose:** Actual implementation code is written by a coding agent following the
-implementation specification. This skill does NOT write implementation code.
+**Purpose:** Actual test code is written by a coding agent following the test
+implementation specification. Tests must initially FAIL because the feature code
+does not exist yet. This skill does NOT write test code.
 
 **Workflow:**
 
-1. Announce readiness for implementation.
-2. Summarize what the implementation specification contains and where it lives
-   (`docs/specs/<feature>-implementation-specification.md`).
+1. Announce readiness for test implementation.
+2. Summarize what the test implementation specification contains and where it
+   lives (`docs/specs/<feature>-test-implementation-specification.md`).
 3. Offer to propose a prompt for the coding agent. The prompt should:
-   - Reference the implementation specification document
-   - Instruct the agent to implement code that passes all tests without modifying them
+   - Reference both the test specification and the test implementation specification
+   - Instruct the agent to implement tests using the project's test framework
+   - Instruct the agent to verify that all tests FAIL (since the feature is not
+     yet implemented)
+   - Specify the detected language and ecosystem
+4. Wait for test code to be written and verified as failing before proceeding.
+
+## Phase 5: Feature Implementation (Handoff)
+
+**Purpose:** Production code is written to make all tests pass. This skill does
+NOT write implementation code.
+
+**Workflow:**
+
+1. Announce readiness for feature implementation.
+2. Summarize that tests exist, are failing, and define the expected behavior.
+3. Offer to propose a prompt for the coding agent. The prompt should:
+   - Reference the behavioral specification and the test files
+   - Instruct the agent to write code that makes all tests pass without
+     modifying any test files
    - Specify the detected language and ecosystem
 4. Wait for implementation code to be written before proceeding.
 
@@ -250,8 +255,8 @@ implementation specification. This skill does NOT write implementation code.
 
 **Pre-check:** Check that all three specification documents exist for the feature:
 `<feature>-specification.md`, `<feature>-test-specification.md`, and
-`<feature>-implementation-specification.md`. Flag any that are missing but proceed
-with what is available.
+`<feature>-test-implementation-specification.md`. Flag any that are missing but
+proceed with what is available.
 
 **Workflow:**
 
@@ -259,8 +264,8 @@ with what is available.
    each other. Identify inconsistencies, coverage gaps, and unresolved ambiguities.
 2. **Code alignment:** Scan actual test files and implementation source code in the
    project. Compare against the specification documents. Identify:
-   - Test scenarios in the spec without corresponding test code
-   - Implementation approaches in the spec without corresponding source code
+   - Test scenarios in the test spec without corresponding test code
+   - Test implementation approaches in the test impl spec without corresponding test code
    - Undocumented behavior (code not covered by any specification)
 3. **Test execution:** Detect the project's test runner and execute all available
    tests locally:
@@ -310,9 +315,10 @@ When `/spec-dd` is invoked (without a specific phase subcommand):
    - Does `<feature>-test-specification.md` exist? Does it cover all acceptance
      criteria from the behavioral spec?
    - Do actual test files exist in the project? Do they align with the test spec?
-   - Does `<feature>-implementation-specification.md` exist? Does it address all
-     test scenarios?
-   - Does actual implementation code exist? Does it align with the impl spec?
+   - Does `<feature>-test-implementation-specification.md` exist? Does it address
+     all test scenarios?
+   - Do actual test files exist? Do they fail (feature not yet implemented)?
+   - Does actual implementation code exist? Do the tests pass?
    - Does `<feature>-implementation-review.md` exist? Is it current?
 4. **Report current state:** Which phases are complete, which have gaps, which
    have not been started.
@@ -329,10 +335,10 @@ but the user can override and proceed.
 | Transition | Gate Check |
 |------------|-----------|
 | Spec -> Test Spec | No unresolved `[NEEDS CLARIFICATION]` markers |
-| Test Spec -> Test Code | Full traceability: every acceptance criterion mapped to test scenarios |
-| Test Code -> Impl Spec | Test files exist and align with test specification |
-| Impl Spec -> Impl Code | Every test scenario has a corresponding implementation approach; no test modifications required |
-| Impl Code -> Review | Implementation code exists |
+| Test Spec -> Test Impl Spec | Full traceability: every acceptance criterion mapped to test scenarios |
+| Test Impl Spec -> Test Impl | Every test scenario mapped to a test implementation approach |
+| Test Impl -> Feature Impl | Test files exist and all tests FAIL (feature not yet implemented) |
+| Feature Impl -> Review | Implementation code exists and tests pass |
 | Review -> Done | All checks pass in the review report, including test execution |
 
 ## Iterative Workflow Support
@@ -347,7 +353,7 @@ The workflow supports non-linear progression:
 - Starting rough and iterating is explicitly supported: write a quick behavioral
   spec, rough out test scenarios, refine both, then proceed.
 - Review findings may reveal issues that require revisiting specification,
-  test specification, or implementation specification phases.
+  test specification, or test implementation specification phases.
 
 ## Pragmatism Guidelines
 
