@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`7 plugins` · `70+ skills`
+`8 plugins` · `70+ skills`
 
 ### Skills
 
@@ -13,6 +13,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [archibald](#archibald) | Software architecture quality assessment — smells, metrics, antipatterns, dependencies, risks, debt |
+| [kiss](#kiss) | Code and architecture simplicity analysis — complexity, abstraction, redundancy, architecture |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
@@ -36,6 +37,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install solid-principles
 claude plugin install beyond-solid-principles
 claude plugin install archibald
+claude plugin install kiss
 claude plugin install appsec
 claude plugin install spec-writer
 claude plugin install spec-dd
@@ -54,6 +56,7 @@ cd claude-code
 claude --plugin-dir ./plugins/solid-principles
 claude --plugin-dir ./plugins/beyond-solid-principles
 claude --plugin-dir ./plugins/archibald
+claude --plugin-dir ./plugins/kiss
 claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/spec-writer
 claude --plugin-dir ./plugins/spec-dd
@@ -192,6 +195,43 @@ Run a full assessment or focus on a single dimension:
 Each finding is reported with severity (CRITICAL / HIGH / MEDIUM / LOW), location, evidence, impact description, and a concrete recommendation. The summary includes a health score per dimension, a prioritized top-3 list, and an improvement roadmap categorized as Critical / Important / Beneficial.
 
 **Languages & architectures:** Any language, any architecture style — monoliths, modular monoliths, microservices, serverless, event-driven, layered, hexagonal. Severity is calibrated to project scale, team size, and lifecycle stage.
+
+---
+
+## kiss
+
+Code and architecture simplicity analysis for Claude Code.
+
+`4 categories` · `20 violation patterns`
+
+Unnecessary complexity accumulates silently during development. Clever one-liners that no one can debug, abstraction layers that add no value, dead code that misleads readers, architecture choices driven by resumes rather than requirements. By the time these problems surface — through slow onboarding, painful debugging, or fear of changing anything — simplification is expensive.
+
+This plugin lets you audit any file, module, or system **on demand**, getting severity-rated findings with concrete simplification suggestions, right in your workflow. It analyzes without modifying code — you decide what to simplify.
+
+| Category | Focus |
+|----------|-------|
+| **Complexity** | Deep nesting, long functions, convoluted control flow, high cyclomatic complexity, clever code |
+| **Abstraction** | Premature generalization, unnecessary indirection, pattern overuse, excessive layering, abstraction inversion |
+| **Redundancy** | Dead code, redundant validation, duplicate logic, unnecessary comments, unused parameters |
+| **Architecture** | Premature microservices, architecture astronautics, resume-driven development, speculative generality, excessive middle tiers |
+
+### How to Use
+
+Check all four categories at once or focus on one:
+
+| Command | What it checks |
+|---------|---------------|
+| `kiss` / `kiss all` | All four categories |
+| `kiss complexity` | Code complexity only |
+| `kiss abstraction` | Over-abstraction only |
+| `kiss redundancy` | Redundancy only |
+| `kiss architecture` | Architecture complexity only |
+
+**Trigger** - Ask Claude to check for unnecessary complexity, simplify code, find over-engineering, or mention a category by name ("check complexity", "find dead code", "over-abstraction", "keep it simple").
+
+Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue description, and a concrete simplification suggestion. Ask Claude to "fix this" or "simplify it" after an audit to get simplified code.
+
+**Languages:** Any language — Python, Java, TypeScript, C#, C++, Kotlin, Go, Rust. The analysis adapts to each language's idioms. Essential complexity (inherent to the problem domain) is not flagged — only accidental complexity introduced by our choices.
 
 ---
 
@@ -489,6 +529,18 @@ plugins/
   │               ├── dependency-structure.md   # DSM analysis
   │               ├── risk-analysis.md         # Risk & trade-off analysis
   │               └── technical-debt.md        # Technical debt assessment
+  ├── kiss/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── kiss/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── complexity.md   # Code complexity patterns
+  │               ├── abstraction.md  # Over-abstraction patterns
+  │               ├── redundancy.md   # Redundancy patterns
+  │               └── architecture.md # Architecture complexity patterns
   ├── appsec/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -568,6 +620,12 @@ No. spec-dd produces specification documents, assesses quality, surfaces gaps, a
 
 **What's the difference between beyond-solid-principles and explain-system-tradeoffs?**
 beyond-solid-principles finds *violations* of design principles - things that should be fixed. explain-system-tradeoffs identifies *tradeoff decisions* - things that were chosen (deliberately or not). A system can follow all design principles perfectly and still have interesting tradeoffs to understand. Use beyond-solid-principles for "what's wrong?", use explain-system-tradeoffs for "what was decided and why?"
+
+**What's the difference between kiss and the KISS check in beyond-solid-principles?**
+beyond-solid-principles includes KISS as one of ten system-level principles, covering architecture-level over-engineering. The standalone kiss plugin provides deeper, more granular analysis across four categories — code complexity, over-abstraction, redundancy, and architecture — with 20 specific violation patterns. Use beyond-solid-principles for a broad architecture health check; use kiss for a focused simplicity audit.
+
+**Does kiss modify my code?**
+No. By default it only reports findings. Ask Claude to "fix this" or "simplify it" after an audit to get refactored code.
 
 **Does explain-system-tradeoffs require a distributed system?**
 It's most useful for distributed systems, but many tradeoff indicators (caching, thread pools, GC tuning, storage engines, schema evolution) apply to any system with performance or reliability requirements.
