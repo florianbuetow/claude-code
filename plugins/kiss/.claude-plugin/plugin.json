@@ -1,0 +1,11 @@
+{
+  "name": "kiss",
+  "version": "1.0.0",
+  "description": "Analyze code and architecture for unnecessary complexity, over-abstraction, and redundancy. Reports findings with severity ratings and concrete simplification suggestions without modifying code.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": ["kiss", "simplicity", "complexity", "code-review", "architecture"]
+}
