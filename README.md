@@ -13,7 +13,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [archibald](#archibald) | Software architecture quality assessment — smells, metrics, antipatterns, dependencies, risks, debt |
-| [kiss](#kiss) | Code and architecture simplicity analysis — complexity, abstraction, redundancy, architecture |
+| [K.I.S.S.](#kiss) | Code and architecture simplicity analysis — complexity, abstraction, redundancy, architecture |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
@@ -198,7 +198,7 @@ Each finding is reported with severity (CRITICAL / HIGH / MEDIUM / LOW), locatio
 
 ---
 
-## kiss
+## K.I.S.S.
 
 Code and architecture simplicity analysis for Claude Code.
 
@@ -621,10 +621,10 @@ No. spec-dd produces specification documents, assesses quality, surfaces gaps, a
 **What's the difference between beyond-solid-principles and explain-system-tradeoffs?**
 beyond-solid-principles finds *violations* of design principles - things that should be fixed. explain-system-tradeoffs identifies *tradeoff decisions* - things that were chosen (deliberately or not). A system can follow all design principles perfectly and still have interesting tradeoffs to understand. Use beyond-solid-principles for "what's wrong?", use explain-system-tradeoffs for "what was decided and why?"
 
-**What's the difference between kiss and the KISS check in beyond-solid-principles?**
-beyond-solid-principles includes KISS as one of ten system-level principles, covering architecture-level over-engineering. The standalone kiss plugin provides deeper, more granular analysis across four categories — code complexity, over-abstraction, redundancy, and architecture — with 20 specific violation patterns. Use beyond-solid-principles for a broad architecture health check; use kiss for a focused simplicity audit.
+**What's the difference between K.I.S.S. and the KISS check in beyond-solid-principles?**
+beyond-solid-principles includes KISS as one of ten system-level principles, covering architecture-level over-engineering. The standalone K.I.S.S. plugin provides deeper, more granular analysis across four categories — code complexity, over-abstraction, redundancy, and architecture — with 20 specific violation patterns. Use beyond-solid-principles for a broad architecture health check; use K.I.S.S. for a focused simplicity audit.
 
-**Does kiss modify my code?**
+**Does K.I.S.S. modify my code?**
 No. By default it only reports findings. Ask Claude to "fix this" or "simplify it" after an audit to get refactored code.
 
 **Does explain-system-tradeoffs require a distributed system?**
