@@ -4,15 +4,16 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`6 plugins` · `70+ skills`
+`7 plugins` · `70+ skills`
 
 ### Skills
 
 | Skill | Description |
 |-------|-------------|
-| [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
+| [archibald](#archibald) | Software architecture quality assessment — smells, metrics, antipatterns, dependencies, risks, debt |
+| [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
@@ -35,6 +36,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install appsec
 claude plugin install solid-principles
 claude plugin install beyond-solid-principles
+claude plugin install archibald
 claude plugin install spec-writer
 claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
@@ -52,6 +54,7 @@ cd claude-code
 claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/solid-principles
 claude --plugin-dir ./plugins/beyond-solid-principles
+claude --plugin-dir ./plugins/archibald
 claude --plugin-dir ./plugins/spec-writer
 claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
@@ -213,6 +216,49 @@ Check all ten at once or focus on one:
 Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue description, and a concrete remediation suggestion. Ask Claude to "fix this" or "refactor it" after an audit to get refactored code or an architecture proposal.
 
 **Languages & architectures:** Any language, any architecture style - monoliths, modular monoliths, microservices, serverless, event-driven, layered, hexagonal. The analysis adapts to the idioms and scale of the target system.
+
+---
+
+## archibald
+
+Software architecture quality assessment for Claude Code.
+
+`6 dimensions` · `7 architectural smells` · `13 antipatterns` · `12 reference files`
+
+SOLID checks class design. Beyond-SOLID checks design principles. But neither tells you whether your architecture is structurally healthy — whether dependencies form cycles, whether components have become god objects, whether coupling metrics are approaching dangerous thresholds, or whether technical debt is accumulating in central components. These are different questions that require different analysis.
+
+Archibald assesses the structural health of a software architecture through six dimensions: smell detection, quantitative metrics, antipattern identification, dependency structure evaluation, risk/trade-off analysis, and technical debt measurement. The assessment approach is grounded in established frameworks (ATAM, SAAM, QUASAR) and research showing that architectural smells are independent from code smells (less than 30% correlation), making dedicated architecture-level assessment essential.
+
+### Assessment Dimensions
+
+| Dimension | What it covers |
+|-----------|---------------|
+| **Smells** | 7 core architectural smells — Cyclic Dependency, Unstable Dependency, Hub-Like Dependency, God Component, Feature Concentration, Scattered Functionality, Ambiguous Interface |
+| **Antipatterns** | 13 flawed decision patterns — Big Ball of Mud, Abstraction Inversion, God Object, Inner Platform Effect, Interface Bloat, Stovepipe System, Anemic Domain Model, Sequential Coupling, Cargo Cult Programming, Technology-Driven Architecture, Golden Hammer, Malignant Growth, Over/Under-Engineering |
+| **Metrics** | Quantitative measures with thresholds — CBO, afferent/efferent coupling, instability, LCOM, cohesion types, cyclomatic complexity, LOC, nesting depth |
+| **Dependencies** | Dependency Structure Matrix (DSM) analysis — layering patterns, cycle detection, hub identification, partitioning algorithms |
+| **Risks** | Trade-off and risk analysis (ATAM-derived) — risks, sensitivity points, trade-off points, quality attribute scenarios |
+| **Debt** | Technical Debt Index (TDI), prioritization matrix (impact × change frequency), management strategies, remediation patterns (Strangler Fig, Façade) |
+
+### How to Use
+
+Run a full assessment or focus on a single dimension:
+
+| Command | What it assesses |
+|---------|-----------------|
+| `archibald` / `archibald full` | Full assessment (all six dimensions) |
+| `archibald smells` | Architectural smell detection |
+| `archibald antipatterns` | Antipattern identification |
+| `archibald metrics` | Quantitative metrics analysis |
+| `archibald dependencies` | Dependency structure / DSM analysis |
+| `archibald risks` | Risk & trade-off analysis |
+| `archibald debt` | Technical debt assessment |
+
+**Trigger** - Ask Claude to assess architecture quality, check for architectural smells, analyze dependencies, measure coupling/cohesion/complexity, evaluate technical debt, or mention a concept by name ("cyclic dependency", "god component", "CBO", "DSM", "instability metric").
+
+Each finding is reported with severity (CRITICAL / HIGH / MEDIUM / LOW), location, evidence, impact description, and a concrete recommendation. The summary includes a health score per dimension, a prioritized top-3 list, and an improvement roadmap categorized as Critical / Important / Beneficial.
+
+**Languages & architectures:** Any language, any architecture style — monoliths, modular monoliths, microservices, serverless, event-driven, layered, hexagonal. Severity is calibrated to project scale, team size, and lifecycle stage.
 
 ---
 
@@ -433,6 +479,26 @@ plugins/
   │               ├── kiss.md         # KISS patterns
   │               ├── pola.md         # Principle of Least Surprise
   │               └── yagni.md        # YAGNI patterns
+  ├── archibald/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── archibald/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── cyclic-dependency.md      # Cyclic Dependency smell
+  │               ├── unstable-dependency.md    # Unstable Dependency smell
+  │               ├── hub-like-dependency.md    # Hub-Like Dependency smell
+  │               ├── god-component.md          # God Component smell
+  │               ├── feature-concentration.md  # Feature Concentration smell
+  │               ├── scattered-functionality.md # Scattered Functionality smell
+  │               ├── ambiguous-interface.md    # Ambiguous Interface smell
+  │               ├── antipatterns.md           # 13 architectural antipatterns
+  │               ├── metrics.md               # Coupling, cohesion, complexity metrics
+  │               ├── dependency-structure.md   # DSM analysis
+  │               ├── risk-analysis.md         # Risk & trade-off analysis
+  │               └── technical-debt.md        # Technical debt assessment
   ├── spec-writer/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -482,8 +548,8 @@ Any OO language - Python, Java, TypeScript, C#, C++, Kotlin, Go (struct methods)
 **Is solid-principles too strict?**
 No. The skill includes pragmatism guidelines. A 50-line script doesn't get the same scrutiny as a large production system.
 
-**What's the difference between solid-principles and beyond-solid-principles?**
-solid-principles operates at the class level - single classes, interfaces, and inheritance hierarchies. beyond-solid-principles operates at the architecture level - modules, services, layers, and system boundaries. They complement each other: use solid-principles for OO design quality, beyond-solid-principles for structural health at scale.
+**What's the difference between solid-principles, beyond-solid-principles, and archibald?**
+They form a complementary trio at increasing abstraction levels. solid-principles operates at the class level — single classes, interfaces, and inheritance hierarchies. beyond-solid-principles checks adherence to design principles at the architecture level — modules, services, layers, and system boundaries. archibald assesses structural health through a different lens entirely — smell detection, quantitative metrics, dependency structure analysis, antipattern identification, risk/trade-off analysis, and technical debt measurement. Use solid-principles for "does this class follow good OO design?", beyond-solid-principles for "does this architecture follow sound principles?", and archibald for "how healthy is this architecture structurally?"
 
 **Does beyond-solid-principles require a distributed system?**
 No. The principles apply to any codebase with module or package boundaries. For monoliths, the analysis focuses on dependency direction, internal layering, and package cohesion. For distributed systems, it also covers service boundaries, API contracts, failure propagation, and operational resilience.
