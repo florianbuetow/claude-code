@@ -1,0 +1,23 @@
+{
+  "name": "archibald",
+  "version": "1.0.0",
+  "description": "Software architecture quality assessment through structural smell detection, quantitative metrics analysis, antipattern identification, dependency structure evaluation, risk/trade-off analysis, and technical debt measurement. Complements SOLID and beyond-SOLID principle checks with architecture-level health diagnostics.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "fbuetow@gmx.de"
+  },
+  "license": "MIT",
+  "keywords": [
+    "architecture",
+    "quality-assessment",
+    "architectural-smells",
+    "antipatterns",
+    "coupling",
+    "cohesion",
+    "complexity",
+    "dependency-structure",
+    "technical-debt",
+    "dsm",
+    "metrics"
+  ]
+}
