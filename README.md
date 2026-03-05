@@ -33,10 +33,10 @@ claude plugin marketplace add florianbuetow/claude-code
 **Step 2** - Install the plugin(s) you want:
 
 ```bash
-claude plugin install appsec
 claude plugin install solid-principles
 claude plugin install beyond-solid-principles
 claude plugin install archibald
+claude plugin install appsec
 claude plugin install spec-writer
 claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
@@ -51,83 +51,16 @@ claude plugin install explain-system-tradeoffs
 git clone https://github.com/florianbuetow/claude-code.git
 cd claude-code
 # Load a plugin directory for this session only
-claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/solid-principles
 claude --plugin-dir ./plugins/beyond-solid-principles
 claude --plugin-dir ./plugins/archibald
+claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/spec-writer
 claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
 ```
 
 </details>
-
----
-
-## appsec
-
-Comprehensive application security toolbox for Claude Code.
-
-`62 skills` · `8 frameworks` · `7 agents` · `18 detection pattern references` · `4 depth modes`
-
-Security vulnerabilities hide in code patterns, architectural decisions, and dependency choices. Finding them requires expertise across multiple frameworks - OWASP, STRIDE, PASTA, LINDDUN, MITRE ATT&CK - and the ability to think like different attackers. Most teams can't afford dedicated security engineers on every project.
-
-This plugin brings that expertise into your workflow. Run a quick scan or launch a full audit with red team simulation. Every finding includes severity, CWE mapping, DREAD scoring, and concrete fix suggestions.
-
-### Frameworks
-
-| Framework | Skills | What it covers |
-|-----------|--------|----------------|
-| **OWASP Top 10** (2021) | 10 individual + dispatcher | Web application vulnerabilities (A01–A10) |
-| **STRIDE** | 6 individual + dispatcher | Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Privilege Escalation |
-| **PASTA** | 7 individual + dispatcher | 7-stage threat modeling methodology |
-| **LINDDUN** | 7 individual + dispatcher | Privacy threats across 7 categories |
-| **MITRE ATT&CK** | mapping skill | Adversary tactics and techniques |
-| **SANS/CWE Top 25** | mapping skill | Most dangerous software weaknesses |
-| **OWASP API Top 10** | `/appsec:api` | API-specific security risks |
-| **DREAD** | scoring model | Risk scoring (Damage, Reproducibility, Exploitability, Affected Users, Discoverability) |
-
-### Red Team Agents
-
-At `--depth expert`, six attacker personas simulate real-world adversaries:
-
-| Agent | Persona |
-|-------|---------|
-| script-kiddie | Low-skill opportunist - known CVEs, default credentials |
-| hacktivist | Ideological attacker - data leaks, defacement |
-| insider | Malicious authenticated user - privilege escalation, exfiltration |
-| organized-crime | Professional criminal - payment data, PII, ransomware |
-| supply-chain | Dependency compromiser - build pipeline, lockfiles |
-| nation-state | Advanced persistent threat - multi-step chains, persistence |
-
-A consolidator agent merges, deduplicates, and ranks all findings.
-
-### How to Use
-
-| Command | What it does |
-|---------|-------------|
-| `/appsec:start` | Assess codebase and recommend tools |
-| `/appsec:run` | Smart orchestrator - picks the right checks |
-| `/appsec:owasp` | Run all OWASP Top 10 checks |
-| `/appsec:stride` | Full STRIDE threat analysis |
-| `/appsec:pasta` | 7-stage PASTA methodology |
-| `/appsec:linddun` | Privacy threat analysis |
-| `/appsec:full-audit` | Exhaustive audit with dated report |
-| `/appsec:secrets` | Detect hardcoded secrets |
-| `/appsec:fix` | Generate code fixes for findings |
-| `/appsec:explain` | Interactive framework/finding explainer |
-
-All skills support `--scope`, `--severity`, `--depth`, `--format`, `--fix`, and `--explain` flags. Default scope is `changed` (only modified files).
-
-**Depth modes:** `quick` (scanners only) · `standard` (scanner + Claude analysis) · `deep` (multi-framework) · `expert` (+ red team simulation with DREAD scoring)
-
-**Specialized tools:** race-conditions, file-upload, graphql, websocket, serverless, api, business-logic, fuzz, model, attack-surface, data-flows, regression
-
-**Education:** `/appsec:learn` (guided walkthroughs), `/appsec:glossary` (quick reference)
-
-**Hook:** Automatically reviews plans on `ExitPlanMode` and checks for hardcoded secrets on file writes and edits.
-
-**Languages & stacks:** Any - Python, JavaScript/TypeScript, Java, Go, C#, Ruby, PHP, Rust. Detects and uses installed scanners (semgrep, bandit, gitleaks, trivy, etc.) with Claude analysis fallback.
 
 ---
 
@@ -259,6 +192,73 @@ Run a full assessment or focus on a single dimension:
 Each finding is reported with severity (CRITICAL / HIGH / MEDIUM / LOW), location, evidence, impact description, and a concrete recommendation. The summary includes a health score per dimension, a prioritized top-3 list, and an improvement roadmap categorized as Critical / Important / Beneficial.
 
 **Languages & architectures:** Any language, any architecture style — monoliths, modular monoliths, microservices, serverless, event-driven, layered, hexagonal. Severity is calibrated to project scale, team size, and lifecycle stage.
+
+---
+
+## appsec
+
+Comprehensive application security toolbox for Claude Code.
+
+`62 skills` · `8 frameworks` · `7 agents` · `18 detection pattern references` · `4 depth modes`
+
+Security vulnerabilities hide in code patterns, architectural decisions, and dependency choices. Finding them requires expertise across multiple frameworks - OWASP, STRIDE, PASTA, LINDDUN, MITRE ATT&CK - and the ability to think like different attackers. Most teams can't afford dedicated security engineers on every project.
+
+This plugin brings that expertise into your workflow. Run a quick scan or launch a full audit with red team simulation. Every finding includes severity, CWE mapping, DREAD scoring, and concrete fix suggestions.
+
+### Frameworks
+
+| Framework | Skills | What it covers |
+|-----------|--------|----------------|
+| **OWASP Top 10** (2021) | 10 individual + dispatcher | Web application vulnerabilities (A01–A10) |
+| **STRIDE** | 6 individual + dispatcher | Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Privilege Escalation |
+| **PASTA** | 7 individual + dispatcher | 7-stage threat modeling methodology |
+| **LINDDUN** | 7 individual + dispatcher | Privacy threats across 7 categories |
+| **MITRE ATT&CK** | mapping skill | Adversary tactics and techniques |
+| **SANS/CWE Top 25** | mapping skill | Most dangerous software weaknesses |
+| **OWASP API Top 10** | `/appsec:api` | API-specific security risks |
+| **DREAD** | scoring model | Risk scoring (Damage, Reproducibility, Exploitability, Affected Users, Discoverability) |
+
+### Red Team Agents
+
+At `--depth expert`, six attacker personas simulate real-world adversaries:
+
+| Agent | Persona |
+|-------|---------|
+| script-kiddie | Low-skill opportunist - known CVEs, default credentials |
+| hacktivist | Ideological attacker - data leaks, defacement |
+| insider | Malicious authenticated user - privilege escalation, exfiltration |
+| organized-crime | Professional criminal - payment data, PII, ransomware |
+| supply-chain | Dependency compromiser - build pipeline, lockfiles |
+| nation-state | Advanced persistent threat - multi-step chains, persistence |
+
+A consolidator agent merges, deduplicates, and ranks all findings.
+
+### How to Use
+
+| Command | What it does |
+|---------|-------------|
+| `/appsec:start` | Assess codebase and recommend tools |
+| `/appsec:run` | Smart orchestrator - picks the right checks |
+| `/appsec:owasp` | Run all OWASP Top 10 checks |
+| `/appsec:stride` | Full STRIDE threat analysis |
+| `/appsec:pasta` | 7-stage PASTA methodology |
+| `/appsec:linddun` | Privacy threat analysis |
+| `/appsec:full-audit` | Exhaustive audit with dated report |
+| `/appsec:secrets` | Detect hardcoded secrets |
+| `/appsec:fix` | Generate code fixes for findings |
+| `/appsec:explain` | Interactive framework/finding explainer |
+
+All skills support `--scope`, `--severity`, `--depth`, `--format`, `--fix`, and `--explain` flags. Default scope is `changed` (only modified files).
+
+**Depth modes:** `quick` (scanners only) · `standard` (scanner + Claude analysis) · `deep` (multi-framework) · `expert` (+ red team simulation with DREAD scoring)
+
+**Specialized tools:** race-conditions, file-upload, graphql, websocket, serverless, api, business-logic, fuzz, model, attack-surface, data-flows, regression
+
+**Education:** `/appsec:learn` (guided walkthroughs), `/appsec:glossary` (quick reference)
+
+**Hook:** Automatically reviews plans on `ExitPlanMode` and checks for hardcoded secrets on file writes and edits.
+
+**Languages & stacks:** Any - Python, JavaScript/TypeScript, Java, Go, C#, Ruby, PHP, Rust. Detects and uses installed scanners (semgrep, bandit, gitleaks, trivy, etc.) with Claude analysis fallback.
 
 ---
 
@@ -440,16 +440,6 @@ The report distinguishes **deliberate choices** (asymmetric config, tuned values
 .claude-plugin/
   └── marketplace.json                # Plugin registry
 plugins/
-  ├── appsec/
-  │   ├── .claude-plugin/
-  │   │   └── plugin.json             # Plugin manifest
-  │   ├── skills/                     # 62 skills (OWASP, STRIDE, PASTA, LINDDUN, specialized, education)
-  │   ├── agents/                     # 7 agents (6 red team + consolidator)
-  │   ├── hooks/
-  │   │   └── hooks.json              # PostToolUse hooks (plan review, secret detection)
-  │   └── shared/
-  │       ├── frameworks/             # 8 framework reference docs
-  │       └── schemas/                # Findings, flags, scanners schemas
   ├── solid-principles/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -499,6 +489,16 @@ plugins/
   │               ├── dependency-structure.md   # DSM analysis
   │               ├── risk-analysis.md         # Risk & trade-off analysis
   │               └── technical-debt.md        # Technical debt assessment
+  ├── appsec/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── skills/                     # 62 skills (OWASP, STRIDE, PASTA, LINDDUN, specialized, education)
+  │   ├── agents/                     # 7 agents (6 red team + consolidator)
+  │   ├── hooks/
+  │   │   └── hooks.json              # PostToolUse hooks (plan review, secret detection)
+  │   └── shared/
+  │       ├── frameworks/             # 8 framework reference docs
+  │       └── schemas/                # Findings, flags, scanners schemas
   ├── spec-writer/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
