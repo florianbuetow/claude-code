@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`8 plugins` · `70+ skills`
+`9 plugins` · `70+ skills`
 
 ### Skills
 
@@ -18,6 +18,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
+| [retrospective](#retrospective) | Developer-AI workflow analysis — session log retros with feedback loops |
 
 ---
 
@@ -42,6 +43,7 @@ claude plugin install appsec
 claude plugin install spec-writer
 claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
+claude plugin install retrospective
 ```
 
 **Step 3** - Restart Claude Code.
@@ -61,6 +63,7 @@ claude --plugin-dir ./plugins/appsec
 claude --plugin-dir ./plugins/spec-writer
 claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
+claude --plugin-dir ./plugins/retrospective
 ```
 
 </details>
@@ -474,6 +477,54 @@ The report distinguishes **deliberate choices** (asymmetric config, tuned values
 
 ---
 
+## retrospective
+
+Developer-AI workflow analysis for Claude Code.
+
+`5 dimensions` · `10 collaboration antipatterns` · `Feedback loop tracking`
+
+Most developers never look at their Claude Code session logs. Those logs are a goldmine of improvement signals — correction spirals, wasted effort, emotional escalation, repeated manual workflows, silent abandonment. By the time you notice these patterns yourself, you've already lost hours to them.
+
+This plugin reads your session logs from the last 3 months and runs a structured retrospective across five dimensions. Each retrospective builds on previous ones — tracking whether past recommendations were acted on and whether the collaboration is actually improving.
+
+| Dimension | Question It Answers |
+|-----------|-------------------|
+| **What Went Well** | Which interactions were efficient, successful, and worth repeating? |
+| **What Didn't Go Well** | Where did the collaboration break down, waste time, or produce poor results? |
+| **Skill Opportunities** | What repeated requests or workflows should become reusable skills? |
+| **Workflow Optimization** | How can subagents, hooks, and automation reduce manual effort? |
+| **Collaboration Antipatterns** | What common developer-AI pitfalls are showing up? |
+
+### How to Use
+
+Run a full retrospective or focus on a single dimension:
+
+| Command | What it analyzes |
+|---------|-----------------|
+| `retrospective` / `retrospective all` | All five dimensions |
+| `retrospective wins` / `retrospective good` | What Went Well |
+| `retrospective problems` / `retrospective bad` | What Didn't Go Well |
+| `retrospective skills` | Skill & Slash Command Opportunities |
+| `retrospective workflow` / `retrospective automation` | Workflow Optimization |
+| `retrospective antipatterns` | Collaboration Antipatterns |
+
+**Trigger** - Ask Claude to run a retrospective, review your sessions, analyze your Claude usage, suggest workflow improvements, or mention a dimension by name ("what went well", "what should I automate", "find collaboration antipatterns").
+
+### What to Expect
+
+| Capability | How it works |
+|------------|-------------|
+| **Feedback loop** | Each retro writes a report to `docs/retrospective/`. The next retro reads previous reports and checks whether you acted on past recommendations. Recurring issues get escalated. |
+| **Root cause analysis** | Goes beyond counting correction spirals — identifies whether the cause is a missing CLAUDE.md rule, a vague prompt pattern, or an architectural mismatch. |
+| **Emotional signal detection** | Detects frustration escalation, resignation, and silent abandonment — problems that turn-counting alone misses. |
+| **Strength-to-weakness mapping** | Connects what works well to what doesn't — if you specify constraints effectively for new code, can you apply that to refactoring where scope creep keeps happening? |
+
+Each finding comes with evidence from your sessions, a root cause, and a concrete suggestion (skill skeleton, hook config, CLAUDE.md addition). Suggestions are rated by effort, impact, and concerns about measurability. The report includes a dimension scorecard (1-5 scale) and prioritized top 3 recommendations.
+
+**Scope:** Reads session logs from `~/.claude/projects/` — requires at least one prior Claude Code session.
+
+---
+
 ## Project Structure
 
 ```
@@ -575,19 +626,32 @@ plugins/
   │               ├── test-specification.md               # Test specification guide
   │               ├── test-implementation-specification.md # Test implementation specification guide
   │               └── review.md                           # Alignment review guide
-  └── explain-system-tradeoffs/
+  ├── explain-system-tradeoffs/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       └── explain-system-tradeoffs/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── consistency.md  # Consistency & Availability axis
+  │               ├── latency.md      # Latency & Throughput axis
+  │               ├── data-distribution.md # Data Distribution axis
+  │               ├── transactions.md # Transaction Boundaries axis
+  │               ├── resilience.md   # Resilience & Failure Isolation axis
+  │               └── operations.md   # Observability, Security & Cost axis
+  └── retrospective/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
+      ├── LICENSE
       └── skills/
-          └── explain-system-tradeoffs/
+          └── retrospective/
               ├── SKILL.md            # Skill definition & workflow
               └── references/
-                  ├── consistency.md  # Consistency & Availability axis
-                  ├── latency.md      # Latency & Throughput axis
-                  ├── data-distribution.md # Data Distribution axis
-                  ├── transactions.md # Transaction Boundaries axis
-                  ├── resilience.md   # Resilience & Failure Isolation axis
-                  └── operations.md   # Observability, Security & Cost axis
+                  ├── success-patterns.md          # Effective collaboration patterns
+                  ├── failure-patterns.md           # Wasted effort and breakdowns
+                  ├── collaboration-antipatterns.md # Developer-AI pitfalls
+                  ├── skill-opportunities.md        # Automatable pattern detection
+                  └── workflow-optimization.md      # Subagents, hooks, automation
 ```
 
 ---
@@ -629,6 +693,12 @@ No. By default it only reports findings. Ask Claude to "fix this" or "simplify i
 
 **Does explain-system-tradeoffs require a distributed system?**
 It's most useful for distributed systems, but many tradeoff indicators (caching, thread pools, GC tuning, storage engines, schema evolution) apply to any system with performance or reliability requirements.
+
+**Does retrospective access my data or send anything externally?**
+No. Everything stays local. The plugin reads session logs from `~/.claude/projects/` on your machine and writes reports to `docs/retrospective/` in your repo. Nothing leaves your environment.
+
+**How far back does retrospective look?**
+The last 3 months of session logs. Each `.jsonl` file in `~/.claude/projects/` has a modification timestamp — the skill includes every file modified within the last 90 days.
 
 **How much context do the plugins use?**
 All plugins use progressive disclosure - reference material is loaded only when needed to minimize token usage.

@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "florianbuetow-plugins",
   "version": "1.0.0",
-  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, software architecture quality assessment, application security analysis, expert-guided specification writing, specification-driven development, and distributed system tradeoff analysis.",
+  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, software architecture quality assessment, application security analysis, expert-guided specification writing, specification-driven development, distributed system tradeoff analysis, and developer-AI workflow retrospectives.",
   "repository": "https://github.com/florianbuetow/claude-code",
   "owner": {
     "name": "Florian Buetow",
@@ -96,6 +96,17 @@
       },
       "source": "./plugins/appsec",
       "category": "security"
+    },
+    {
+      "name": "retrospective",
+      "description": "Analyze Claude Code session logs to identify what went well, what didn't, and how to improve developer-AI collaboration. Suggests new skills, subagents, slash commands, hooks, and workflow optimizations based on actual usage patterns.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/retrospective",
+      "category": "development"
     }
   ]
 }
