@@ -234,14 +234,55 @@ by providing incremental corrections when they should say "stop, let's rethink."
 - Developer habit: learn to say "wrong direction" early rather than attempting to steer
   incrementally
 
-## Severity Assessment
+## How to Present Antipattern Findings
 
-Rate each antipattern by:
-- **Frequency**: How often it appears in the analyzed sessions
-- **Cost**: How many turns/time it wastes when it occurs
-- **Fixability**: How easy the structural fix is (LOW/MEDIUM/HIGH effort)
+For each antipattern detected, provide paragraph-level evidence with severity
+assessment — not a metric bullet list.
 
-Prioritize antipatterns that are high-frequency, high-cost, and low-fixability-effort.
+**Expected depth per finding:**
+
+**1. Premature Implementation** (HIGH frequency, HIGH cost, LOW fix effort)
+
+**Evidence:** In session `abc123` (2026-03-01, 890 lines), the assistant began
+editing `database.py` at turn 3, before reading the error output or the test
+file that was failing. The user corrected at turn 5: "Read the test output
+first." The assistant then read the output but still misidentified the root
+cause, leading to 2 more corrections. Total wasted turns: 6.
+
+This antipattern appeared in 4 sessions (`abc123`, `def456`, `ghi789`, `jkl012`)
+with a consistent signature: Edit/Write tool calls appearing before Read/Grep
+calls for the relevant context. The average correction cost was 5 turns per
+occurrence, totaling approximately 20 wasted turns across the analysis period.
+
+**Root cause:** The assistant's bias toward action over understanding. In all
+4 sessions, the user's request was specific enough to execute, but the existing
+code had constraints that weren't obvious from the request alone. A Read-first
+approach would have caught these.
+
+**Structural fix:**
+- CLAUDE.md addition: "Always read the file you're about to edit and its test
+  file before making changes. For debugging tasks, read error output before
+  proposing fixes."
+- This is LOW effort (one CLAUDE.md line) with HIGH impact (addresses the
+  most frequent antipattern).
+
+**Severity:**
+- **Frequency:** 4 out of [N] sessions (most common antipattern)
+- **Cost:** ~20 turns total (~5 per occurrence)
+- **Fixability:** LOW effort — one CLAUDE.md instruction
+
+---
+
+**What to include in each finding:**
+- Session IDs with dates — traceable to the inventory
+- Quoted messages showing the antipattern in action
+- Turn cost per occurrence and total across sessions
+- Root cause — why this antipattern emerges
+- Structural fix with effort level — concrete, not generic advice
+- Severity triple: frequency, cost, fixability
+
+**Prioritization:** Order antipatterns by composite score:
+high-frequency + high-cost + low-fix-effort items first.
 
 ## False Positives to Avoid
 

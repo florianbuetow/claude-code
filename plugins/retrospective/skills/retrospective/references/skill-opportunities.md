@@ -155,14 +155,55 @@ Flag items in the Concerns column of the suggestions table when:
 
 ## How to Present Skill Suggestions
 
-For each suggested skill, provide:
+For each suggested skill, provide a full evidence block — not a table row.
 
-1. **Name**: Proposed slash command name (`/name`)
-2. **Evidence**: What session patterns justify it (with counts)
-3. **Trigger phrases**: Natural language triggers for the YAML frontmatter
-4. **Workflow**: What the skill would do (numbered steps)
-5. **Effort**: How hard to create (most skills are LOW — a SKILL.md file)
-6. **Skeleton**: A minimal YAML frontmatter + first paragraph to get started
+**Expected depth per suggestion:**
+
+**1. Create `/deploy` skill** (Skill — LOW effort, HIGH impact)
+
+**Evidence:** The user asked for deployment-related tasks in sessions `abc123`,
+`def456`, `ghi789`, and `jkl012` (4 occurrences across 90 days). Each time,
+the assistant ran the same sequence: check branch → run tests → build → deploy
+→ verify. In session `abc123`, the user said "deploy to staging" and the
+assistant took 6 turns to complete the standard sequence. In `def456`, the
+identical workflow took 7 turns. The total cost of not having this skill:
+approximately 24 turns across 4 sessions.
+
+**What it would do:**
+1. Check current branch and uncommitted changes
+2. Run test suite
+3. Build and deploy to specified environment
+4. Verify deployment succeeded
+
+**Trigger phrases:** "deploy to staging", "deploy to prod", "push to production",
+"ship it"
+
+**Skeleton:**
+```yaml
+---
+name: deploy
+description: >
+  Triggers on "deploy to staging", "deploy to prod", "push to production".
+  Runs pre-flight checks, builds, deploys, and verifies.
+---
+```
+
+**Concerns:** [If any]
+
+---
+
+**What to include in each suggestion:**
+- Session IDs where the pattern appeared — with dates and quoted user messages
+- Turn count for each manual occurrence — showing the concrete cost
+- Total cost of not having the skill — sum of turns across sessions
+- Complete skeleton — YAML frontmatter + description, not just a name
+- Trigger phrases — what the user actually said (from the logs)
+- Concerns — flag controllability, observability, or habit-change issues
+
+**What NOT to do:**
+- Don't suggest skills based on 1 occurrence — need 2+ sessions minimum
+- Don't provide just a name and description — include the full evidence chain
+- Don't skip the skeleton — it makes the suggestion immediately actionable
 
 ## Existing Plugin Awareness
 
@@ -181,8 +222,8 @@ If the user is manually doing what a plugin already does, the suggestion should 
 
 ## False Positives to Avoid
 
-- A request made twice is an anecdote, not a pattern. Look for 3+ occurrences or
-  clear structural repetition
+- A request made once is an anecdote, not a pattern. Look for 2+ sessions with
+  similar requests, or clear structural repetition within a single session
 - Some tasks benefit from manual control — deployment, destructive operations, and
   security-sensitive workflows should keep human judgment in the loop
 - Don't suggest skills for one-time tasks — skills are for recurring workflows

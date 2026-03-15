@@ -191,20 +191,62 @@ A CLAUDE.md rule helps with missing constraints. A hook helps with automated che
 A process change helps with communication patterns. Matching fix to root cause is what
 makes retrospective recommendations actually work — otherwise you're treating symptoms.
 
-## Quantifying Failures
+## How to Present Failure Findings
 
-When reporting failures, include concrete metrics:
-- **Turns wasted**: How many turns were spent on the failed approach before correction
-- **Frequency**: How many times this pattern appeared across sessions
-- **Time cost**: Rough estimate of time wasted (if turns are timestamped in logs)
-- **Correction count**: How many user corrections per task on average
+When reporting failure patterns, provide paragraph-level evidence with root cause
+analysis for each finding. Do not compress into metric bullets.
+
+**Expected depth per finding:**
+
+- **[Problem name]**
+
+  [1-2 sentence summary of the problem.]
+
+  **Evidence:** In session `abc123` (2026-03-01, 890 lines), the user asked to
+  "fix the failing integration tests." The assistant edited `test_api.py` without
+  first reading the error output. The user corrected: "No, read the test output
+  first." The assistant then read the output but misidentified the root cause,
+  editing `config.py` instead of `database.py`. The user corrected again: "Wrong
+  file — the error is in the database connection setup." After a third correction
+  ("don't change the connection string, fix the timeout"), the issue was resolved.
+  Total: 9 turns for what should have been a 3-turn fix.
+
+  This pattern also appeared in sessions `def456` (7 correction turns on a
+  CSS layout task) and `ghi789` (5 correction turns on a migration script).
+
+  **Root cause:** The assistant consistently dives into implementation before
+  reading enough context. In all three sessions, the first edit happened before
+  any Read/Grep calls for the relevant error messages or surrounding code. This
+  is the "Premature Implementation" antipattern — and it's systemic, not a one-off.
+
+  **Strength to apply:** In sessions where the developer provided explicit file
+  paths upfront (the "Clean Handoff" pattern from the success analysis), zero
+  corrections were needed. Transferring this constraint-setting habit to debugging
+  tasks — "the error is in X, start by reading Y" — could prevent the correction
+  spiral.
+
+  **Severity:** Appeared in 3 sessions, costing approximately 12 turns total.
+
+**What to include in each finding:**
+- Session ID(s) and dates — traceable to the session inventory
+- Quoted corrections — the user's actual words, showing the correction chain
+- Turn count — how many turns were wasted
+- Root cause — WHY this happened (from the "Generate Insights" step)
+- Strength to apply — which success pattern could address this
+- Severity metrics — frequency and total turn cost
+
+**Quantitative summary** (include at the end of the section):
+- Total correction turns across all sessions analyzed
+- Average corrections per task
+- Most common root cause category
+- Sessions with the highest friction (by correction count or frustration signals)
 
 ## False Positives to Avoid
 
 - Exploratory conversations are not failures — "try this, no try that" during design
   exploration is productive, not wasteful
-- A single correction is normal — only flag correction *patterns* (3+ corrections on
-  similar tasks)
+- A single correction is normal — only flag correction *patterns* (2+ corrections on
+  similar tasks across sessions, or notable single-session impact)
 - Long sessions aren't automatically bad — some tasks genuinely require extended work
 - User interruptions aren't always corrections — they might be adding context or
   changing priorities
