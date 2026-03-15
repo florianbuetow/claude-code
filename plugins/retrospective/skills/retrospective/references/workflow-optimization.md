@@ -154,12 +154,50 @@ model: [sonnet/opus/haiku]
 
 ## How to Present Optimization Suggestions
 
-For each suggestion, provide:
+For each optimization suggestion, provide paragraph-level evidence and concrete
+configuration — not a numbered checklist.
 
-1. **Type**: Hook / Subagent / Setting / CLAUDE.md / Workflow change
-2. **Evidence**: What session patterns justify it
-3. **Concrete config**: The actual JSON/YAML/markdown to add
-4. **Before/after**: What the workflow looks like now vs. after the change
+**Expected depth per suggestion:**
+
+**1. Add PostToolUse type-checking hook** (Hook — LOW effort, MEDIUM impact)
+
+**Evidence:** In sessions `abc123`, `def456`, and `ghi789`, the user asked the
+assistant to "run tsc" or "check types" after code edits. In `abc123`, the user
+said "check types on that file" after 3 separate Edit tool calls — 3 manual
+requests that a hook would have handled automatically. In `def456`, a type error
+caught by manual tsc in turn 14 could have been caught by a PostToolUse hook at
+turn 4, saving 10 turns of work that had to be partially reverted.
+
+**Concrete config:**
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "tsc --noEmit ${TOOL_INPUT_FILE} 2>&1 | head -20"
+      }
+    ]
+  }
+}
+```
+
+**Before:** User manually asks "check types" after every edit → 3-5 turns per
+coding sequence spent on manual type checking.
+
+**After:** Types checked automatically after every Edit/Write → errors caught
+immediately, user never needs to ask.
+
+**Concerns:** [If any]
+
+---
+
+**What to include in each suggestion:**
+- Session IDs and quoted user messages showing the manual workflow
+- Turn cost of the current manual approach
+- Concrete configuration — the actual JSON, YAML, or markdown to add
+- Before/after comparison — specific, not generic
+- Concerns — flag if the automation adds latency or risk
 
 ## False Positives to Avoid
 

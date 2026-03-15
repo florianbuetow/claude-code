@@ -134,18 +134,46 @@ the "What Went Well" section actionable rather than purely celebratory.
 
 ## What to Highlight in the Report
 
-When reporting on what went well, include:
-- **Specific examples**: "The refactoring of auth.py was completed in 2 turns with
-  no corrections" — not vague praise
-- **Quantitative evidence**: "5 out of 8 tasks completed on first attempt"
-- **Patterns to repeat**: Name the pattern so the developer can consciously do it
-  again ("your habit of specifying file paths upfront saved an average of 2 turns
-  per task")
-- **Effective tool/skill usage**: Highlight when the right tool was chosen and
-  the result was good
-- **Strengths applicable to weaknesses**: For each success pattern, note which failure
-  patterns it could address ("your constraint-setting habit works well for code gen —
-  applying it to refactoring tasks could prevent the correction spirals seen there")
+When reporting success patterns, provide paragraph-level evidence for each finding.
+Do not compress findings into one-liner bullets.
+
+**Expected depth per finding:**
+
+- **[Pattern name]**
+
+  [1-2 sentence summary of the pattern.]
+
+  **Evidence:** In session `abc123` (2026-03-01, 450 lines), the user asked to
+  "refactor the auth middleware to use the new token validation." The assistant
+  read `auth.py` and `auth_test.py` first, confirmed the approach ("I'll replace
+  the session-based validation with JWT verification, keeping the same interface"),
+  then implemented in 4 edits with no corrections. The user responded "perfect,
+  exactly what I needed." Total: 8 turns from request to commit.
+
+  This pattern also appeared in sessions `def456` and `ghi789`, where upfront
+  constraint-setting ("only touch X") correlated with zero-correction completions.
+
+  **Why this works:** The developer's habit of specifying file scope upfront
+  eliminates ambiguity about what Claude should and shouldn't touch. This is a
+  form of constraint-setting that prevents scope creep before it starts.
+
+  **Applicable to:** The "Scope Explosion" failure pattern (sessions `jkl012`
+  and `mno345`) — applying this same constraint-setting habit to refactoring
+  requests could prevent the over-editing seen there.
+
+**What to include in each finding:**
+- Session ID(s) and dates — so the reader can cross-reference the session inventory
+- Quoted user messages — the actual words, not paraphrased
+- Tool call sequences — which tools were used and in what order
+- Turn count — concrete measure of efficiency
+- Positive emotional signals — quote them ("perfect", "exactly", "great")
+- Cross-references to failure patterns this strength could address
+
+**What NOT to do:**
+- Don't write one-liner bullets like "The auth refactoring was efficient"
+- Don't skip session IDs — every claim must be traceable
+- Don't report patterns without explaining WHY they work
+- Don't list strengths without connecting them to addressable weaknesses
 
 ## False Positives to Avoid
 
