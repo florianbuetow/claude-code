@@ -198,34 +198,13 @@ analysis for each finding. Do not compress into metric bullets.
 
 **Expected depth per finding:**
 
-- **[Problem name]**
-
-  [1-2 sentence summary of the problem.]
-
-  **Evidence:** In session `abc123` (2026-03-01, 890 lines), the user asked to
-  "fix the failing integration tests." The assistant edited `test_api.py` without
-  first reading the error output. The user corrected: "No, read the test output
-  first." The assistant then read the output but misidentified the root cause,
-  editing `config.py` instead of `database.py`. The user corrected again: "Wrong
-  file — the error is in the database connection setup." After a third correction
-  ("don't change the connection string, fix the timeout"), the issue was resolved.
-  Total: 9 turns for what should have been a 3-turn fix.
-
-  This pattern also appeared in sessions `def456` (7 correction turns on a
-  CSS layout task) and `ghi789` (5 correction turns on a migration script).
-
-  **Root cause:** The assistant consistently dives into implementation before
-  reading enough context. In all three sessions, the first edit happened before
-  any Read/Grep calls for the relevant error messages or surrounding code. This
-  is the "Premature Implementation" antipattern — and it's systemic, not a one-off.
-
-  **Strength to apply:** In sessions where the developer provided explicit file
-  paths upfront (the "Clean Handoff" pattern from the success analysis), zero
-  corrections were needed. Transferring this constraint-setting habit to debugging
-  tasks — "the error is in X, start by reading Y" — could prevent the correction
-  spiral.
-
-  **Severity:** Appeared in 3 sessions, costing approximately 12 turns total.
+### Incremental Fix Escalation
+- **Lines:** 580 | **Sessions:** `ba6c3984`, `80afdd3b`
+- **Pattern:** Claude defaults to minimum viable fixes at each step instead of the thorough solution, causing frustration escalation.
+- **Evidence:** In session `ba6c3984` (2026-03-05, 580 lines), the user said "dont push docs" but Claude's session-close protocol committed `docs/plans/` files. The escalation chain: user asks "were there ever any documents added from docs plans to git?" — Claude responds "Want me to remove them?" (unnecessary confirmation when user had already said "fucking revert that") — Claude tries `git revert` + `.gitignore` + force-push (partial fix, missed older files) — user: "I STILL SEE documents in docs/plans in the github repository" (ALL CAPS) — Claude uses `git rm --cached` (still in history) — user: "HOW MANY MORE TIMES DO I NEED TO ASK YOU TO ERASE ALL docs/plans/*.* files from git history?" (ALL CAPS, exasperation) — Claude finally uses `git filter-repo` (thorough fix). Cost: 18 assistant responses over ~59 minutes. This also appeared in session `80afdd3b` (2026-03-05, 175 lines) where README ordering inconsistency across 4 sections required 14 assistant responses — each fix revealing another inconsistent section.
+- **Root cause:** Claude defaulted to the minimum viable fix at each step (revert → .gitignore → git rm → filter-repo) instead of going directly to the thorough solution. Asking "Want me to remove them?" after "fucking revert that" amplified frustration.
+- **Strength to apply:** The cautious-but-thorough approach from session `1cde1423` (process cleanup) — investigate fully, present findings, then act once. For git history issues, go straight to `git filter-repo`.
+- **Severity:** 2 sessions, ~32 turns total.
 
 **What to include in each finding:**
 - Session ID(s) and dates — traceable to the session inventory

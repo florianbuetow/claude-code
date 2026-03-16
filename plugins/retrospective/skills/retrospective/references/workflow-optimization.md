@@ -159,38 +159,24 @@ configuration — not a numbered checklist.
 
 **Expected depth per suggestion:**
 
-**1. Add PostToolUse type-checking hook** (Hook — LOW effort, MEDIUM impact)
-
-**Evidence:** In sessions `abc123`, `def456`, and `ghi789`, the user asked the
-assistant to "run tsc" or "check types" after code edits. In `abc123`, the user
-said "check types on that file" after 3 separate Edit tool calls — 3 manual
-requests that a hook would have handled automatically. In `def456`, a type error
-caught by manual tsc in turn 14 could have been caught by a PostToolUse hook at
-turn 4, saving 10 turns of work that had to be partially reverted.
-
-**Concrete config:**
-```json
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "command": "tsc --noEmit ${TOOL_INPUT_FILE} 2>&1 | head -20"
-      }
-    ]
+### PreToolUse hook for destructive remote operations
+- **Sessions:** `870ef05c`
+- **Type:** Hook | **Effort:** LOW | **Impact:** HIGH
+- **Evidence:** In session `870ef05c` (2026-02-15, 360 lines), the user typed "nice perge the feature branch into main on GH" (typo for merge/purge). The assistant interpreted "perge" as "purge" and immediately executed `gh api repos/{owner}/{repo}/git/refs/heads/feature/appsec-plugin -X DELETE` — deleting the remote branch without any confirmation. The user responded: "you deleted it without merging?" The branch was already merged so no data was lost, but if it hadn't been, this would have been catastrophic.
+- **Concrete config:**
+  ```json
+  {
+    "hooks": {
+      "PreToolUse": [{
+        "matcher": "Bash",
+        "command": "echo \"$TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('command',''); exit(2 if any(p in cmd for p in ['DELETE','--force','push --force','push -f','branch -D','reset --hard']) and ('gh api' in cmd or 'git push' in cmd or 'git branch' in cmd) else 0)\""
+      }]
+    }
   }
-}
-```
-
-**Before:** User manually asks "check types" after every edit → 3-5 turns per
-coding sequence spent on manual type checking.
-
-**After:** Types checked automatically after every Edit/Write → errors caught
-immediately, user never needs to ask.
-
-**Concerns:** [If any]
-
----
+  ```
+- **Before:** Claude deletes remote branches or force-pushes based on ambiguous/misspelled input without confirmation.
+- **After:** Hook blocks destructive remote operations, requiring Claude to explain and confirm before proceeding.
+- **Concerns:** Adds small latency per Bash call. Could be narrowed to `gh api` DELETE calls only.
 
 **What to include in each suggestion:**
 - Session IDs and quoted user messages showing the manual workflow

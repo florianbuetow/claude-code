@@ -139,27 +139,12 @@ Do not compress findings into one-liner bullets.
 
 **Expected depth per finding:**
 
-- **[Pattern name]**
-
-  [1-2 sentence summary of the pattern.]
-
-  **Evidence:** In session `abc123` (2026-03-01, 450 lines), the user asked to
-  "refactor the auth middleware to use the new token validation." The assistant
-  read `auth.py` and `auth_test.py` first, confirmed the approach ("I'll replace
-  the session-based validation with JWT verification, keeping the same interface"),
-  then implemented in 4 edits with no corrections. The user responded "perfect,
-  exactly what I needed." Total: 8 turns from request to commit.
-
-  This pattern also appeared in sessions `def456` and `ghi789`, where upfront
-  constraint-setting ("only touch X") correlated with zero-correction completions.
-
-  **Why this works:** The developer's habit of specifying file scope upfront
-  eliminates ambiguity about what Claude should and shouldn't touch. This is a
-  form of constraint-setting that prevents scope creep before it starts.
-
-  **Applicable to:** The "Scope Explosion" failure pattern (sessions `jkl012`
-  and `mno345`) — applying this same constraint-setting habit to refactoring
-  requests could prevent the over-editing seen there.
+### The Clean Commit-Push Handoff
+- **Lines:** 30 | **Sessions:** `1cbdfd50`, `243c2c70`, `0edfb8fd`
+- **Pattern:** User gives a scoped imperative request, Claude executes in 1-2 turns with zero corrections.
+- **Evidence:** In session `1cbdfd50` (2026-03-13, 30 lines), the user's only message was "please push the new skill, make a git commit of the new skill and push it." The assistant executed `git status` + `git diff --staged --stat` (parallel), `git log --oneline -5`, `git add`, `git commit`, `git push` — 6 tool uses, 2 assistant responses, zero corrections. The same pattern appeared in session `243c2c70` where the user said "commit this" then "yes push it", completing in 3 turns. In session `0edfb8fd` the user said "git push and merge to main" and it completed with "Already done! The merge to main was pushed successfully."
+- **Why this works:** Unambiguous action verbs ("commit", "push") with clear scope. Claude already has context from the current session. No room for interpretation.
+- **Applicable to:** Contrasts with session `ba6c3984` (docs/plans debacle) where the same push operation failed because automated defaults conflicted with an explicit constraint. Structural enforcement (`.gitignore`) prevents recurrence better than conversational instructions.
 
 **What to include in each finding:**
 - Session ID(s) and dates — so the reader can cross-reference the session inventory

@@ -159,38 +159,22 @@ For each suggested skill, provide a full evidence block — not a table row.
 
 **Expected depth per suggestion:**
 
-**1. Create `/deploy` skill** (Skill — LOW effort, HIGH impact)
-
-**Evidence:** The user asked for deployment-related tasks in sessions `abc123`,
-`def456`, `ghi789`, and `jkl012` (4 occurrences across 90 days). Each time,
-the assistant ran the same sequence: check branch → run tests → build → deploy
-→ verify. In session `abc123`, the user said "deploy to staging" and the
-assistant took 6 turns to complete the standard sequence. In `def456`, the
-identical workflow took 7 turns. The total cost of not having this skill:
-approximately 24 turns across 4 sessions.
-
-**What it would do:**
-1. Check current branch and uncommitted changes
-2. Run test suite
-3. Build and deploy to specified environment
-4. Verify deployment succeeded
-
-**Trigger phrases:** "deploy to staging", "deploy to prod", "push to production",
-"ship it"
-
-**Skeleton:**
-```yaml
----
-name: deploy
-description: >
-  Triggers on "deploy to staging", "deploy to prod", "push to production".
-  Runs pre-flight checks, builds, deploys, and verifies.
----
-```
-
-**Concerns:** [If any]
-
----
+### `/onboard` — Auto-load project context at session start
+- **Sessions:** `ba6c3984`, `a2f8b30a`, `1a21ef9a`, `e136ffee`, `0edfb8fd`, `243c2c70`, `652a1653`, `0dd34bdb`, `db343130`, `cf640a71`, `9d178df0`, `50ee2a5f`, `59fbb1ea`, `9fdb4b4c`, `72dda694`, `f1ebc862`, `5b6d4d0f`, `b9cae13d`, `e53ef62c`, `5c606ef4` (20+ sessions)
+- **Effort:** LOW | **Impact:** HIGH
+- **Evidence:** The exact phrase "Please read @CLAUDE.md and familiarize yourself with all other markdown files in the current folder. Let me know when you are ready to continue working on this project." appeared as the opening message in 20+ of 30 substantial sessions (~67%). Each occurrence costs 2-4 turns and 5-15 tool calls of boilerplate (glob for markdown files, read CLAUDE.md, read README, produce summary). Estimated total: 60-100 turns across the dataset.
+- **What it would do:** Read CLAUDE.md, README.md, check `git status` + `git log --oneline -5`, run `bd ready`, report project state in one structured response.
+- **Trigger phrases:** "onboard", "familiarize yourself", "ready to continue", "let me know when you are ready"
+- **Skeleton:**
+  ```yaml
+  ---
+  name: onboard
+  description: >
+    Triggers on "onboard", "familiarize yourself", "ready to continue".
+    Reads project files, checks git status, runs bd ready, reports state.
+  ---
+  ```
+- **Concerns:** SessionStart hook partially overlaps. This formalizes the remaining manual steps.
 
 **What to include in each suggestion:**
 - Session IDs where the pattern appeared — with dates and quoted user messages
