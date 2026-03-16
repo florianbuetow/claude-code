@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 1.4.0
+version: 1.5.0
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
@@ -349,6 +349,31 @@ fixed fields per block.**
 Do not dump raw subagent prose into the main body. Synthesize findings into a fixed
 structure, then move detailed evidence into a numbered appendix.
 
+Before you draft any section of the report, build a **canonical recommendation set**
+from the merged findings. This is the source of truth for BOTH the saved markdown
+report and the immediate user-facing explanation after the file is written.
+
+Each recommendation in this canonical set must include:
+- `Action`
+- `Effort`
+- `Impact`
+- `Status` (`new` or `recurring`)
+- `Problem addressed`
+- `Why it matters`
+- `Expected outcome`
+- `Target artifact`
+- `Exact content to apply`
+- `Verification`
+- `Evidence refs`
+
+Rules:
+- Every recommendation that appears in the report must come from this canonical set.
+- The user-facing explanation after writing the report must explain the same
+  recommendations in the same priority order.
+- Do not invent new recommendations in the post-write explanation.
+- If the recommendations are clear in chat but hard to see in the report, the report
+  structure is wrong and must be fixed before writing.
+
 #### Required Output Order (fixed)
 
 1. **Recommendations Table (FIRST section in the report)**
@@ -380,7 +405,8 @@ After the table, include one block per recommendation in strict field order:
 `Effort:`  
 `Impact:`  
 `Status:` (`new` or `recurring`)  
-`Why now:` (1-2 sentences, no long evidence dump)  
+`Problem addressed:` (1-2 sentences)  
+`Why it matters:` (1-3 sentences, quantify when possible)  
 `Expected outcome:`  
 `Evidence refs:` (`E01`, `E07`, etc.; no inline quote walls)
 
@@ -438,6 +464,32 @@ Save the merged report to `docs/retrospective/YYYY-MM-DD-v1.md`. Increment the
 version number if a file for today already exists. This is the authoritative record
 for the feedback loop — future retrospectives read these files.
 
+### 11. Explain Recommendations to the User
+
+After writing the report, immediately explain the recommendations to the user using
+the same canonical recommendation set from step 9. This explanation is mandatory.
+Do not merely say "report written" and do not defer explanation to the markdown file.
+
+Required structure for the user-facing explanation:
+1. A very short headline summary (2-4 bullets max): completion rate, overall score,
+   wasted-turn estimate, number of recommendations.
+2. A numbered recommendation walkthrough in priority order.
+3. Only after the walkthrough, offer implementation.
+
+For each recommendation in the walkthrough, include:
+- the recommendation name/action
+- what problem it addresses
+- why it matters (with quantified impact/cost when available)
+- how the proposed fix changes the workflow
+
+Rules:
+- Explain **every** recommendation unless the user explicitly asked for only the top N.
+- Do not tell the user to open or read the file instead of explaining it.
+- Do not reduce the explanation to only the top 3 when 10 recommendations were produced.
+- Do not ask "Want me to implement any of these now?" until after the full walkthrough.
+- The wording may be simpler than the report, but the recommendation ordering and core
+  claims must match the canonical recommendation set.
+
 ## Pragmatism Guidelines
 
 These are guidelines, not laws. Apply judgment:
@@ -465,6 +517,9 @@ These are guidelines, not laws. Apply judgment:
   benefit from human judgment each time.
 - **Suggest concrete artifacts.** Don't say "create a skill for X" — sketch the
   skill's YAML frontmatter and purpose. Don't say "add a hook" — show the hook config.
+- **Keep the report and the explanation in sync.** The markdown file is the durable
+  artifact, but the immediate user reply is the first thing the user reads. They must
+  tell the same recommendation story in the same order.
 
 ## Example Interaction
 
@@ -478,6 +533,9 @@ These are guidelines, not laws. Apply judgment:
    findings with paragraph-level evidence and quoted session content
 4. For each pattern, asks "why" — root causes, connects strengths to weaknesses
 5. Launches feedback subagent to compare against previous retrospective
-6. **Builds a recommendation-first report with fixed blocks** — recommendations
-   and copy-paste implementation first, numbered evidence appendix last
+6. Builds a canonical recommendation set, then **builds a recommendation-first
+   report with fixed blocks** — recommendations and copy-paste implementation first,
+   numbered evidence appendix last
 7. Writes the report to docs/retrospective/YYYY-MM-DD-v1.md
+8. Explains the same recommendations back to the user in a numbered walkthrough,
+   so the report and the user-facing summary stay aligned
