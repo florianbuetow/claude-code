@@ -138,42 +138,46 @@ Follow the table with summary statistics:
 
 For each session (above the minimum size threshold), provide a detail block:
 
-```
-#### Session [N]: `[session-id]`
-- **Lines:** [N] | **Modified:** [date time] | **Turns:** [N]
-- **Topic:** [one-phrase topic summary]
-- **Status:** [Completed / Prematurely terminated / User-initiated exit]
-- **Evidence:** [Paragraph explaining HOW the status was determined. Quote specific
-  messages, tool calls, or user actions. For completed sessions, quote the completion
-  marker. For premature terminations, describe what was in progress when the session
-  ended. For user-initiated exits, describe the user's decision.]
-- **Notable patterns:** [Any patterns relevant to the 5 dimension analysis — efficient
-  completion, correction spirals, frustration signals, skill usage, etc. This field
-  connects the inventory to the pattern analysis that follows.]
-```
+#### Session 1: `a1b2c3d4-5678-90ab-cdef-1234567890ab`
+- **Lines:** 619 | **Modified:** 2026-03-08 23:34 | **Turns:** 18
+- **Topic:** Rename preprocess script, fix glob patterns for IDs with brackets
+- **Status:** Prematurely terminated
+- **Evidence:** The very last message is an assistant `TOOL_USE: Bash` call to `ls -la .../data/input/iL3uDrk-i_E/` to "Verify bundle contents". The command was issued but never received a result. The assistant had just said "Bundle created successfully. Let me verify the contents." and the session ended before the verification completed.
+- **Notable patterns:** Script ran successfully but verification was cut off. Near-complete session — only the final check was lost.
 
-**Evidence depth:** The Evidence field must be a full paragraph, not a phrase.
-It should quote actual messages from the session and explain the reasoning behind
-the classification. See ANALYSIS.md for the expected level of detail — each session
-entry has 2-5 sentences of specific evidence.
+#### Session 2: `e5f6a7b8-1234-56cd-ef78-abcdef012345`
+- **Lines:** 83 | **Modified:** 2026-02-07 15:08 | **Turns:** 4
+- **Topic:** Commit all changes as a series of small grouped commits
+- **Status:** Completed
+- **Evidence:** The assistant's last message is a summary table of 11 commits created, stating "All done." This is a clear completion with no pending work.
+- **Notable patterns:** Efficient commit session — 4 turns, zero corrections. Good example of scoped imperative request.
+
+#### Session 3: `c9d0e1f2-3456-78ab-cdef-567890abcdef`
+- **Lines:** 110 | **Modified:** 2026-02-07 01:25 | **Turns:** 6
+- **Topic:** Check how cleaned transcripts are stored (SRT vs text), plan to add .txt conversion
+- **Status:** User-initiated exit
+- **Evidence:** The assistant completed a plan and called `ExitPlanMode`, but the user rejected it ("The user doesn't want to proceed with this tool use"). This is a deliberate user choice to not proceed, not a premature termination. The plan was written to a file and the session ended after the rejection.
+- **Notable patterns:** Plan completed successfully — user chose to defer execution to a future session.
+
+Each entry must follow this exact format. The Evidence field is a full paragraph (2-5 sentences) that quotes specific messages, tool calls, or user actions — never a one-liner summary.
 
 ### Sessions Requiring Attention
 
 After the per-session details, highlight sessions that need follow-up:
 
+**3 sessions were prematurely terminated:**
+
+1. **`a1b2c3d4`** (2026-03-08) — The assistant was verifying the output of a script it had just fixed and run. The `ls` command to verify bundle contents was issued but the result never came back. The work was nearly done (script ran successfully) but the verification step was cut off.
+
+2. **`f3e4d5c6`** (2026-02-07) — The user explicitly interrupted the assistant mid-edit with `[Request interrupted by user for tool use]`. The assistant was editing `generate-config.py` to fix how `optional_angle` is handled. The edit was rejected and the session ended with this fix unfinished.
+
+**Resume commands:**
+```bash
+claude --resume a1b2c3d4-5678-90ab-cdef-1234567890ab
+claude --resume f3e4d5c6-7890-12ab-cdef-abcdef345678
 ```
-### Prematurely Terminated Sessions
 
-[For each prematurely terminated session, provide:]
-- A 1-2 paragraph summary of what was happening when the session ended
-- What work remains unfinished
-- Resume command: `claude --resume [session-id]`
-
-### Sessions with Unresolved Work
-
-[Sessions that completed but mentioned TODOs, follow-up items, or deferred work.
-These are not failures — they're context for the next session.]
-```
+**Note:** 3 sessions ended with the user rejecting `ExitPlanMode`. These are classified as normal terminations (user-initiated exits) since the user made a deliberate choice to stop. The plans remain saved in files for future use.
 
 ## How This Connects to Pattern Analysis
 

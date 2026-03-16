@@ -241,37 +241,13 @@ assessment — not a metric bullet list.
 
 **Expected depth per finding:**
 
-**1. Premature Implementation** (HIGH frequency, HIGH cost, LOW fix effort)
-
-**Evidence:** In session `abc123` (2026-03-01, 890 lines), the assistant began
-editing `database.py` at turn 3, before reading the error output or the test
-file that was failing. The user corrected at turn 5: "Read the test output
-first." The assistant then read the output but still misidentified the root
-cause, leading to 2 more corrections. Total wasted turns: 6.
-
-This antipattern appeared in 4 sessions (`abc123`, `def456`, `ghi789`, `jkl012`)
-with a consistent signature: Edit/Write tool calls appearing before Read/Grep
-calls for the relevant context. The average correction cost was 5 turns per
-occurrence, totaling approximately 20 wasted turns across the analysis period.
-
-**Root cause:** The assistant's bias toward action over understanding. In all
-4 sessions, the user's request was specific enough to execute, but the existing
-code had constraints that weren't obvious from the request alone. A Read-first
-approach would have caught these.
-
-**Structural fix:**
-- CLAUDE.md addition: "Always read the file you're about to edit and its test
-  file before making changes. For debugging tasks, read error output before
-  proposing fixes."
-- This is LOW effort (one CLAUDE.md line) with HIGH impact (addresses the
-  most frequent antipattern).
-
-**Severity:**
-- **Frequency:** 4 out of [N] sessions (most common antipattern)
-- **Cost:** ~20 turns total (~5 per occurrence)
-- **Fixability:** LOW effort — one CLAUDE.md instruction
-
----
+### Over-Asking / Unnecessary Confirmation
+- **Sessions:** `9fdb4b4c`, `870ef05c`, `ba6c3984`, `80afdd3b`
+- **Frequency:** 4+ sessions | **Cost:** ~30+ turns | **Fix effort:** LOW
+- **Evidence:** Session `9fdb4b4c` (2026-03-02, 912 lines) had 16 `AskUserQuestion` tool calls — far more than any other session. The user explicitly corrected this at turn 219: "please don't ask me what to update. Please read the readme and determine yourself what needs to be updated." In session `870ef05c` (2026-02-15, 360 lines), the assistant asked "Want me to delete the feature branch?" then 4 turns later re-asked the same question. The user responded: "i am waiting." In session `ba6c3984`, the assistant asked "Want me to remove them?" after the user had already said "if so fucking revert that" — a redundant confirmation that amplified frustration. Across the full dataset: 111 occurrences of "shall I" / "should I" / "want me to" / "would you like" across 40 session files.
+- **Root cause:** The assistant defaults to asking rather than inspecting and acting. The user's interaction style is to give high-level direction and expect autonomous execution. When the user says "update the README", they expect Claude to read it, determine what's stale, fix it, and report — not ask "what specifically should I update?"
+- **Structural fix:** CLAUDE.md addition: "For general directives ('update the README', 'fix the tests'), inspect the current state, determine what needs changing, execute, and report what you did. Do not ask 'what specifically?' — figure it out. Only ask clarifying questions when there are genuinely ambiguous choices with different tradeoffs."
+- **Severity:** HIGH frequency (4+ sessions), HIGH cost (~30+ turns), LOW fix effort (one CLAUDE.md directive).
 
 **What to include in each finding:**
 - Session IDs with dates — traceable to the inventory

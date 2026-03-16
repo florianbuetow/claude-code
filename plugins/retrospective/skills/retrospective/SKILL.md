@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 1.1.0
+version: 1.2.0
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
@@ -310,201 +310,74 @@ analysis script (e.g., `/tmp/retro-feedback.sh`) following the single-script app
 
 If no previous retrospective reports exist, skip this step.
 
-### 9. Produce Findings
+### 9. Merge Results Into Report
 
-Present findings in this structure. **Every finding must include paragraph-level
-evidence with quoted session content. Do not compress findings into one-liner bullets.**
+**CRITICAL: The report is a merger of all subagent outputs. Do not summarize,
+compress, rewrite, or cherry-pick. Every per-session detail block, every finding
+paragraph, every piece of evidence produced by subagents goes into the report
+verbatim.**
+
+The subagents already did the analysis. This step is assembly, not interpretation.
+Read the complete output from each subagent and copy it into the report sections
+below. The only new work you do here is: organize outputs under section headings,
+add the dimension scorecard (from step 7), and select the top 3 recommendations.
 
 #### Session Inventory
 
-Include the full session inventory from step 4 as the first section of the report.
-This is the foundation — the reader's map of all sessions analyzed.
+Copy the COMPLETE output from the inventory subagent (step 4) verbatim: the
+summary table, the summary statistics, AND every per-session detail block with
+its evidence paragraph. Then the "Sessions Requiring Attention" section with
+resume commands. If the inventory produced 200 lines, the report contains 200
+lines. Nothing omitted, nothing rewritten.
 
 #### What Went Well
 
-Report all significant success patterns with paragraph-level evidence:
-
-- **[Pattern name]**
-
-  [1-2 sentence summary of the pattern.]
-
-  **Evidence:** In session `[session-id]` ([date], [N] lines), the user asked to
-  "[quoted request]." The assistant [describe what happened — tools used, approach
-  taken, corrections needed or not]. The user responded "[quoted response]."
-  Total: [N] turns from request to completion.
-
-  This pattern also appeared in sessions `[id1]` and `[id2]`, where [describe the
-  commonality that makes this a pattern, not an anecdote].
-
-  **Why this works:** [Root cause analysis — what about this interaction style
-  produces efficiency. Reference the "Generate Insights" analysis from step 6.]
-
-  **Applicable to:** [Which failure patterns this strength could address, with
-  specific reference to the "What Didn't Go Well" findings.]
+Copy all findings from the success patterns subagent verbatim. Each finding
+should follow the format defined in `references/success-patterns.md` — see the
+"What to Highlight in the Report" section for the expected structure and depth.
 
 #### What Didn't Go Well
 
-Report all significant failure patterns with paragraph-level evidence and root
-cause analysis:
-
-- **[Problem name]**
-
-  [1-2 sentence summary of the problem.]
-
-  **Evidence:** In session `[session-id]` ([date], [N] lines), the user asked to
-  "[quoted request]." The assistant [describe what went wrong — wrong approach,
-  misunderstanding, tool failures]. The user corrected with "[quoted correction]"
-  but the assistant [describe what happened next]. This cost [N] turns before
-  [resolution or abandonment].
-
-  This pattern also appeared in sessions `[id1]` and `[id2]`, where [describe
-  the commonality].
-
-  **Root cause:** [Why this pattern exists — missing skill, bad habit,
-  architectural constraint, tooling gap, communication mismatch. From step 6.]
-
-  **Strength to apply:** [Which success pattern could address this — connecting
-  strengths to weaknesses. If no applicable strength, say so.]
-
-  **Severity:** Appeared in [N] sessions, costing approximately [N] turns total.
+Copy all findings from the failure patterns and antipatterns subagents verbatim.
+Each finding should follow the format defined in `references/failure-patterns.md`
+and `references/collaboration-antipatterns.md` — see the "How to Present" sections
+for the expected structure and depth.
 
 #### Improvement Suggestions
 
-##### Summary
-
-| # | Type | Suggestion | Effort | Impact |
-|---|------|------------|--------|--------|
-| 1 | Skill | Create /deploy skill | LOW | HIGH |
-| 2 | Hook | Add post-edit type checking | LOW | MEDIUM |
-| ... | | | | |
-
-**Type** categories:
-- **Skill**: A new slash command / skill to create
-- **Subagent**: A custom subagent definition to create
-- **Hook**: A Claude Code hook to add
-- **Plugin**: An existing plugin to install or configure
-- **Workflow**: A process change (not tooling)
-- **Config**: A CLAUDE.md / AGENTS.md / settings change
-
-**Effort** ratings:
-- **LOW**: < 30 minutes, write a skill file or config change
-- **MEDIUM**: 1–4 hours, requires designing and testing
-- **HIGH**: Half-day+, requires significant new tooling
-
-**Impact** ratings:
-- **LOW**: Minor convenience improvement
-- **MEDIUM**: Saves noticeable time on recurring tasks
-- **HIGH**: Transforms a painful workflow into an efficient one
-
-##### Details
-
-For each suggestion in the summary table, provide a full evidence block:
-
-**1. [Suggestion name]** ([Type] — [Effort] effort, [Impact] impact)
-
-**Evidence:** [Paragraph-level description of the session patterns that justify this
-suggestion. Include session IDs, quoted user messages, turn counts, and the total
-cost of not having this automation. Reference the session inventory entries.]
-
-**What it would do:**
-[Numbered list of steps the skill/hook/subagent would perform]
-
-**Skeleton:** [For skills: YAML frontmatter. For hooks: JSON config. For CLAUDE.md
-changes: the exact text to add.]
-
-**Concerns:** [If any — "Not measurable from logs", "Requires habit change",
-"Not controllable". Leave blank if none.]
-
----
+Merge findings from the skill opportunities and workflow optimization subagents.
+Each suggestion should follow the format defined in `references/skill-opportunities.md`
+and `references/workflow-optimization.md` — see the "How to Present" sections for
+the expected structure and depth.
 
 #### Action Tracking
 
-If previous retrospective reports exist, include this section:
-
-**Previous retrospective actions reviewed:** [N] items from [dates of previous reports]
-
-✅ **Resolved (no longer flagged):**
-- [Action from previous retro] — Evidence: [how we know it was addressed]
-
-🔄 **Recurring (still appearing):**
-- [Action from previous retro] — Still observed: [current evidence]
-
-❓ **Unknown (could not verify):**
-- [Action from previous retro] — [why verification was not possible]
-
-**Action completion rate**: [X of Y] previous recommendations addressed ([percentage]%)
-
-*Research on ~2,000 Scrum teams found that tracking whether retrospective actions were
-implemented is itself a key predictor of team effectiveness. Recurring items deserve
-escalated attention — if an issue survived multiple retrospectives, it either needs a
-different approach or needs to be accepted as a known limitation.*
+Copy from the feedback loop subagent (step 8). Shows which previous retrospective
+recommendations were resolved, recurring, or unknown. Include action completion
+rate percentage.
 
 #### Dimension Scorecard
 
-| Dimension                  | Score | Label |
-|----------------------------|-------|-------|
-| What Went Well             | 4/5   | Good  |
-| What Didn't Go Well        | 2/5   | Fair  |
-| Skill Opportunities        | 3/5   | Okay  |
-| Workflow Optimization       | 2/5   | Fair  |
-| Collaboration Antipatterns | 3/5   | Okay  |
+The scores from step 7, presented as a table.
 
 #### Top 3 Recommendations
 
-These are the highest-impact, lowest-effort suggestions with the fewest concerns.
+Select the 3 highest-impact, lowest-effort suggestions from the merged findings.
+For each: What to change, Why (with session IDs and quoted evidence), Root cause
+it addresses, First step (concrete artifact the developer can implement in under
+5 minutes — actual file content, hook config JSON, or CLAUDE.md text).
 
-**Recommendation 1: [Name]**
+#### Summary
 
-**What:** [What to create or change — be specific about the artifact]
-
-**Why:** [Why it matters — reference specific session evidence, with session IDs
-and quoted content. This is not a generic justification; it's grounded in the
-data from this retrospective.]
-
-**Root cause it addresses:** [Which failure pattern or antipattern from this
-retrospective, and the root cause identified in step 6]
-
-**First step:** [Concrete action — not "create a skill" but the actual file
-content, hook config JSON, or CLAUDE.md addition. Show enough that the developer
-could implement it in under 5 minutes.]
-
----
-
-**Recommendation 2: [Name]**
-[... same structure ...]
-
----
-
-**Recommendation 3: [Name]**
-[... same structure ...]
+One paragraph on overall collaboration health — biggest theme, single highest-impact
+change, and what should stay the same. If the feedback loop found recurring issues,
+call out the most persistent one and suggest a different approach.
 
 ### 10. Write Report to Persistence Store
 
-Save the full retrospective report to `docs/retrospective/`. The filename format is:
-
-```
-docs/retrospective/YYYY-MM-DD-v1.md
-```
-
-Where:
-- `YYYY-MM-DD` is the current date
-- `v1` is the version number, incremented if a retrospective already exists for today
-  (v2, v3, etc.)
-
-**Before writing**, check if a file for today's date already exists. If so, increment
-the version number.
-
-The saved report is the authoritative record for the feedback loop. Future
-retrospectives will read these files to track action completion.
-
-### 11. Summary
-
-One paragraph on the overall health of the developer-AI collaboration — what's the
-biggest theme, what single change would have the most impact, and what should stay the
-same.
-
-If the feedback loop found recurring issues from previous retrospectives, call out
-the most persistent one and suggest a different approach to addressing it.
+Save the merged report to `docs/retrospective/YYYY-MM-DD-v1.md`. Increment the
+version number if a file for today already exists. This is the authoritative record
+for the feedback loop — future retrospectives read these files.
 
 ## Pragmatism Guidelines
 
@@ -539,22 +412,14 @@ These are guidelines, not laws. Apply judgment:
 **User**: `retrospective`
 
 **Claude**:
-1. Reads all six reference files (including session-inventory.md) and loads
-   previous retrospective reports from docs/retrospective/
-2. Launches inventory subagent — catalogs every session from the last 3 months,
-   classifies completion status, produces per-session detail blocks. Writes
-   inventory to `/tmp/retro-inventory-output.md`.
-3. Launches 5 dimension subagents in parallel — each receives the session
-   inventory as input context, reads its dimension reference file, writes an
-   analysis script, and returns all significant findings with paragraph-level
-   evidence and quoted session content.
-4. Collects results from all 5 subagents
-5. For each pattern, asks "why" — identifies root causes and connects strengths
-   to weaknesses
-6. Launches a feedback subagent to compare current findings against previous
-   retrospective recommendations, verifying which were acted on
-7. Produces the full report: session inventory, per-dimension findings (with
-   paragraph-level evidence), improvement suggestions (with detailed evidence
-   blocks), action tracking, dimension scorecard, and top 3 recommendations
-   with concrete first steps
-8. Writes the report to docs/retrospective/YYYY-MM-DD-v1.md
+1. Reads all six reference files and loads previous retrospective reports
+2. Launches inventory subagent — catalogs every session, classifies completion
+   status, produces per-session detail blocks with evidence paragraphs
+3. Launches 5 dimension subagents in parallel — each produces comprehensive
+   findings with paragraph-level evidence and quoted session content
+4. For each pattern, asks "why" — root causes, connects strengths to weaknesses
+5. Launches feedback subagent to compare against previous retrospective
+6. **Merges all subagent outputs verbatim into the final report** — every
+   per-session detail block, every finding, every evidence paragraph. No
+   compression, no summarization. The report is the union of all subagent work.
+7. Writes the report to docs/retrospective/YYYY-MM-DD-v1.md
