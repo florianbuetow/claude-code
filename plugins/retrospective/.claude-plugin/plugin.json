@@ -1,6 +1,6 @@
 {
   "name": "retrospective",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Analyze Claude Code session logs to identify what went well, what didn't, and how to improve developer-AI collaboration. Suggests new skills, subagents, slash commands, hooks, and workflow optimizations based on actual usage patterns.",
   "author": {
     "name": "Florian Buetow",
