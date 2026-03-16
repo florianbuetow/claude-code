@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 1.3.2
+version: 1.4.0
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
@@ -64,26 +64,36 @@ confirmation fatigue — the exact antipattern this skill detects. The fix: each
 creates one script and only ever runs that script. When the agent
 needs different data, it edits the script and re-runs it.
 
+### Session directory
+
+Each retrospective run writes all scripts and intermediate output to a **session-scoped
+directory** to avoid write conflicts when multiple agents run in parallel:
+
+`/tmp/retro-$$` (where `$$` is the shell PID of the main context)
+
+The main context must create this directory (`mkdir -p /tmp/retro-$$`) before launching
+any subagents, and pass the path to every subagent in its prompt.
+
 ### How every agent must work
 
 1. **Write** a shell script using the Write tool (no approval needed):
-   `/tmp/retro-<agent-name>.sh`
-2. **Run it:** `bash /tmp/retro-<agent-name>.sh` (one approval)
+   `/tmp/retro-$$/<agent-name>.sh`
+2. **Run it:** `bash /tmp/retro-$$/<agent-name>.sh` (one approval)
 3. **Need different data?** Edit the script with the Edit tool (no approval), then
-   re-run `bash /tmp/retro-<agent-name>.sh` (one approval). Never create a new Bash call.
+   re-run `bash /tmp/retro-$$/<agent-name>.sh` (one approval). Never create a new Bash call.
 
 ### Script assignments (one per agent, no sharing)
 
 | Agent | Script path |
 |-------|------------|
-| Main context (step 1) | `/tmp/retro-analyze.sh` |
-| Inventory subagent (step 4) | `/tmp/retro-inventory.sh` |
-| Dimension 1 subagent (step 5) | `/tmp/retro-dim1.sh` |
-| Dimension 2 subagent (step 5) | `/tmp/retro-dim2.sh` |
-| Dimension 3 subagent (step 5) | `/tmp/retro-dim3.sh` |
-| Dimension 4 subagent (step 5) | `/tmp/retro-dim4.sh` |
-| Dimension 5 subagent (step 5) | `/tmp/retro-dim5.sh` |
-| Feedback loop subagent (step 8) | `/tmp/retro-feedback.sh` |
+| Main context (step 1) | `/tmp/retro-$$/analyze.sh` |
+| Inventory subagent (step 4) | `/tmp/retro-$$/inventory.sh` |
+| Success patterns subagent (step 5) | `/tmp/retro-$$/success-patterns.sh` |
+| Failure patterns subagent (step 5) | `/tmp/retro-$$/failure-patterns.sh` |
+| Skill opportunities subagent (step 5) | `/tmp/retro-$$/skill-opportunities.sh` |
+| Workflow optimization subagent (step 5) | `/tmp/retro-$$/workflow-optimization.sh` |
+| Collaboration antipatterns subagent (step 5) | `/tmp/retro-$$/collaboration-antipatterns.sh` |
+| Feedback loop subagent (step 8) | `/tmp/retro-$$/feedback.sh` |
 
 ### What goes in the script
 
@@ -116,7 +126,7 @@ timestamp — include every file modified within the last 90 days. Each line in 
 is a JSON object representing one event.
 
 **Use the single-script approach** (see "Execution Principle" above). Write the
-analysis script to `/tmp/retro-analyze.sh`, execute it once, then edit and re-run it
+analysis script to `/tmp/retro-$$/analyze.sh`, execute it once, then edit and re-run it
 as needed to drill into specific patterns. Do not read log files one at a time.
 
 **Key event types to extract:**
@@ -179,13 +189,13 @@ classification heuristics, and output format.
 
 The inventory subagent must:
 1. Read `references/session-inventory.md` for methodology and output format.
-2. Write `/tmp/retro-inventory.sh` using the Write tool. This script handles ALL
+2. Write `/tmp/retro-$$/inventory.sh` using the Write tool. This script handles ALL
    data extraction: file discovery, JSONL
    parsing, metadata extraction, topic detection, status classification.
-3. Run `bash /tmp/retro-inventory.sh` (one Bash approval). Analyze the output.
+3. Run `bash /tmp/retro-$$/inventory.sh` (one Bash approval). Analyze the output.
 4. Need different data? Edit the script with the Edit tool, re-run it. Never run
    raw grep/find/jq/cat as separate Bash calls — everything goes in the script.
-5. Write the structured inventory output to `/tmp/retro-inventory-output.md`.
+5. Write the structured inventory output to `/tmp/retro-$$/inventory-output.md`.
 6. Never ask the user to run shell commands manually. If this appears in output,
    discard and re-run the subagent.
 
@@ -206,20 +216,20 @@ For a full retrospective, launch 5 subagents in parallel:
 
 | Subagent | Dimension | Reference File | Script Path |
 |----------|-----------|----------------|-------------|
-| 1 | What Went Well | `references/success-patterns.md` | `/tmp/retro-dim1.sh` |
-| 2 | What Didn't Go Well | `references/failure-patterns.md` | `/tmp/retro-dim2.sh` |
-| 3 | Skill Opportunities | `references/skill-opportunities.md` | `/tmp/retro-dim3.sh` |
-| 4 | Workflow Optimization | `references/workflow-optimization.md` | `/tmp/retro-dim4.sh` |
-| 5 | Collaboration Antipatterns | `references/collaboration-antipatterns.md` | `/tmp/retro-dim5.sh` |
+| 1 | What Went Well | `references/success-patterns.md` | `/tmp/retro-$$/success-patterns.sh` |
+| 2 | What Didn't Go Well | `references/failure-patterns.md` | `/tmp/retro-$$/failure-patterns.sh` |
+| 3 | Skill Opportunities | `references/skill-opportunities.md` | `/tmp/retro-$$/skill-opportunities.sh` |
+| 4 | Workflow Optimization | `references/workflow-optimization.md` | `/tmp/retro-$$/workflow-optimization.sh` |
+| 5 | Collaboration Antipatterns | `references/collaboration-antipatterns.md` | `/tmp/retro-$$/collaboration-antipatterns.sh` |
 
 **Each subagent must follow the script-only rule:**
 1. Read its assigned reference file for detection heuristics and pattern catalogs.
-2. Read the session inventory from `/tmp/retro-inventory-output.md` (produced in step 4)
+2. Read the session inventory from `/tmp/retro-$$/inventory-output.md` (produced in step 4)
    to understand the full session landscape and reference specific sessions by ID.
-3. Write its dedicated script (e.g., `/tmp/retro-dim1.sh`) using the Write tool. The
-   script must contain ALL
+3. Write its dedicated script (e.g., `/tmp/retro-$$/success-patterns.sh`) using the Write
+   tool. The script must contain ALL
    grep, find, jq, cat, rg, awk, wc, and sort operations — no raw Bash calls allowed.
-4. Run `bash /tmp/retro-dim1.sh` (one Bash approval). Analyze the output.
+4. Run `bash /tmp/retro-$$/success-patterns.sh` (one Bash approval). Analyze the output.
 5. Need different data? Edit the script with the Edit tool, re-run it. Repeat as needed.
    The agent may ONLY call Bash to run its own script — never for individual commands.
 6. Return all significant findings, each backed by paragraph-level evidence with quoted
@@ -305,8 +315,8 @@ For each dimension analyzed, assign a score from 1–5:
 ### 8. Feedback Loop — Compare Against Previous Retrospectives
 
 **Launch a subagent** to perform this comparison. The subagent MUST follow the
-script-only rule: write `/tmp/retro-feedback.sh` using the Write tool, run
-`bash /tmp/retro-feedback.sh` (one Bash approval), edit and re-run as needed. No raw
+script-only rule: write `/tmp/retro-$$/feedback.sh` using the Write tool, run
+`bash /tmp/retro-$$/feedback.sh` (one Bash approval), edit and re-run as needed. No raw
 Bash calls — all grep/find/jq/cat operations go in the script. The subagent should:
 
 1. Read the current analysis (from steps 5-7).
