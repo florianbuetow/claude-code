@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 2.0.0
+version: 1.1.0
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
