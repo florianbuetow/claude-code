@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 1.2.0
+version: 1.3.0
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
@@ -312,66 +312,95 @@ If no previous retrospective reports exist, skip this step.
 
 ### 9. Merge Results Into Report
 
-**CRITICAL: The report is a merger of all subagent outputs. Do not summarize,
-compress, rewrite, or cherry-pick. Every per-session detail block, every finding
-paragraph, every piece of evidence produced by subagents goes into the report
-verbatim.**
+**CRITICAL: Keep the analysis methodology unchanged, but change the presentation.
+The final report must be recommendation-first, scannable in 30 seconds, and use
+fixed fields per block.**
 
-The subagents already did the analysis. This step is assembly, not interpretation.
-Read the complete output from each subagent and copy it into the report sections
-below. The only new work you do here is: organize outputs under section headings,
-add the dimension scorecard (from step 7), and select the top 3 recommendations.
+Do not dump raw subagent prose into the main body. Synthesize findings into a fixed
+structure, then move detailed evidence into a numbered appendix.
 
-#### Session Inventory
+#### Required Output Order (fixed)
 
-Copy the COMPLETE output from the inventory subagent (step 4) verbatim: the
-summary table, the summary statistics, AND every per-session detail block with
-its evidence paragraph. Then the "Sessions Requiring Attention" section with
-resume commands. If the inventory produced 200 lines, the report contains 200
-lines. Nothing omitted, nothing rewritten.
+1. **Recommendations Table (FIRST section in the report)**
+2. **Recommendation Blocks (numbered, fixed fields)**
+3. **Concrete Implementation (copy-paste artifacts)**
+4. **Action Tracking (resolved/recurring/unknown from step 8)**
+5. **Dimension Scorecard (from step 7)**
+6. **Summary (short)**
+7. **Evidence Appendix (numbered, after recommendations)**
 
-#### What Went Well
+#### Recommendations Table (FIRST)
 
-Copy all findings from the success patterns subagent verbatim. Each finding
-should follow the format defined in `references/success-patterns.md` — see the
-"What to Highlight in the Report" section for the expected structure and depth.
+Start the report with a table:
 
-#### What Didn't Go Well
+`| # | Action | Effort | Impact | Status | Evidence Ref(s) |`
 
-Copy all findings from the failure patterns and antipatterns subagents verbatim.
-Each finding should follow the format defined in `references/failure-patterns.md`
-and `references/collaboration-antipatterns.md` — see the "How to Present" sections
-for the expected structure and depth.
+Rules:
+- `Status` must be `new` or `recurring` for every recommendation.
+- Mark `recurring` when step 8 found a materially similar unresolved recommendation.
+- Mark `new` when no prior equivalent recommendation exists.
+- Sort by highest impact, then lowest effort.
 
-#### Improvement Suggestions
+#### Recommendation Blocks (fixed fields)
 
-Merge findings from the skill opportunities and workflow optimization subagents.
-Each suggestion should follow the format defined in `references/skill-opportunities.md`
-and `references/workflow-optimization.md` — see the "How to Present" sections for
-the expected structure and depth.
+After the table, include one block per recommendation in strict field order:
+
+`Recommendation #`  
+`Action:`  
+`Effort:`  
+`Impact:`  
+`Status:` (`new` or `recurring`)  
+`Why now:` (1-2 sentences, no long evidence dump)  
+`Expected outcome:`  
+`Evidence refs:` (`E01`, `E07`, etc.; no inline quote walls)
+
+#### Concrete Implementation (copy-paste)
+
+Provide an implementation block for every recommendation with exact text/config:
+
+`Recommendation #`  
+`Target artifact:` (file path, hook config path, skill file, etc.)  
+`Exact content to apply:` (full markdown/json/yaml/code block ready to copy-paste)  
+`Verification:` (one concrete check command or acceptance condition)
+
+This section must be immediately usable without interpretation.
 
 #### Action Tracking
 
-Copy from the feedback loop subagent (step 8). Shows which previous retrospective
-recommendations were resolved, recurring, or unknown. Include action completion
-rate percentage.
+Use the feedback-loop output from step 8, but keep it concise and structured:
+- Completion rate percentage
+- Resolved items
+- Recurring items
+- Unknown items
 
 #### Dimension Scorecard
 
-The scores from step 7, presented as a table.
+Include the 1-5 scores from step 7 as a table. Keep to one compact table.
 
-#### Top 3 Recommendations
+#### Evidence Appendix (numbered, after recommendations)
 
-Select the 3 highest-impact, lowest-effort suggestions from the merged findings.
-For each: What to change, Why (with session IDs and quoted evidence), Root cause
-it addresses, First step (concrete artifact the developer can implement in under
-5 minutes — actual file content, hook config JSON, or CLAUDE.md text).
+All detailed analysis lives here, after the recommendation sections.
+
+Rules:
+- Assign evidence IDs `E01`, `E02`, ... and reference these IDs from recommendations.
+- Put session inventory details, quotes, long reasoning, and per-dimension findings
+  in this appendix only.
+- Do not repeat full evidence inline in recommendation blocks.
+
+Each appendix entry must use fixed fields:
+
+`Evidence ID:`  
+`Dimension:` (`inventory`, `success`, `failure`, `skill`, `workflow`, `antipattern`, `feedback`)  
+`Sessions:`  
+`Observation:`  
+`Supporting evidence:` (quoted snippets/tool traces)  
+`Root cause:`  
+`Impact/cost:`  
+`Related recommendation(s):` (`#1`, `#3`, etc.)
 
 #### Summary
 
-One paragraph on overall collaboration health — biggest theme, single highest-impact
-change, and what should stay the same. If the feedback loop found recurring issues,
-call out the most persistent one and suggest a different approach.
+One short paragraph: biggest theme, highest-leverage change, and what to preserve.
 
 ### 10. Write Report to Persistence Store
 
@@ -419,7 +448,6 @@ These are guidelines, not laws. Apply judgment:
    findings with paragraph-level evidence and quoted session content
 4. For each pattern, asks "why" — root causes, connects strengths to weaknesses
 5. Launches feedback subagent to compare against previous retrospective
-6. **Merges all subagent outputs verbatim into the final report** — every
-   per-session detail block, every finding, every evidence paragraph. No
-   compression, no summarization. The report is the union of all subagent work.
+6. **Builds a recommendation-first report with fixed blocks** — recommendations
+   and copy-paste implementation first, numbered evidence appendix last
 7. Writes the report to docs/retrospective/YYYY-MM-DD-v1.md

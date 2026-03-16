@@ -111,6 +111,9 @@ For projects with many sessions, scale the detail level:
 
 ## Output Format
 
+The inventory remains detailed, but in the final retrospective it should live in the
+**Evidence Appendix** (after recommendations), not before them.
+
 ### Summary Table
 
 Present all sessions in a summary table, sorted by date (most recent first):
@@ -136,9 +139,11 @@ Follow the table with summary statistics:
 
 ### Per-Session Detail Blocks
 
-For each session (above the minimum size threshold), provide a detail block:
+For each session (above the minimum size threshold), provide a detail block with an
+evidence ID so recommendations can reference it:
 
 #### Session 1: `a1b2c3d4-5678-90ab-cdef-1234567890ab`
+- **Evidence ID:** `E##`
 - **Lines:** 619 | **Modified:** 2026-03-08 23:34 | **Turns:** 18
 - **Topic:** Rename preprocess script, fix glob patterns for IDs with brackets
 - **Status:** Prematurely terminated
@@ -146,6 +151,7 @@ For each session (above the minimum size threshold), provide a detail block:
 - **Notable patterns:** Script ran successfully but verification was cut off. Near-complete session — only the final check was lost.
 
 #### Session 2: `e5f6a7b8-1234-56cd-ef78-abcdef012345`
+- **Evidence ID:** `E##`
 - **Lines:** 83 | **Modified:** 2026-02-07 15:08 | **Turns:** 4
 - **Topic:** Commit all changes as a series of small grouped commits
 - **Status:** Completed
@@ -153,13 +159,16 @@ For each session (above the minimum size threshold), provide a detail block:
 - **Notable patterns:** Efficient commit session — 4 turns, zero corrections. Good example of scoped imperative request.
 
 #### Session 3: `c9d0e1f2-3456-78ab-cdef-567890abcdef`
+- **Evidence ID:** `E##`
 - **Lines:** 110 | **Modified:** 2026-02-07 01:25 | **Turns:** 6
 - **Topic:** Check how cleaned transcripts are stored (SRT vs text), plan to add .txt conversion
 - **Status:** User-initiated exit
 - **Evidence:** The assistant completed a plan and called `ExitPlanMode`, but the user rejected it ("The user doesn't want to proceed with this tool use"). This is a deliberate user choice to not proceed, not a premature termination. The plan was written to a file and the session ended after the rejection.
 - **Notable patterns:** Plan completed successfully — user chose to defer execution to a future session.
 
-Each entry must follow this exact format. The Evidence field is a full paragraph (2-5 sentences) that quotes specific messages, tool calls, or user actions — never a one-liner summary.
+Each entry must follow this exact format. The Evidence field is a full paragraph
+(2-5 sentences) quoting specific messages/tool calls. Keep these details in the
+appendix; recommendation sections should reference these entries by `E##`.
 
 ### Sessions Requiring Attention
 

@@ -236,25 +236,32 @@ by providing incremental corrections when they should say "stop, let's rethink."
 
 ## How to Present Antipattern Findings
 
-For each antipattern detected, provide paragraph-level evidence with severity
-assessment — not a metric bullet list.
+For each antipattern, produce an evidence entry for the **Evidence Appendix** and
+reference it from recommendations by `E##`.
 
-**Expected depth per finding:**
+Do not embed long antipattern narratives in the recommendation sections.
 
-### Over-Asking / Unnecessary Confirmation
+**Appendix block format (fixed fields):**
+
+### [E##] Over-Asking / Unnecessary Confirmation
+- **Evidence ID:** `E##`
+- **Dimension:** `antipattern`
 - **Sessions:** `9fdb4b4c`, `870ef05c`, `ba6c3984`, `80afdd3b`
-- **Frequency:** 4+ sessions | **Cost:** ~30+ turns | **Fix effort:** LOW
-- **Evidence:** Session `9fdb4b4c` (2026-03-02, 912 lines) had 16 `AskUserQuestion` tool calls — far more than any other session. The user explicitly corrected this at turn 219: "please don't ask me what to update. Please read the readme and determine yourself what needs to be updated." In session `870ef05c` (2026-02-15, 360 lines), the assistant asked "Want me to delete the feature branch?" then 4 turns later re-asked the same question. The user responded: "i am waiting." In session `ba6c3984`, the assistant asked "Want me to remove them?" after the user had already said "if so fucking revert that" — a redundant confirmation that amplified frustration. Across the full dataset: 111 occurrences of "shall I" / "should I" / "want me to" / "would you like" across 40 session files.
-- **Root cause:** The assistant defaults to asking rather than inspecting and acting. The user's interaction style is to give high-level direction and expect autonomous execution. When the user says "update the README", they expect Claude to read it, determine what's stale, fix it, and report — not ask "what specifically should I update?"
-- **Structural fix:** CLAUDE.md addition: "For general directives ('update the README', 'fix the tests'), inspect the current state, determine what needs changing, execute, and report what you did. Do not ask 'what specifically?' — figure it out. Only ask clarifying questions when there are genuinely ambiguous choices with different tradeoffs."
-- **Severity:** HIGH frequency (4+ sessions), HIGH cost (~30+ turns), LOW fix effort (one CLAUDE.md directive).
+- **Observation:** Repeated unnecessary confirmation requests.
+- **Supporting evidence:** Quoted user corrections + counts.
+- **Root cause:** Why this antipattern emerged.
+- **Structural fix:** Concrete rule/hook/skill change.
+- **Impact/cost:** Frequency + turn cost.
+- **Related recommendation(s):** `#N`
 
 **What to include in each finding:**
-- Session IDs with dates — traceable to the inventory
-- Quoted messages showing the antipattern in action
-- Turn cost per occurrence and total across sessions
+- Evidence ID (`E##`) for recommendation cross-reference
+- Session IDs with dates — traceable to inventory
+- Quoted messages showing the antipattern
+- Turn cost per occurrence and total
 - Root cause — why this antipattern emerges
-- Structural fix with effort level — concrete, not generic advice
+- Structural fix with effort level
+- Related recommendation number(s)
 - Severity triple: frequency, cost, fixability
 
 **Prioritization:** Order antipatterns by composite score:

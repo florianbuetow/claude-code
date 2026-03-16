@@ -193,26 +193,32 @@ makes retrospective recommendations actually work — otherwise you're treating 
 
 ## How to Present Failure Findings
 
-When reporting failure patterns, provide paragraph-level evidence with root cause
-analysis for each finding. Do not compress into metric bullets.
+Failure findings must be written as numbered evidence entries in the **Evidence
+Appendix** and referenced from recommendations by `E##`.
 
-**Expected depth per finding:**
+Keep recommendation blocks concise; place detailed quote chains only in appendix.
 
-### Incremental Fix Escalation
-- **Lines:** 580 | **Sessions:** `ba6c3984`, `80afdd3b`
-- **Pattern:** Claude defaults to minimum viable fixes at each step instead of the thorough solution, causing frustration escalation.
-- **Evidence:** In session `ba6c3984` (2026-03-05, 580 lines), the user said "dont push docs" but Claude's session-close protocol committed `docs/plans/` files. The escalation chain: user asks "were there ever any documents added from docs plans to git?" — Claude responds "Want me to remove them?" (unnecessary confirmation when user had already said "fucking revert that") — Claude tries `git revert` + `.gitignore` + force-push (partial fix, missed older files) — user: "I STILL SEE documents in docs/plans in the github repository" (ALL CAPS) — Claude uses `git rm --cached` (still in history) — user: "HOW MANY MORE TIMES DO I NEED TO ASK YOU TO ERASE ALL docs/plans/*.* files from git history?" (ALL CAPS, exasperation) — Claude finally uses `git filter-repo` (thorough fix). Cost: 18 assistant responses over ~59 minutes. This also appeared in session `80afdd3b` (2026-03-05, 175 lines) where README ordering inconsistency across 4 sections required 14 assistant responses — each fix revealing another inconsistent section.
-- **Root cause:** Claude defaulted to the minimum viable fix at each step (revert → .gitignore → git rm → filter-repo) instead of going directly to the thorough solution. Asking "Want me to remove them?" after "fucking revert that" amplified frustration.
-- **Strength to apply:** The cautious-but-thorough approach from session `1cde1423` (process cleanup) — investigate fully, present findings, then act once. For git history issues, go straight to `git filter-repo`.
-- **Severity:** 2 sessions, ~32 turns total.
+**Appendix block format (fixed fields):**
+
+### [E##] Incremental Fix Escalation
+- **Evidence ID:** `E##`
+- **Dimension:** `failure`
+- **Sessions:** `ba6c3984`, `80afdd3b`
+- **Observation:** Claude defaulted to minimum viable fixes at each step instead of the thorough solution.
+- **Supporting evidence:** Full correction chain with quoted messages and tool actions.
+- **Root cause:** Why this pattern recurred.
+- **Strength to apply:** Which success pattern can mitigate it.
+- **Impact/cost:** Frequency + turn/time cost.
+- **Related recommendation(s):** `#N`
 
 **What to include in each finding:**
+- Evidence ID (`E##`) for recommendation cross-reference
 - Session ID(s) and dates — traceable to the session inventory
-- Quoted corrections — the user's actual words, showing the correction chain
-- Turn count — how many turns were wasted
-- Root cause — WHY this happened (from the "Generate Insights" step)
+- Quoted corrections showing the correction chain
+- Turn/time cost estimate
+- Root cause — WHY this happened (from step 6)
 - Strength to apply — which success pattern could address this
-- Severity metrics — frequency and total turn cost
+- Related recommendation number(s)
 
 **Quantitative summary** (include at the end of the section):
 - Total correction turns across all sessions analyzed

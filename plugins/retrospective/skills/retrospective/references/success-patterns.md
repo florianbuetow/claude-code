@@ -134,31 +134,38 @@ the "What Went Well" section actionable rather than purely celebratory.
 
 ## What to Highlight in the Report
 
-When reporting success patterns, provide paragraph-level evidence for each finding.
-Do not compress findings into one-liner bullets.
+Success findings should remain detailed, but they belong in the **Evidence Appendix**
+and must be referenced by ID from recommendations.
 
-**Expected depth per finding:**
+Do not place long success-analysis prose before recommendations.
 
-### The Clean Commit-Push Handoff
-- **Lines:** 30 | **Sessions:** `1cbdfd50`, `243c2c70`, `0edfb8fd`
-- **Pattern:** User gives a scoped imperative request, Claude executes in 1-2 turns with zero corrections.
-- **Evidence:** In session `1cbdfd50` (2026-03-13, 30 lines), the user's only message was "please push the new skill, make a git commit of the new skill and push it." The assistant executed `git status` + `git diff --staged --stat` (parallel), `git log --oneline -5`, `git add`, `git commit`, `git push` — 6 tool uses, 2 assistant responses, zero corrections. The same pattern appeared in session `243c2c70` where the user said "commit this" then "yes push it", completing in 3 turns. In session `0edfb8fd` the user said "git push and merge to main" and it completed with "Already done! The merge to main was pushed successfully."
-- **Why this works:** Unambiguous action verbs ("commit", "push") with clear scope. Claude already has context from the current session. No room for interpretation.
-- **Applicable to:** Contrasts with session `ba6c3984` (docs/plans debacle) where the same push operation failed because automated defaults conflicted with an explicit constraint. Structural enforcement (`.gitignore`) prevents recurrence better than conversational instructions.
+**Appendix block format (fixed fields):**
+
+### [E##] The Clean Commit-Push Handoff
+- **Evidence ID:** `E##`
+- **Dimension:** `success`
+- **Sessions:** `1cbdfd50`, `243c2c70`, `0edfb8fd`
+- **Observation:** User gives a scoped imperative request; Claude executes in 1-2 turns with zero corrections.
+- **Supporting evidence:** Quoted user messages and tool-call sequence.
+- **Why this works:** Unambiguous action verbs with clear scope.
+- **Applicable to weakness:** Which failure pattern this strength can mitigate.
+- **Impact/cost:** Time/turn savings estimate.
+- **Related recommendation(s):** `#N`
 
 **What to include in each finding:**
-- Session ID(s) and dates — so the reader can cross-reference the session inventory
-- Quoted user messages — the actual words, not paraphrased
-- Tool call sequences — which tools were used and in what order
-- Turn count — concrete measure of efficiency
-- Positive emotional signals — quote them ("perfect", "exactly", "great")
-- Cross-references to failure patterns this strength could address
+- Evidence ID (`E##`) for cross-reference from recommendations
+- Session ID(s) and dates — cross-referenceable to session inventory
+- Quoted user messages and tool-call sequences
+- Turn count or time saved estimate
+- Positive emotional signals ("perfect", "exactly", "great")
+- Cross-reference to failure pattern(s) this strength could address
+- Related recommendation number(s)
 
 **What NOT to do:**
-- Don't write one-liner bullets like "The auth refactoring was efficient"
-- Don't skip session IDs — every claim must be traceable
+- Don't put long evidence paragraphs in the recommendation sections
+- Don't skip evidence IDs or session IDs
 - Don't report patterns without explaining WHY they work
-- Don't list strengths without connecting them to addressable weaknesses
+- Don't list strengths without linking them to recommendation(s)
 
 ## False Positives to Avoid
 

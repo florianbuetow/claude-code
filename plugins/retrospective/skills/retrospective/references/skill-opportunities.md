@@ -148,46 +148,56 @@ require the developer to remember a new behavior are low-follow-through. When in
 prefer structural enforcement (a skill that asks clarifying questions automatically)
 over behavioral advice (a recommendation to "include more context in requests").
 
-Flag items in the Concerns column of the suggestions table when:
+Flag these in the evidence appendix entry (and mention briefly in `Why now`) when:
 - **Not controllable**: Depends on external factors
 - **Not measurable from logs**: No way to verify from session data
 - **Requires habit change**: Depends on the developer remembering to act differently
 
 ## How to Present Skill Suggestions
 
-For each suggested skill, provide a full evidence block — not a table row.
+Each skill opportunity must produce:
+1. a **recommendation candidate block** for the recommendation-first section, and
+2. a detailed **evidence appendix block** referenced by `E##`.
 
-**Expected depth per suggestion:**
+**Recommendation candidate block (main report, fixed fields):**
+- **Action:** What to build/change
+- **Effort:** LOW/MEDIUM/HIGH
+- **Impact:** LOW/MEDIUM/HIGH
+- **Status:** `new` or `recurring` (from feedback loop comparison)
+- **Expected outcome:** One sentence
+- **Evidence refs:** `E##`
 
-### `/onboard` — Auto-load project context at session start
-- **Sessions:** `ba6c3984`, `a2f8b30a`, `1a21ef9a`, `e136ffee`, `0edfb8fd`, `243c2c70`, `652a1653`, `0dd34bdb`, `db343130`, `cf640a71`, `9d178df0`, `50ee2a5f`, `59fbb1ea`, `9fdb4b4c`, `72dda694`, `f1ebc862`, `5b6d4d0f`, `b9cae13d`, `e53ef62c`, `5c606ef4` (20+ sessions)
-- **Effort:** LOW | **Impact:** HIGH
-- **Evidence:** The exact phrase "Please read @CLAUDE.md and familiarize yourself with all other markdown files in the current folder. Let me know when you are ready to continue working on this project." appeared as the opening message in 20+ of 30 substantial sessions (~67%). Each occurrence costs 2-4 turns and 5-15 tool calls of boilerplate (glob for markdown files, read CLAUDE.md, read README, produce summary). Estimated total: 60-100 turns across the dataset.
-- **What it would do:** Read CLAUDE.md, README.md, check `git status` + `git log --oneline -5`, run `bd ready`, report project state in one structured response.
-- **Trigger phrases:** "onboard", "familiarize yourself", "ready to continue", "let me know when you are ready"
-- **Skeleton:**
-  ```yaml
-  ---
-  name: onboard
-  description: >
-    Triggers on "onboard", "familiarize yourself", "ready to continue".
-    Reads project files, checks git status, runs bd ready, reports state.
-  ---
-  ```
-- **Concerns:** SessionStart hook partially overlaps. This formalizes the remaining manual steps.
+**Concrete implementation block (copy-paste, required):**
+- **Target artifact:** exact file path(s)
+- **Exact content to apply:** full YAML/markdown/json snippet
+- **Verification:** one acceptance check command/condition
+
+**Evidence appendix block (fixed fields):**
+
+### [E##] `/onboard` — Auto-load project context at session start
+- **Evidence ID:** `E##`
+- **Dimension:** `skill`
+- **Sessions:** list of supporting sessions
+- **Observation:** repeated onboarding boilerplate pattern
+- **Supporting evidence:** quoted opening prompts + turn/tool costs
+- **Root cause:** why the manual pattern persists
+- **Impact/cost:** estimated cumulative waste
+- **Related recommendation(s):** `#N`
 
 **What to include in each suggestion:**
-- Session IDs where the pattern appeared — with dates and quoted user messages
-- Turn count for each manual occurrence — showing the concrete cost
-- Total cost of not having the skill — sum of turns across sessions
-- Complete skeleton — YAML frontmatter + description, not just a name
-- Trigger phrases — what the user actually said (from the logs)
-- Concerns — flag controllability, observability, or habit-change issues
+- Recommendation fields: Action, Effort, Impact, Status (`new`/`recurring`)
+- Concrete implementation snippet (copy-paste ready)
+- Evidence ID (`E##`) and related recommendation number
+- Session IDs, dates, quoted user messages
+- Turn cost per occurrence + total cost
+- Complete skeleton (YAML frontmatter + description)
+- Trigger phrases from logs
+- Concerns (controllability/observability/habit-change)
 
 **What NOT to do:**
 - Don't suggest skills based on 1 occurrence — need 2+ sessions minimum
-- Don't provide just a name and description — include the full evidence chain
-- Don't skip the skeleton — it makes the suggestion immediately actionable
+- Don't provide only a name/description without implementation text
+- Don't skip evidence IDs or copy-paste content
 
 ## Existing Plugin Awareness
 
