@@ -1,6 +1,6 @@
 ---
 name: retrospective
-version: 1.3.1
+version: 1.3.2
 description: >
   This skill should be used when the user asks to "run a retrospective", "review my
   sessions", "what went well", "what didn't go well", "how can I improve my workflow",
@@ -61,17 +61,16 @@ cat, rg, or any data extraction directly. Every command goes into the script.**
 
 Each Bash tool call requires user approval. Running dozens of individual commands causes
 confirmation fatigue — the exact antipattern this skill detects. The fix: each agent
-creates one script, makes it executable, and only ever runs that script. When the agent
+creates one script and only ever runs that script. When the agent
 needs different data, it edits the script and re-runs it.
 
 ### How every agent must work
 
 1. **Write** a shell script using the Write tool (no approval needed):
    `/tmp/retro-<agent-name>.sh`
-2. **Make it executable once:** `chmod +x /tmp/retro-<agent-name>.sh` (one approval)
-3. **Run it:** `./tmp/retro-<agent-name>.sh` (one approval)
-4. **Need different data?** Edit the script with the Edit tool (no approval), then
-   re-run `./tmp/retro-<agent-name>.sh` (one approval). Never create a new Bash call.
+2. **Run it:** `bash /tmp/retro-<agent-name>.sh` (one approval)
+3. **Need different data?** Edit the script with the Edit tool (no approval), then
+   re-run `bash /tmp/retro-<agent-name>.sh` (one approval). Never create a new Bash call.
 
 ### Script assignments (one per agent, no sharing)
 
@@ -97,7 +96,8 @@ agent reads the output, thinks about it, edits the script for the next query, re
 - Running `grep`, `rg`, `find`, `jq`, `cat`, `wc`, `sort`, or `awk` as direct Bash calls
 - Reading log files one at a time with individual Read or Bash calls
 - Creating multiple different Bash commands instead of editing the script
-- Any Bash tool call that is not `chmod +x` or executing the agent's own script
+- Asking the user to run commands manually ("run ls", "run wc -l", "run this grep")
+- Any Bash tool call that is not executing the agent's own script
 
 ## Workflow
 
@@ -179,13 +179,15 @@ classification heuristics, and output format.
 
 The inventory subagent must:
 1. Read `references/session-inventory.md` for methodology and output format.
-2. Write `/tmp/retro-inventory.sh` using the Write tool, then `chmod +x` it (one
-   Bash approval). This script handles ALL data extraction: file discovery, JSONL
+2. Write `/tmp/retro-inventory.sh` using the Write tool. This script handles ALL
+   data extraction: file discovery, JSONL
    parsing, metadata extraction, topic detection, status classification.
-3. Run `./tmp/retro-inventory.sh` (one Bash approval). Analyze the output.
+3. Run `bash /tmp/retro-inventory.sh` (one Bash approval). Analyze the output.
 4. Need different data? Edit the script with the Edit tool, re-run it. Never run
    raw grep/find/jq/cat as separate Bash calls — everything goes in the script.
 5. Write the structured inventory output to `/tmp/retro-inventory-output.md`.
+6. Never ask the user to run shell commands manually. If this appears in output,
+   discard and re-run the subagent.
 
 **This step must complete before step 5 launches.** The inventory output is passed
 to each dimension subagent as input context so they can reference specific sessions
@@ -214,17 +216,19 @@ For a full retrospective, launch 5 subagents in parallel:
 1. Read its assigned reference file for detection heuristics and pattern catalogs.
 2. Read the session inventory from `/tmp/retro-inventory-output.md` (produced in step 4)
    to understand the full session landscape and reference specific sessions by ID.
-3. Write its dedicated script (e.g., `/tmp/retro-dim1.sh`) using the Write tool, then
-   run `chmod +x /tmp/retro-dim1.sh` (one Bash approval). The script must contain ALL
+3. Write its dedicated script (e.g., `/tmp/retro-dim1.sh`) using the Write tool. The
+   script must contain ALL
    grep, find, jq, cat, rg, awk, wc, and sort operations — no raw Bash calls allowed.
-4. Run `./tmp/retro-dim1.sh` (one Bash approval). Analyze the output.
+4. Run `bash /tmp/retro-dim1.sh` (one Bash approval). Analyze the output.
 5. Need different data? Edit the script with the Edit tool, re-run it. Repeat as needed.
    The agent may ONLY call Bash to run its own script — never for individual commands.
-5. Return all significant findings, each backed by paragraph-level evidence with quoted
+6. Return all significant findings, each backed by paragraph-level evidence with quoted
    session content. A finding is significant if it appeared in 2+ sessions or had notable
    impact in a single session. Reference specific session IDs from the inventory when
    presenting evidence. Each finding must include session ID(s), quoted messages or tool
    calls, turn counts, and full reasoning — not one-liner summaries.
+7. If the subagent output asks the user to run commands, treat it as invalid and
+   regenerate with stricter instructions.
 
 **What each subagent looks for:**
 
@@ -301,8 +305,8 @@ For each dimension analyzed, assign a score from 1–5:
 ### 8. Feedback Loop — Compare Against Previous Retrospectives
 
 **Launch a subagent** to perform this comparison. The subagent MUST follow the
-script-only rule: write `/tmp/retro-feedback.sh` using the Write tool, `chmod +x` it
-(one Bash approval), run it (one Bash approval), edit and re-run as needed. No raw
+script-only rule: write `/tmp/retro-feedback.sh` using the Write tool, run
+`bash /tmp/retro-feedback.sh` (one Bash approval), edit and re-run as needed. No raw
 Bash calls — all grep/find/jq/cat operations go in the script. The subagent should:
 
 1. Read the current analysis (from steps 5-7).
@@ -321,6 +325,8 @@ Bash calls — all grep/find/jq/cat operations go in the script. The subagent sh
    - **Unknown**: Cannot determine from current session data whether the recommendation
      was addressed. Needs manual verification.
 4. Produce the Action Tracking section (see step 9 output format).
+5. Never ask the user to run shell commands manually. If this appears, regenerate
+   the feedback output.
 
 If no previous retrospective reports exist, skip this step.
 
