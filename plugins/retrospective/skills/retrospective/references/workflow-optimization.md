@@ -154,36 +154,43 @@ model: [sonnet/opus/haiku]
 
 ## How to Present Optimization Suggestions
 
-For each optimization suggestion, provide paragraph-level evidence and concrete
-configuration — not a numbered checklist.
+Each optimization suggestion must produce:
+1. a concise **recommendation candidate** (main report), and
+2. a detailed **evidence appendix block** (`E##`).
 
-**Expected depth per suggestion:**
+**Recommendation candidate (main report, fixed fields):**
+- **Action:** optimization to implement
+- **Effort:** LOW/MEDIUM/HIGH
+- **Impact:** LOW/MEDIUM/HIGH
+- **Status:** `new` or `recurring`
+- **Expected outcome:** one sentence
+- **Evidence refs:** `E##`
 
-### PreToolUse hook for destructive remote operations
+**Concrete implementation block (copy-paste, required):**
+- **Target artifact:** exact settings/hook/file path
+- **Exact content to apply:** complete JSON/YAML/markdown/config text
+- **Verification:** one acceptance check command/condition
+
+**Evidence appendix block (fixed fields):**
+
+### [E##] PreToolUse Hook for Destructive Remote Operations
+- **Evidence ID:** `E##`
+- **Dimension:** `workflow`
 - **Sessions:** `870ef05c`
-- **Type:** Hook | **Effort:** LOW | **Impact:** HIGH
-- **Evidence:** In session `870ef05c` (2026-02-15, 360 lines), the user typed "nice perge the feature branch into main on GH" (typo for merge/purge). The assistant interpreted "perge" as "purge" and immediately executed `gh api repos/{owner}/{repo}/git/refs/heads/feature/appsec-plugin -X DELETE` — deleting the remote branch without any confirmation. The user responded: "you deleted it without merging?" The branch was already merged so no data was lost, but if it hadn't been, this would have been catastrophic.
-- **Concrete config:**
-  ```json
-  {
-    "hooks": {
-      "PreToolUse": [{
-        "matcher": "Bash",
-        "command": "echo \"$TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('command',''); exit(2 if any(p in cmd for p in ['DELETE','--force','push --force','push -f','branch -D','reset --hard']) and ('gh api' in cmd or 'git push' in cmd or 'git branch' in cmd) else 0)\""
-      }]
-    }
-  }
-  ```
-- **Before:** Claude deletes remote branches or force-pushes based on ambiguous/misspelled input without confirmation.
-- **After:** Hook blocks destructive remote operations, requiring Claude to explain and confirm before proceeding.
-- **Concerns:** Adds small latency per Bash call. Could be narrowed to `gh api` DELETE calls only.
+- **Observation:** destructive remote operation executed on ambiguous input
+- **Supporting evidence:** quoted message + command trace
+- **Root cause:** why guardrail was missing
+- **Impact/cost:** risk/turn impact
+- **Related recommendation(s):** `#N`
 
 **What to include in each suggestion:**
-- Session IDs and quoted user messages showing the manual workflow
-- Turn cost of the current manual approach
-- Concrete configuration — the actual JSON, YAML, or markdown to add
-- Before/after comparison — specific, not generic
-- Concerns — flag if the automation adds latency or risk
+- Recommendation fields: Action, Effort, Impact, Status (`new`/`recurring`)
+- Concrete implementation text/config (copy-paste ready)
+- Evidence ID (`E##`) and recommendation linkage
+- Session IDs and quoted user messages
+- Turn or risk cost of the current manual approach
+- Before/after comparison
+- Concerns (latency/risk/tradeoffs)
 
 ## False Positives to Avoid
 
