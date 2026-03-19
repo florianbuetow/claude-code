@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`9 plugins` · `70+ skills`
+`10 plugins` · `70+ skills`
 
 ### Skills
 
@@ -19,6 +19,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [retrospective](#retrospective) | Developer-AI workflow analysis — session log retros with feedback loops |
+| [onboarding](#onboarding) | Project onboarding — status briefing from git, issues, and build system |
 
 ---
 
@@ -44,6 +45,7 @@ claude plugin install spec-writer
 claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
 claude plugin install retrospective
+claude plugin install onboarding
 ```
 
 **Step 3** - Restart Claude Code.
@@ -64,6 +66,7 @@ claude --plugin-dir ./plugins/spec-writer
 claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
 claude --plugin-dir ./plugins/retrospective
+claude --plugin-dir ./plugins/onboarding
 ```
 
 </details>
@@ -522,6 +525,32 @@ Run a full retrospective or focus on a single dimension:
 Each finding comes with evidence from your sessions, a root cause, and a concrete suggestion (skill skeleton, hook config, CLAUDE.md addition). Suggestions are rated by effort, impact, and concerns about measurability. The report includes a dimension scorecard (1-5 scale) and prioritized top 3 recommendations.
 
 **Scope:** Reads session logs from `~/.claude/projects/` — requires at least one prior Claude Code session.
+
+---
+
+## onboarding
+
+Project onboarding for Claude Code.
+
+`1 skill` · `6-step briefing`
+
+Starting a new session or resuming after a break? This plugin gathers context from multiple sources — project instructions, git state, issue tracker, and build system — and produces a concise status briefing so you can get oriented fast.
+
+| Source | What It Checks |
+|--------|---------------|
+| **Project instructions** | AGENTS.md / CLAUDE.md — conventions, tech stack, rules |
+| **Git status** | Current branch, uncommitted changes, ahead/behind remote |
+| **Recent history** | Last 15 commits — what was worked on and when |
+| **Issue tracker** | Ready issues (no blockers) and in-progress work |
+| **Build system** | Justfile/Makefile — how to run tests, CI, and the project |
+
+### How to Use
+
+| Command | What it does |
+|---------|-------------|
+| `onboard` | Full project onboarding briefing |
+
+**Trigger** — Ask Claude to onboard, get oriented, catch you up, show project state, or suggest what to work on next.
 
 ---
 
