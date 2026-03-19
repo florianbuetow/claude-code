@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "florianbuetow-plugins",
   "version": "1.0.0",
-  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, software architecture quality assessment, application security analysis, expert-guided specification writing, specification-driven development, distributed system tradeoff analysis, and developer-AI workflow retrospectives.",
+  "description": "A collection of Claude Code plugins for software engineering workflows: SOLID principles analysis, system-level architecture principles analysis, software architecture quality assessment, application security analysis, expert-guided specification writing, specification-driven development, distributed system tradeoff analysis, developer-AI workflow retrospectives, and project onboarding.",
   "repository": "https://github.com/florianbuetow/claude-code",
   "owner": {
     "name": "Florian Buetow",
@@ -106,6 +106,17 @@
         "email": "2320560+florianbuetow@users.noreply.github.com"
       },
       "source": "./plugins/retrospective",
+      "category": "development"
+    },
+    {
+      "name": "onboarding",
+      "description": "Project onboarding skill that orients AI agents by gathering context from project instructions, git state, issue trackers, and build systems to produce a concise status briefing with suggested next steps.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/onboarding",
       "category": "development"
     }
   ]
