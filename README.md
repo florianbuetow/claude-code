@@ -565,7 +565,7 @@ Starting a new session or resuming after a break? This plugin gathers context fr
 
 ISO 27001:2022 software development compliance scanner for Claude Code.
 
-`10 core controls` · `5 supporting controls` · `Evidence-based gap analysis`
+`10 core controls` · `5 supporting controls` · `Two-phase scan → score architecture` · `Monorepo aware`
 
 ISO 27001 certification requires demonstrating that your software development practices meet specific security controls — but most of those controls live in code, CI/CD configs, and repo artifacts that nobody systematically checks. Teams discover gaps during expensive audit prep, not during development.
 
@@ -584,6 +584,17 @@ This plugin scans your repository against the Annex A software development contr
 | **8.32** | Change management — PR workflows, changelogs, rollback procedures, deployment gates |
 | **8.33** | Test information and data — synthetic data, fixture factories, data masking |
 
+### How It Works
+
+The skill uses a two-phase architecture that separates evidence collection from compliance scoring:
+
+| Phase | What it does |
+|-------|-------------|
+| **Phase 1 — Scan** | Runs `scan_repo.py` to collect all file evidence into a single JSON structure. Deterministic, no judgment calls. |
+| **Phase 2 — Score** | Reads the JSON evidence and applies scoring rules from the controls reference to produce the markdown report. |
+
+This ensures the same file never gets assessed differently across controls. Evidence is collected once, referenced everywhere.
+
 ### How to Use
 
 | Command | What it does |
@@ -595,6 +606,8 @@ This plugin scans your repository against the Annex A software development contr
 Each control is rated PASS / WARNING / FAIL / NOT APPLICABLE / MANUAL REVIEW NEEDED with file-level evidence and concrete remediation steps. The report includes an executive summary with overall posture (STRONG / MODERATE / WEAK / CRITICAL GAPS), a prioritized action list, and an appendix of analysis limitations.
 
 After the scan, you can ask Claude to generate template files for any missing documents or configurations.
+
+**Monorepo aware:** Detects monorepos and produces one aggregate report with per-sub-project coverage summaries rather than per-package reports.
 
 **Scope-honest:** The scan is explicit about what it can and cannot verify. Many ISO 27001 controls are process/organizational — the scan checks for artifacts and configurations, not whether processes are actually followed. Gap flags tell you what an auditor will expect to see beyond the repository.
 
@@ -733,9 +746,11 @@ plugins/
       ├── LICENSE
       └── skills/
           └── iso27001-sdlc/
-              ├── SKILL.md            # Skill definition & workflow
+              ├── SKILL.md            # Skill definition & two-phase workflow
+              ├── scripts/
+              │   └── scan_repo.py    # Phase 1: deterministic evidence collection
               └── references/
-                  └── controls.md     # Per-control check definitions & scoring
+                  └── controls.md     # Per-control scoring rules & evidence mapping
 ```
 
 ---
