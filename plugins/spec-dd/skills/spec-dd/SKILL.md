@@ -4,11 +4,12 @@ description: >
   This skill should be used when the user asks to "write specifications",
   "create test specifications", "specification-driven development", "spec-first",
   "behavioral specs", "derive test scenarios", "test implementation specification",
-  "check specification alignment", "review specs", or "spec-dd". Also triggers
-  when the user mentions "SDD", "SDD-TDD", "spec-driven", "behavioral testing
-  workflow", "test-first design", or asks about writing specifications before code,
-  deriving tests from specs, or verifying implementation against specifications.
-  Supports a full workflow walkthrough or focusing on individual phases.
+  "check specification alignment", "review specs", "verify implementation",
+  or "spec-dd". Also triggers when the user mentions "SDD", "SDD-TDD",
+  "spec-driven", "behavioral testing workflow", "test-first design", or asks
+  about writing specifications before code, deriving tests from specs, or
+  verifying implementation against specifications. Supports a full workflow
+  walkthrough or focusing on individual phases.
 ---
 
 # Specification-Driven Development
@@ -29,9 +30,13 @@ them, but the user can override and proceed.
 | `/spec-dd:spec` | Behavioral Specification | `references/specification.md` |
 | `/spec-dd:test` | Test Specification | `references/test-specification.md` |
 | `/spec-dd:test-impl` | Test Implementation Specification | `references/test-implementation-specification.md` |
+| `/spec-dd:verify` | Implementation Verification | `references/verify.md` |
 | `/spec-dd:review` | Alignment Review | `references/review.md` |
 
 All commands accept an optional feature name argument (e.g., `/spec-dd:spec user-auth`).
+`/spec-dd:verify` also accepts a spec file path as its first argument
+(e.g., `/spec-dd:verify specifications.md chat-ui`). This allows verification against
+any spec file, including informal ones not created through the spec-dd workflow.
 If no feature name is provided and multiple features exist, list available features and
 ask the user to choose.
 
@@ -44,6 +49,7 @@ All artifacts live in `docs/specs/` with one set of files per feature:
 | Behavioral Specification | `docs/specs/<feature>-specification.md` |
 | Test Specification | `docs/specs/<feature>-test-specification.md` |
 | Test Implementation Specification | `docs/specs/<feature>-test-implementation-specification.md` |
+| Implementation Verification | `docs/specs/<feature>-verification.md` |
 | Implementation Review | `docs/specs/<feature>-implementation-review.md` |
 
 ## First Steps
@@ -54,6 +60,7 @@ When any command is invoked:
    - `/spec-dd:spec` -> read `references/specification.md`
    - `/spec-dd:test` -> read `references/test-specification.md`
    - `/spec-dd:test-impl` -> read `references/test-implementation-specification.md`
+   - `/spec-dd:verify` -> read `references/verify.md`
    - `/spec-dd:review` -> read `references/review.md`
    - `/spec-dd` -> read whichever reference applies to the recommended phase
 
@@ -247,7 +254,85 @@ NOT write implementation code.
    - Specify the detected language and ecosystem
 4. Wait for implementation code to be written before proceeding.
 
-## Phase 6: Review (`/spec-dd:review`)
+## Phase 6: Implementation Verification (`/spec-dd:verify`)
+
+**Reference:** Read `references/verify.md` before starting.
+
+**Purpose:** Check whether the implementation satisfies the specification at the
+requirement level. Unlike the review phase (which checks artifact alignment),
+verification answers: "Did we build what the spec says?"
+
+**Key difference from review:** Verification works with any spec file — including
+informal documents not created through spec-dd. It produces a requirement-level
+PASS/FAIL checklist, not a severity-classified alignment report.
+
+**Pre-check:** Implementation code must exist. If no code has been written yet,
+advise the user to complete Phase 5 first.
+
+**Workflow:**
+
+1. **Identify the spec file.** Use the argument if provided (e.g.,
+   `/spec-dd:verify specifications.md`). Otherwise, look for
+   `docs/specs/<feature>-specification.md`. If neither exists, ask the user to
+   provide the spec file path.
+2. **Extract requirements.** Read the spec file and identify every testable
+   requirement using the heuristics in `references/verify.md`: numbered items,
+   acceptance criteria, RFC-style keywords (MUST/SHALL), and behavioral
+   descriptions. Assign each an ID (R01, R02, ...).
+3. **Verify by reading code.** For each requirement, search the codebase for
+   implementing code. Verify that the code logic matches the spec's behavioral
+   description. Mark as PASS, FAIL, or PARTIAL with a one-line evidence note
+   citing file path and line number.
+4. **Run targeted tests only when needed.** Execute tests only when a requirement
+   describes runtime behavior that cannot be verified by reading, when the user
+   explicitly asks, or when a read-based check is inconclusive. Never re-run
+   slow or non-deterministic tests without asking.
+5. **Handle non-deterministic tests.** If a requirement is tested by a
+   non-deterministic test (LLM-dependent, network-dependent), verify the test
+   exists and exercises the correct code path. Mark the requirement based on code
+   reading, not test pass/fail.
+6. **Produce verification report** at `docs/specs/<feature>-verification.md`
+   (or `docs/specs/verify-<spec-filename>-<date>.md` if no feature name).
+7. **If gaps are found**, list specific next steps: which requirements need
+   implementation, which need fixes (with file paths), whether to revisit the
+   spec (if requirements are ambiguous).
+
+**Advisory gate:** All requirements PASS or PARTIAL (no FAIL) before proceeding
+to Phase 7 (Review).
+
+**Artifact template:**
+
+```markdown
+# Verification: <spec-file>
+
+| Field | Value |
+|-------|-------|
+| Spec file | `<path to spec>` |
+| Feature | <feature name or "N/A"> |
+| Date | <today's date> |
+
+## Requirements
+
+| # | Requirement | Status | Evidence |
+|---|-------------|--------|----------|
+| R01 | <requirement> | PASS | `file:line` — description |
+| R02 | <requirement> | FAIL | Expected X, found nothing |
+| R03 | <requirement> | PARTIAL | `file:line` — works but missing Y |
+
+## Summary
+X/Y PASS, Z FAIL, W PARTIAL
+
+## Gaps Requiring Action
+
+| # | Requirement | Issue | Suggested Fix |
+|---|-------------|-------|---------------|
+| R02 | <requirement> | Not implemented | <suggested approach> |
+
+## Notes
+Observations about non-deterministic tests, environment issues, or spec ambiguities.
+```
+
+## Phase 7: Review (`/spec-dd:review`)
 
 **Reference:** Read `references/review.md` before starting.
 
@@ -319,6 +404,7 @@ When `/spec-dd` is invoked (without a specific phase subcommand):
      all test scenarios?
    - Do actual test files exist? Do they fail (feature not yet implemented)?
    - Does actual implementation code exist? Do the tests pass?
+   - Does `<feature>-verification.md` exist? Are all requirements PASS or PARTIAL?
    - Does `<feature>-implementation-review.md` exist? Is it current?
 4. **Report current state:** Which phases are complete, which have gaps, which
    have not been started.
@@ -338,7 +424,8 @@ but the user can override and proceed.
 | Test Spec -> Test Impl Spec | Full traceability: every acceptance criterion mapped to test scenarios |
 | Test Impl Spec -> Test Impl | Every test scenario mapped to a test implementation approach |
 | Test Impl -> Feature Impl | Test files exist and all tests FAIL (feature not yet implemented) |
-| Feature Impl -> Review | Implementation code exists and tests pass |
+| Feature Impl -> Verify | Implementation code exists |
+| Verify -> Review | All requirements PASS or PARTIAL (no FAIL) |
 | Review -> Done | All checks pass in the review report, including test execution |
 
 ## Iterative Workflow Support

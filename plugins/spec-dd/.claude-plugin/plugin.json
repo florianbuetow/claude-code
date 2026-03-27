@@ -1,6 +1,6 @@
 {
   "name": "spec-dd",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline: write behavioral specifications, derive test scenarios, plan implementation, and verify alignment across all artifacts and code. Acts as a workflow navigator with advisory quality gates between phases.",
   "author": {
     "name": "Florian Buetow",
