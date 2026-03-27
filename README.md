@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`10 plugins` · `70+ skills`
+`11 plugins` · `70+ skills`
 
 ### Skills
 
@@ -20,6 +20,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [retrospective](#retrospective) | Developer-AI workflow analysis — session log retros with feedback loops |
 | [onboarding](#onboarding) | Project onboarding — status briefing from git, issues, and build system |
+| [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner — Annex A controls 8.4, 8.25–8.33 |
 
 ---
 
@@ -46,6 +47,7 @@ claude plugin install spec-dd
 claude plugin install explain-system-tradeoffs
 claude plugin install retrospective
 claude plugin install onboarding
+claude plugin install iso27001-sdlc
 ```
 
 **Step 3** - Restart Claude Code.
@@ -67,6 +69,7 @@ claude --plugin-dir ./plugins/spec-dd
 claude --plugin-dir ./plugins/explain-system-tradeoffs
 claude --plugin-dir ./plugins/retrospective
 claude --plugin-dir ./plugins/onboarding
+claude --plugin-dir ./plugins/iso27001-sdlc
 ```
 
 </details>
@@ -382,7 +385,7 @@ Output documents are saved as markdown files with traceability IDs that link acr
 
 Specification-driven development workflow for Claude Code.
 
-`6 phases` · `4 reference guides` · `Advisory quality gates` · `Language-aware reviews`
+`7 phases` · `5 reference guides` · `Advisory quality gates` · `Language-aware reviews`
 
 Tests are a firewall between specification and implementation. You never modify tests during implementation — if the code can't pass the tests, the implementation approach is wrong, not the tests.
 
@@ -397,7 +400,8 @@ This plugin orchestrates a spec-first discipline: define behavioral specificatio
 | 3 | `/spec-dd:test-impl` | Map every test scenario to a technical approach for test implementation |
 | 4 | *(handoff)* | Implement tests and verify they fail (feature code doesn't exist yet) |
 | 5 | *(handoff)* | Make all tests pass by implementing the required features |
-| 6 | `/spec-dd:review` | Verify alignment across all artifacts and code, run tests |
+| 6 | `/spec-dd:verify` | Verify implementation satisfies the spec — requirement-level PASS/FAIL checklist |
+| 7 | `/spec-dd:review` | Verify alignment across all artifacts and code, run tests |
 
 ### How to Use
 
@@ -407,9 +411,10 @@ This plugin orchestrates a spec-first discipline: define behavioral specificatio
 | `/spec-dd:spec` | Work on the behavioral specification |
 | `/spec-dd:test` | Work on the test specification |
 | `/spec-dd:test-impl` | Work on the test implementation specification |
+| `/spec-dd:verify` | Verify implementation against any spec file (read-first, run-second) |
 | `/spec-dd:review` | Run alignment review, execute tests, produce report |
 
-All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). Without one, the skill lists available features and asks you to choose.
+All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). `/spec-dd:verify` also accepts a spec file path (e.g., `/spec-dd:verify specifications.md chat-ui`) to verify against informal specs not created through spec-dd. Without a feature name, the skill lists available features and asks you to choose.
 
 **Auto-detect router** — `/spec-dd` without a phase scans `docs/specs/` for existing artifacts, assesses which phases are complete, identifies gaps, and recommends the next action.
 
@@ -419,7 +424,9 @@ All commands accept an optional feature name (e.g., `/spec-dd:spec user-auth`). 
 
 **Test execution** — During review, detects and runs your project's test runner (Makefile, justfile, pytest, go test, cargo test, npm test, mvn test, gradle test).
 
-**Artifacts** — All documents live in `docs/specs/`: `<feature>-specification.md`, `<feature>-test-specification.md`, `<feature>-test-implementation-specification.md`, `<feature>-implementation-review.md`.
+**Implementation verification** — `/spec-dd:verify` checks whether code satisfies a specification at the requirement level. Works with any spec file (including informal ones outside the spec-dd workflow). Prefers reading code over running tests — only executes tests when runtime behavior can't be verified by inspection. Handles non-deterministic tests by verifying the test exists and exercises the right code path.
+
+**Artifacts** — All documents live in `docs/specs/`: `<feature>-specification.md`, `<feature>-test-specification.md`, `<feature>-test-implementation-specification.md`, `<feature>-verification.md`, `<feature>-implementation-review.md`.
 
 ---
 
@@ -554,6 +561,45 @@ Starting a new session or resuming after a break? This plugin gathers context fr
 
 ---
 
+## iso27001-sdlc
+
+ISO 27001:2022 software development compliance scanner for Claude Code.
+
+`10 core controls` · `5 supporting controls` · `Evidence-based gap analysis`
+
+ISO 27001 certification requires demonstrating that your software development practices meet specific security controls — but most of those controls live in code, CI/CD configs, and repo artifacts that nobody systematically checks. Teams discover gaps during expensive audit prep, not during development.
+
+This plugin scans your repository against the Annex A software development controls (8.4, 8.25–8.33) and produces a compliance gap report with evidence, status ratings, and concrete fix suggestions.
+
+| Control | Focus |
+|---------|-------|
+| **8.4** | Access to source code — CODEOWNERS, branch protection, signed commits |
+| **8.25** | Secure development life cycle — PR templates, CI security gates, SDLC policy |
+| **8.26** | Application security requirements — security in issue templates, NFR checklists |
+| **8.27** | Secure architecture — architecture docs, threat models, security design principles |
+| **8.28** | Secure coding — linters, SAST, secrets scanning, dependency management |
+| **8.29** | Security testing — SAST/DAST/SCA in CI, container scanning, security test files |
+| **8.30** | Outsourced development — third-party contribution policies, supplier requirements |
+| **8.31** | Separation of environments — env-specific configs, IaC separation, data protection |
+| **8.32** | Change management — PR workflows, changelogs, rollback procedures, deployment gates |
+| **8.33** | Test information and data — synthetic data, fixture factories, data masking |
+
+### How to Use
+
+| Command | What it does |
+|---------|-------------|
+| `iso27001-sdlc` | Full compliance scan of all 10 core + 5 supporting controls |
+
+**Trigger** — Ask Claude to check ISO 27001 compliance, run a security audit, check Annex A controls, assess SDLC compliance, or mention audit readiness for software development controls.
+
+Each control is rated PASS / WARNING / FAIL / NOT APPLICABLE / MANUAL REVIEW NEEDED with file-level evidence and concrete remediation steps. The report includes an executive summary with overall posture (STRONG / MODERATE / WEAK / CRITICAL GAPS), a prioritized action list, and an appendix of analysis limitations.
+
+After the scan, you can ask Claude to generate template files for any missing documents or configurations.
+
+**Scope-honest:** The scan is explicit about what it can and cannot verify. Many ISO 27001 controls are process/organizational — the scan checks for artifacts and configurations, not whether processes are actually followed. Gap flags tell you what an auditor will expect to see beyond the repository.
+
+---
+
 ## Project Structure
 
 ```
@@ -668,19 +714,28 @@ plugins/
   │               ├── transactions.md # Transaction Boundaries axis
   │               ├── resilience.md   # Resilience & Failure Isolation axis
   │               └── operations.md   # Observability, Security & Cost axis
-  └── retrospective/
+  ├── retrospective/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── retrospective/
+  │           ├── SKILL.md            # Skill definition & workflow
+  │           └── references/
+  │               ├── success-patterns.md          # Effective collaboration patterns
+  │               ├── failure-patterns.md           # Wasted effort and breakdowns
+  │               ├── collaboration-antipatterns.md # Developer-AI pitfalls
+  │               ├── skill-opportunities.md        # Automatable pattern detection
+  │               └── workflow-optimization.md      # Subagents, hooks, automation
+  └── iso27001-sdlc/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
       ├── LICENSE
       └── skills/
-          └── retrospective/
+          └── iso27001-sdlc/
               ├── SKILL.md            # Skill definition & workflow
               └── references/
-                  ├── success-patterns.md          # Effective collaboration patterns
-                  ├── failure-patterns.md           # Wasted effort and breakdowns
-                  ├── collaboration-antipatterns.md # Developer-AI pitfalls
-                  ├── skill-opportunities.md        # Automatable pattern detection
-                  └── workflow-optimization.md      # Subagents, hooks, automation
+                  └── controls.md     # Per-control check definitions & scoring
 ```
 
 ---
