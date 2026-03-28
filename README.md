@@ -21,7 +21,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [retrospective](#retrospective) | Developer-AI workflow analysis — session log retros with feedback loops |
 | [onboarding](#onboarding) | Project onboarding — status briefing from git, issues, and build system |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner — Annex A controls 8.4, 8.25–8.33 |
-| [cache-money](#cache-money) | Keep the Anthropic prompt cache warm — reduce token costs by up to 90% on large contexts |
+| [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours — adapts ping interval to your cache TTL (5-min or 1-hour) |
 
 ---
 
@@ -618,23 +618,26 @@ After the scan, you can ask Claude to generate template files for any missing do
 
 ## cache-money
 
-Keep the Anthropic prompt cache warm during Claude Code sessions.
+Keep the Anthropic prompt cache warm during Claude Code sessions — especially during peak hours.
 
-`1 skill` · `1 reference doc` · `Peak-hour aware`
+`1 skill` · `1 reference doc` · `TTL-adaptive` · `Peak-hour aware`
 
-Every API call in Claude Code sends the full conversation context to the model. Anthropic caches this prefix for 1 hour — cached tokens cost ~90% less than uncached. But if a session sits idle for more than 60 minutes, the cache expires and the next call pays full price for the entire context (up to 1M tokens).
+Every API call in Claude Code sends the full conversation context to the model. Anthropic caches this prefix server-side — cached tokens cost ~90% less than uncached. But the cache expires after a TTL period of inactivity, and the next call pays full cache-write price for the entire context (up to 1M tokens).
 
-During peak hours (weekdays 5am–11am PT), session limits are consumed faster, making cache efficiency even more critical.
+| TTL Tier | Duration | Cache Write Cost | Who Gets It |
+|----------|----------|-----------------|-------------|
+| **Default** | 5 minutes | 1.25x base input | All plans — CLI and API always use this unless explicit `ttl: "1h"` |
+| **Extended** | 1 hour | 2x base input | Max-tier plans (server-side in Claude Code UI), or explicit `ttl: "1h"` via API |
 
-This plugin schedules a lightweight ping every 55 minutes to keep the cache alive. Each ping renews the 1-hour TTL at negligible token cost, so large contexts stay cached at read price instead of rewrite price.
+During **peak hours** (weekdays 5am–11am PT), Anthropic's rolling session limits are consumed faster. Cache misses during peak windows are doubly expensive: full rebuild cost plus faster quota burn.
+
+This plugin detects your cache TTL tier and schedules pings accordingly — every 4 minutes for 5-min TTL, every 55 minutes for 1-hour TTL. Each ping is a minimal API call that renews the cache at negligible cost.
 
 | Command | What it does |
 |---------|-------------|
-| `cache-money` | Assess peak-hour timing and start the cache ping loop |
+| `cache-money` | Detect TTL tier, assess peak-hour timing, start the cache ping loop |
 
 **Trigger** — Ask Claude to "keep the cache warm", "save tokens", "start cache ping", "reduce token usage", or mention prompt cache optimization.
-
-The skill detects your timezone, reports whether peak hours are active, and starts a `/loop` at 55-minute intervals. Each iteration is a minimal API call — just enough to renew the cache, not enough to matter on the bill.
 
 ---
 

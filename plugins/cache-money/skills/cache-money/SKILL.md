@@ -5,13 +5,20 @@ description: This skill should be used when the user asks to "keep cache warm", 
 
 # Cache Money
 
-Reduce token costs and latency in Claude Code sessions by keeping the Anthropic prompt cache warm through scheduled lightweight pings.
+Keep the Anthropic prompt cache warm during Claude Code sessions — especially during peak hours when usage limits are tighter — by scheduling lightweight pings tuned to your cache TTL.
 
 ## Why This Matters
 
-Anthropic caches the prompt prefix for 1 hour (extended TTL) in Claude Code. Cached tokens cost approximately one tenth of the base price and arrive faster. If a session is idle for more than 60 minutes, the cache expires and the next call pays full price for the entire context — which can be up to one million tokens.
+Claude Code sends the full conversation context with every API call. Anthropic caches this prefix server-side and serves subsequent calls from cache at ~10% of the base input price. But the cache expires after a TTL period of inactivity:
 
-During peak hours (weekdays 5:00 AM – 11:00 AM PT / 1:00 PM – 7:00 PM GMT), session limits are consumed faster. Keeping the cache warm during these windows prevents expensive full-context rebuilds.
+| TTL Tier | Duration | Cache Write Cost | Who Gets It |
+|----------|----------|-----------------|-------------|
+| **Default** | 5 minutes | 1.25x base input | All plans (no `ttl` field specified) |
+| **Extended** | 1 hour | 2x base input | Max-tier plans (server-side in Claude Code), or explicit `ttl: "1h"` via API |
+
+Cache reads cost **0.1x base input** regardless of TTL tier — that's the 90% saving.
+
+If a session sits idle past its TTL, the next call pays full cache-write price for the entire context — up to 1M tokens. During **peak hours** (weekdays 5:00 AM – 11:00 AM PT), Anthropic's rolling session limits are consumed faster, making every cache miss doubly expensive: higher rebuild cost plus faster quota burn.
 
 For detailed technical background, consult **`references/cache-mechanics.md`**.
 
@@ -31,28 +38,47 @@ Classify the current window:
 |-----------|--------|
 | Weekday, 5:00 AM – 11:00 AM PT | **Peak hours active** — cache warming strongly recommended |
 | Weekday, 4:47 AM – 4:59 AM PT | **Peak approaching** — pre-warming recommended |
-| Weekend or outside peak | **Off-peak** — cache warming optional, still saves on idle sessions longer than 60 min |
+| Weekend or outside peak | **Off-peak** — cache warming optional, still saves on idle sessions longer than the TTL |
 
 Report the status to the user in one line before proceeding.
 
-### Step 2: Start the Cache Ping Loop
+### Step 2: Detect Cache TTL
 
-Invoke the `/loop` skill to schedule a recurring ping every 55 minutes:
+Determine which TTL tier is active. Ask the user:
 
+> Are you on a **Max-tier plan** (which enables 1-hour cache TTL in Claude Code), or the **default** (5-minute cache TTL)?
+
+Use the answer to set the ping interval:
+
+| TTL Tier | Cache Duration | Ping Interval | Safety Margin |
+|----------|---------------|---------------|---------------|
+| **Extended (1h)** | 60 minutes | **55 minutes** | 5 minutes |
+| **Default (5min)** | 5 minutes | **4 minutes** | 1 minute |
+
+If the user is unsure, default to the **5-minute TTL** (4-minute ping interval) — it's safe for all plans and the overhead is minimal.
+
+### Step 3: Start the Cache Ping Loop
+
+Invoke the `/loop` skill to schedule the recurring ping at the determined interval:
+
+**For 1-hour TTL (Max-tier):**
 ```
 Skill tool: skill="loop", args="55m Cache ping. Reply with only: ok"
 ```
 
-The 55-minute interval provides a 5-minute safety margin within the 1-hour cache TTL.
+**For 5-minute TTL (default):**
+```
+Skill tool: skill="loop", args="4m Cache ping. Reply with only: ok"
+```
 
-Each ping iteration triggers one lightweight API call that renews the cached prompt prefix. The response is minimal — just "ok" — so token consumption per ping is negligible.
+Each ping triggers one lightweight API call that renews the cached prompt prefix. The response is minimal — just "ok" — so token consumption per ping is negligible.
 
-### Step 3: Confirm to User
+### Step 4: Confirm to User
 
 After starting the loop, report:
 
-1. **Status**: Cache ping loop is active
-2. **Interval**: Every 55 minutes
+1. **TTL tier**: Which cache duration was detected (5-min or 1-hour)
+2. **Interval**: The chosen ping interval and why
 3. **Peak window**: Whether currently in peak hours
 4. **How to stop**: End the session or cancel the loop
 5. **Savings**: Cached tokens cost ~90% less than uncached — on a large context this adds up fast
@@ -75,5 +101,5 @@ After starting the loop, report:
 
 - The cache is per-session. Each active Claude Code conversation has its own cached prefix. The ping must happen within the same session to renew it.
 - The ping only works while the session is open. Closing the terminal or ending the session invalidates the cache regardless of the loop.
-- Off-peak sessions still benefit if idle periods exceed 60 minutes — the cache expires based on inactivity, not time of day.
-- The first API call after cache expiry is always a full-price write. Every subsequent call within 60 minutes is a cache read at ~10% cost.
+- Off-peak sessions still benefit if idle periods exceed the TTL — the cache expires based on inactivity, not time of day.
+- The first API call after cache expiry is always a full-price write. Every subsequent call within the TTL is a cache read at ~10% cost.
