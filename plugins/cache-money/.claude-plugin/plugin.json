@@ -1,7 +1,7 @@
 {
   "name": "cache-money",
-  "version": "1.0.0",
-  "description": "Keep the Anthropic prompt cache warm during Claude Code sessions by scheduling lightweight pings at regular intervals, reducing token costs by up to 90% on cached context.",
+  "version": "1.1.0",
+  "description": "Keep the Anthropic prompt cache warm during Claude Code sessions — especially during peak hours when usage limits are tighter. Detects your cache TTL (5-min default or 1-hour extended) and schedules pings accordingly, reducing token costs by up to 90% on cached context.",
   "author": {
     "name": "Florian Buetow"
   },
