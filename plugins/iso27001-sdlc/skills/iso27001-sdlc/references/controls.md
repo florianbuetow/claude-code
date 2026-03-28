@@ -218,6 +218,9 @@ should inform design decisions.
 **Control intent:** Apply secure coding principles to prevent common
 vulnerabilities. This is the most technically verifiable control.
 
+For per-language library names, config locations, and specific patterns,
+refer to `references/secure-coding-patterns.md`.
+
 ### Evidence keys
 
 - `linter_evidence` (per-language linter configs)
@@ -230,9 +233,13 @@ vulnerabilities. This is the most technically verifiable control.
 - `file_evidence.dependency_scanning_config`
 - `file_evidence.pre_commit`
 - `file_evidence.secure_coding_docs`
-- `repo_context.languages` (to determine which linters are expected)
+- `repo_context.languages` (to determine which linters/libs are expected)
+- `secure_coding_practices.secure_coding_deps.*` (all sub-categories)
+- `secure_coding_practices.source_patterns.*` (all sub-categories)
+- `secure_coding_practices.csrf_evidence`
+- `secure_coding_practices.sbom_tooling`
 
-### Scoring rules
+### Scoring rules — Tooling (existing checks)
 
 | Check | Evidence | PASS | WARNING | FAIL |
 |-------|----------|------|---------|------|
@@ -245,28 +252,57 @@ vulnerabilities. This is the most technically verifiable control.
 | Dependency scanning | `dependency_scanning_config` non-empty | Auto-updates configured | — | No dependency scanning |
 | Coding standards doc | `secure_coding_docs` non-empty | Doc found | — | Absent |
 
+### Scoring rules — Secure Coding Practices (new checks)
+
+These checks verify that developers are actually applying secure coding
+patterns, not just that tooling exists.
+
+| Check | Evidence | PASS | WARNING | FAIL |
+|-------|----------|------|---------|------|
+| Input validation | `secure_coding_deps.input_validation` non-empty | Validation framework in dependencies | — | No validation framework detected (for web apps) |
+| Output encoding / sanitization | `secure_coding_deps.sanitization` non-empty, OR auto-escaping framework in use (React, Django, Rails) | Sanitization library or safe-by-default framework | — | No sanitization evidence and unsafe template patterns found |
+| Authentication framework | `secure_coding_deps.authentication` non-empty | Established auth library in use | — | No auth framework (WARNING only — may be API-only service) |
+| Password hashing | `secure_coding_deps.password_hashing` non-empty | bcrypt/argon2/scrypt in dependencies | — | No compliant password hashing library |
+| Deprecated crypto | `source_patterns.deprecated_crypto` empty | No deprecated crypto found | — | MD5/SHA1 for passwords, ECB mode, Math.random for tokens detected |
+| Security HTTP headers | `secure_coding_deps.security_headers` non-empty | Header middleware configured | — | No security header middleware (WARNING for APIs, FAIL for web apps) |
+| Session/cookie security | No `insecure_config` patterns for session settings | Secure cookie settings | Insecure session config detected | — |
+| ORM / parameterized queries | `secure_coding_deps.orm` non-empty AND `source_patterns.raw_sql` empty | ORM in use, no raw SQL concat | ORM in use but raw SQL patterns found | No ORM and raw SQL concatenation found |
+| CSRF protection | `csrf_evidence.found` non-empty AND `csrf_evidence.disabled` empty | CSRF protection active | CSRF explicitly disabled | No CSRF evidence (for browser-facing apps) |
+| Structured logging | `secure_coding_deps.structured_logging` non-empty | Structured logging library in use | — | No structured logging (WARNING, not FAIL) |
+| Rate limiting | `secure_coding_deps.rate_limiting` non-empty | Rate limiting configured | — | No rate limiting (WARNING for public APIs) |
+| CORS configuration | `source_patterns.insecure_cors` empty | No insecure CORS patterns | — | Wildcard origins with credentials detected |
+| Unsafe functions | `source_patterns.unsafe_functions` empty | No unsafe patterns detected | Unsafe patterns found in non-test code | — |
+| XSS template escapes | `source_patterns.xss_template_escapes` empty | No unsafe template escapes | Unsafe raw/safe escapes found | — |
+| SBOM generation | `sbom_tooling.in_ci` or `sbom_tooling.in_dependencies` non-empty | SBOM tooling configured | — | No SBOM generation (WARNING) |
+| Insecure configurations | `source_patterns.insecure_config` empty | No insecure configs detected | DEBUG=True, insecure session settings, etc. found | — |
+
 **Overall 8.28 status:**
-- PASS if linters present AND no hardcoded secrets AND lock files present AND (security SAST OR secrets scanning configured)
-- WARNING if linters present but no security-specific tools, or minor gaps
-- FAIL if hardcoded secrets found, or no linting AND no security analysis at all
 
-**Language-specific linter expectations** (use `repo_context.languages`):
+8.28 is now the most complex control. Use this prioritized rubric:
 
-| Language | Expected linter | Security-specific tool |
-|----------|----------------|----------------------|
-| Python | ruff, flake8, pylint | bandit, semgrep |
-| JavaScript/TypeScript | eslint, biome | eslint-plugin-security, semgrep |
-| Java/Kotlin | checkstyle, spotbugs | spotbugs + find-sec-bugs, semgrep |
-| Go | golangci-lint | gosec (often via golangci-lint), semgrep |
-| Ruby | rubocop | brakeman |
-| Rust | clippy | cargo-audit (dependency), semgrep |
-| PHP | phpstan, phpcs | psalm (taint analysis), semgrep |
-| C/C++ | clang-tidy | clang-tidy security checks, semgrep |
-| Scala | scalafmt, scalafix | scalafix security rules |
-| Swift | swiftlint | semgrep |
-| Elixir | credo | sobelow |
-| C# | Roslyn analyzers | SecurityCodeScan, semgrep |
-| Dart | analysis_options.yaml | dart analyze (built-in) |
+- **FAIL if any of:**
+  - Hardcoded secrets found in source code
+  - Deprecated crypto patterns found (MD5/SHA1 for passwords)
+  - No linting AND no security analysis at all
+  - Raw SQL concatenation found with no ORM usage
+
+- **WARNING if:**
+  - Linters present but no security-specific tools
+  - No input validation framework detected
+  - Unsafe function patterns or XSS template escapes found
+  - Insecure CORS or config patterns detected
+  - Missing SBOM, rate limiting, or structured logging
+
+- **PASS if:**
+  - Linters + security SAST configured
+  - No hardcoded secrets or deprecated crypto
+  - Input validation, auth, and ORM frameworks present
+  - Lock files present with dependency scanning
+  - No unsafe code patterns detected (or only minor ones in test files)
+
+**Language-specific expectations** — refer to `references/secure-coding-patterns.md`
+for the complete per-language table of expected linters, security tools,
+validation frameworks, auth libraries, and crypto packages.
 
 ### Gap flags
 
@@ -275,26 +311,50 @@ vulnerabilities. This is the most technically verifiable control.
 
 ### Example fix suggestions
 
+- **No input validation framework (Node.js):** "Add `zod` or `express-validator` to
+  dependencies. Define validation schemas for all API endpoints. Example:
+  `const schema = z.object({ email: z.string().email(), name: z.string().min(1) })`
+  and validate request bodies before processing."
+- **No input validation framework (Python/FastAPI):** "FastAPI already uses Pydantic —
+  ensure all endpoints accept Pydantic `BaseModel` subclasses, not raw `dict` or
+  `request.json`. For Django, use serializers or ModelForms for all input."
+- **Deprecated crypto found (MD5 for passwords):** "IMMEDIATE: Replace MD5/SHA1
+  password hashing with bcrypt or Argon2. For Python: `pip install argon2-cffi` and
+  use `argon2.PasswordHasher()`. For Node.js: `npm install bcrypt` and use
+  `bcrypt.hash(password, 10)`. Rotate all affected credentials."
+- **Raw SQL concatenation found:** "Replace string-concatenated SQL with parameterized
+  queries. Python: `cursor.execute('SELECT * WHERE id = %s', (id,))`.
+  Node.js: `db.query('SELECT * WHERE id = $1', [id])`.
+  Java: use `PreparedStatement` or JPA `@Query` with `?1` parameters."
+- **Unsafe template escapes (dangerouslySetInnerHTML):** "Every use of
+  `dangerouslySetInnerHTML` must be preceded by DOMPurify sanitization:
+  `dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }}`.
+  Add `dompurify` to dependencies."
+- **No security headers middleware (Express):** "Add Helmet: `npm install helmet`
+  and `app.use(helmet())` in your Express setup. This sets CSP, HSTS,
+  X-Content-Type-Options, X-Frame-Options, and other security headers."
+- **Insecure CORS (wildcard + credentials):** "Replace `origin: '*'` with an explicit
+  allowlist of trusted domains. Wildcard origins with `credentials: true` is a
+  security vulnerability that allows any site to make authenticated requests."
+- **No CSRF protection:** "Enable CSRF protection in your framework. Django: ensure
+  `CsrfViewMiddleware` is in MIDDLEWARE. Rails: `protect_from_forgery` in
+  ApplicationController. Express: add `csurf` or `csrf-csrf` middleware."
+- **No SBOM generation:** "Add SBOM generation to your CI pipeline. Universal option:
+  `syft dir:. -o cyclonedx-json > sbom.json`. For npm: `cyclonedx-npm`. For Maven:
+  add `org.cyclonedx:cyclonedx-maven-plugin` to pom.xml."
 - **No security SAST (Python):** "Add a `.bandit` config or add `[tool.bandit]`
   to `pyproject.toml`. Integrate into CI: `bandit -r src/ -f json`. For broader
   coverage, add Semgrep with `semgrep scan --config=auto`."
-- **No security SAST (JavaScript):** "Install `eslint-plugin-security`:
-  `npm install --save-dev eslint-plugin-security` and add `plugin:security/recommended`
-  to your ESLint extends. For deeper analysis, add Semgrep to CI."
 - **No secrets scanning:** "Add Gitleaks: create `.gitleaks.toml` (start with the
-  default config), add a pre-commit hook via `.pre-commit-config.yaml`, and add
-  a CI step: `gitleaks detect --source . --verbose`. A config template can be
-  generated on request."
+  default config), add a pre-commit hook, and add a CI step: `gitleaks detect
+  --source . --verbose`. A config template can be generated on request."
 - **Hardcoded secrets found:** "IMMEDIATE ACTION: Rotate all detected credentials.
   Move secrets to environment variables or a secrets manager (AWS Secrets Manager,
   HashiCorp Vault, Doppler). Add `.env` to `.gitignore`. Consider running
   `git filter-branch` or BFG Repo-Cleaner to remove secrets from git history."
-- **No lock files:** "Commit your dependency lock file (`package-lock.json`,
-  `poetry.lock`, `Cargo.lock`, etc.) to ensure reproducible builds and prevent
-  supply chain attacks via dependency confusion."
 - **No dependency scanning:** "Add Dependabot (`.github/dependabot.yml`) or
-  Renovate (`renovate.json`) for automated dependency update PRs. Configure
-  security-only updates at minimum. A config template can be generated on request."
+  Renovate (`renovate.json`) for automated dependency update PRs. A config template
+  can be generated on request."
 
 ---
 
