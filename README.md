@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins and skills for software engineering workflows.
 
-`11 plugins` · `70+ skills`
+`12 plugins` · `70+ skills`
 
 ### Skills
 
@@ -21,6 +21,7 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [retrospective](#retrospective) | Developer-AI workflow analysis — session log retros with feedback loops |
 | [onboarding](#onboarding) | Project onboarding — status briefing from git, issues, and build system |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner — Annex A controls 8.4, 8.25–8.33 |
+| [cache-money](#cache-money) | Keep the Anthropic prompt cache warm — reduce token costs by up to 90% on large contexts |
 
 ---
 
@@ -48,6 +49,7 @@ claude plugin install explain-system-tradeoffs
 claude plugin install retrospective
 claude plugin install onboarding
 claude plugin install iso27001-sdlc
+claude plugin install cache-money
 ```
 
 **Step 3** - Restart Claude Code.
@@ -70,6 +72,7 @@ claude --plugin-dir ./plugins/explain-system-tradeoffs
 claude --plugin-dir ./plugins/retrospective
 claude --plugin-dir ./plugins/onboarding
 claude --plugin-dir ./plugins/iso27001-sdlc
+claude --plugin-dir ./plugins/cache-money
 ```
 
 </details>
@@ -613,6 +616,28 @@ After the scan, you can ask Claude to generate template files for any missing do
 
 ---
 
+## cache-money
+
+Keep the Anthropic prompt cache warm during Claude Code sessions.
+
+`1 skill` · `1 reference doc` · `Peak-hour aware`
+
+Every API call in Claude Code sends the full conversation context to the model. Anthropic caches this prefix for 1 hour — cached tokens cost ~90% less than uncached. But if a session sits idle for more than 60 minutes, the cache expires and the next call pays full price for the entire context (up to 1M tokens).
+
+During peak hours (weekdays 5am–11am PT), session limits are consumed faster, making cache efficiency even more critical.
+
+This plugin schedules a lightweight ping every 55 minutes to keep the cache alive. Each ping renews the 1-hour TTL at negligible token cost, so large contexts stay cached at read price instead of rewrite price.
+
+| Command | What it does |
+|---------|-------------|
+| `cache-money` | Assess peak-hour timing and start the cache ping loop |
+
+**Trigger** — Ask Claude to "keep the cache warm", "save tokens", "start cache ping", "reduce token usage", or mention prompt cache optimization.
+
+The skill detects your timezone, reports whether peak hours are active, and starts a `/loop` at 55-minute intervals. Each iteration is a minimal API call — just enough to renew the cache, not enough to matter on the bill.
+
+---
+
 ## Project Structure
 
 ```
@@ -740,17 +765,25 @@ plugins/
   │               ├── collaboration-antipatterns.md # Developer-AI pitfalls
   │               ├── skill-opportunities.md        # Automatable pattern detection
   │               └── workflow-optimization.md      # Subagents, hooks, automation
-  └── iso27001-sdlc/
+  ├── iso27001-sdlc/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── iso27001-sdlc/
+  │           ├── SKILL.md            # Skill definition & two-phase workflow
+  │           ├── scripts/
+  │           │   └── scan_repo.py    # Phase 1: deterministic evidence collection
+  │           └── references/
+  │               └── controls.md     # Per-control scoring rules & evidence mapping
+  └── cache-money/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
-      ├── LICENSE
       └── skills/
-          └── iso27001-sdlc/
-              ├── SKILL.md            # Skill definition & two-phase workflow
-              ├── scripts/
-              │   └── scan_repo.py    # Phase 1: deterministic evidence collection
+          └── cache-money/
+              ├── SKILL.md            # Skill definition & ping loop workflow
               └── references/
-                  └── controls.md     # Per-control scoring rules & evidence mapping
+                  └── cache-mechanics.md  # Anthropic prompt cache technical details
 ```
 
 ---
