@@ -18,6 +18,14 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
+# Import supplementary scanner for secure coding practice detection
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    from secure_coding_scanner import run_secure_coding_scan
+    HAS_SECURE_CODING_SCANNER = True
+except ImportError:
+    HAS_SECURE_CODING_SCANNER = False
+
 
 # ---------------------------------------------------------------------------
 # File pattern definitions
@@ -872,6 +880,16 @@ def run_scan(repo_path: str, output_path: str | None = None) -> dict:
          "security", "authentication", "authorization"]
     )
 
+    # Secure coding practice detection
+    secure_coding = {}
+    if HAS_SECURE_CODING_SCANNER:
+        print("  Scanning secure coding practices...", file=sys.stderr)
+        secure_coding = run_secure_coding_scan(
+            repo_root, file_index, languages,
+            ci_content=ci_evidence.get("all_ci_content", ""))
+    else:
+        print("  WARNING: secure_coding_scanner module not found, skipping practice checks", file=sys.stderr)
+
     # Assemble evidence
     evidence = {
         "scan_metadata": {
@@ -907,6 +925,7 @@ def run_scan(repo_path: str, output_path: str | None = None) -> dict:
         "security_test_files": security_tests,
         "pr_template_security": pr_security,
         "architecture_security": arch_security,
+        "secure_coding_practices": secure_coding,
     }
 
     # Strip the all_ci_content from the output (too large for JSON report)
@@ -930,6 +949,19 @@ def run_scan(repo_path: str, output_path: str | None = None) -> dict:
     print(f"Potential secrets found: {len(secret_findings)}", file=sys.stderr)
     print(f"Security test files: {len(security_tests)}", file=sys.stderr)
     print(f"CI security jobs: {len(ci_evidence['security_jobs'])}", file=sys.stderr)
+    if secure_coding:
+        deps = secure_coding.get("secure_coding_deps", {})
+        pats = secure_coding.get("source_patterns", {})
+        dep_cats = sum(1 for v in deps.values() if v)
+        print(f"Secure coding dep categories found: {dep_cats}/10", file=sys.stderr)
+        print(f"Unsafe function patterns: {len(pats.get('unsafe_functions', []))}", file=sys.stderr)
+        print(f"Raw SQL patterns: {len(pats.get('raw_sql', []))}", file=sys.stderr)
+        print(f"Deprecated crypto patterns: {len(pats.get('deprecated_crypto', []))}", file=sys.stderr)
+        print(f"XSS template escapes: {len(pats.get('xss_template_escapes', []))}", file=sys.stderr)
+        print(f"Insecure CORS: {len(pats.get('insecure_cors', []))}", file=sys.stderr)
+        print(f"Insecure config: {len(pats.get('insecure_config', []))}", file=sys.stderr)
+        sbom = secure_coding.get("sbom_tooling", {})
+        print(f"SBOM tooling: {'Found' if sbom.get('in_ci') or sbom.get('in_dependencies') else 'Not found'}", file=sys.stderr)
 
     return evidence
 

@@ -23,6 +23,10 @@ ISO 27001:2022 Annex A software development controls (8.4, 8.25–8.33).
 Read `references/controls.md` — it contains the per-control scoring rules,
 example fix suggestions, and the mapping from evidence to status.
 
+For 8.28 (Secure Coding) checks, also read `references/secure-coding-patterns.md`
+which contains the per-language/framework lookup tables for libraries, config
+locations, and unsafe code patterns.
+
 ## Architecture: two-phase scan → score
 
 The skill separates evidence collection (deterministic) from compliance
@@ -76,6 +80,22 @@ The evidence JSON maps to controls like this:
 | `linter_evidence`, `security_analysis` | 8.28 |
 | `secrets_findings`, `env_gitignore` | 8.28 |
 | `file_evidence.lockfiles`, `file_evidence.dependency_scanning_config` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.input_validation` | 8.28, 8.26 |
+| `secure_coding_practices.secure_coding_deps.authentication` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.password_hashing` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.security_headers` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.rate_limiting` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.sanitization` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.orm` | 8.28 |
+| `secure_coding_practices.secure_coding_deps.structured_logging` | 8.28, supporting 8.16 |
+| `secure_coding_practices.source_patterns.unsafe_functions` | 8.28 |
+| `secure_coding_practices.source_patterns.raw_sql` | 8.28 |
+| `secure_coding_practices.source_patterns.deprecated_crypto` | 8.28 |
+| `secure_coding_practices.source_patterns.xss_template_escapes` | 8.28 |
+| `secure_coding_practices.source_patterns.insecure_cors` | 8.28 |
+| `secure_coding_practices.source_patterns.insecure_config` | 8.28 |
+| `secure_coding_practices.csrf_evidence` | 8.28 |
+| `secure_coding_practices.sbom_tooling` | 8.28, supporting 8.8 |
 | `ci_evidence.security_jobs` | 8.25, 8.28, 8.29 |
 | `security_test_files` | 8.29 |
 | `file_evidence.env_specific_configs`, `file_evidence.env_dirs` | 8.31 |
