@@ -130,12 +130,10 @@ claude --plugin-dir ./plugins/agent-guardrails
 These skills follow the open [Agent Skills](https://agentskills.io) standard (`SKILL.md` files with YAML frontmatter), which means they work with [Codex](https://github.com/openai/codex) out of the box — no modifications needed. Codex recursively discovers all `SKILL.md` files within each plugin directory. Subcommands use namespaced names (e.g., `changelog:create`, `logbook:time`) to avoid collisions.
 
 > **Important: Always install plugins as whole directories.** Each plugin directory contains all its skills, subcommands, reference files, and scripts. Never cherry-pick individual `SKILL.md` files out of their directory — they depend on sibling files for context.
+>
+> **Do not use `$skill-installer` or `npx skills`** — these tools flatten the directory tree by extracting each `SKILL.md` as a standalone skill. Plugins with subcommands that share common directory names (e.g., `update/`) across different plugins will collide when installed this way.
 
-**Option 1** — Install from inside Codex using the built-in `$skill-installer`:
-
-> Install skills from https://github.com/florianbuetow/claude-code
-
-**Option 2** — Clone and copy plugin directories:
+**Option 1** — Clone and copy plugin directories:
 
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git /tmp/claude-code
@@ -150,7 +148,7 @@ done
 rm -rf /tmp/claude-code
 ```
 
-**Option 3** — Symlink for automatic sync:
+**Option 2** — Symlink for automatic sync:
 
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git ~/claude-code-plugins
