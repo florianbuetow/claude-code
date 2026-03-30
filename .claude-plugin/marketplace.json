@@ -151,6 +151,17 @@
       },
       "source": "./plugins/logbook",
       "category": "productivity"
+    },
+    {
+      "name": "changelog",
+      "description": "Generate and maintain CHANGELOG.md files from git commit history using Keep a Changelog format with Semantic Versioning. Auto-detects create vs update. Classifies commits into six categories, filters internal changes, and surfaces breaking changes with migration guidance.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/changelog",
+      "category": "development"
     }
   ]
 }
