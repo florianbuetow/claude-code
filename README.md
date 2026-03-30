@@ -127,32 +127,24 @@ claude --plugin-dir ./plugins/agent-guardrails
 
 ### Using with Codex (OpenAI)
 
-These skills follow the open [Agent Skills](https://agentskills.io) standard (`SKILL.md` files with YAML frontmatter), which means they work with [Codex](https://github.com/openai/codex) out of the box — no modifications needed.
+These skills follow the open [Agent Skills](https://agentskills.io) standard (`SKILL.md` files with YAML frontmatter), which means they work with [Codex](https://github.com/openai/codex) out of the box — no modifications needed. Codex recursively discovers all `SKILL.md` files within each plugin directory. Subcommands use namespaced names (e.g., `changelog:create`, `logbook:time`) to avoid collisions.
 
-> **Note:** Codex skills are behind a feature flag. Enable them first: `codex --enable skills`
+> **Important: Always install plugins as whole directories.** Each plugin directory contains all its skills, subcommands, reference files, and scripts. Never cherry-pick individual `SKILL.md` files out of their directory — they depend on sibling files for context.
 
-**Option 1** — Install with the [`skills` CLI](https://github.com/vercel-labs/skills) (recommended):
+**Option 1** — Install from inside Codex using the built-in `$skill-installer`:
 
-```bash
-# Install all skills from this repo into Codex
-npx skills add florianbuetow/claude-code -a codex -g
+> Install skills from https://github.com/florianbuetow/claude-code
 
-# Or install specific skills
-npx skills add florianbuetow/claude-code --skill solid-principles --skill archibald -a codex -g
-```
-
-The `-a codex` flag targets Codex, and `-g` installs globally to `~/.agents/skills/`.
-
-**Option 2** — Clone and copy skill folders directly:
+**Option 2** — Clone and copy plugin directories:
 
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git /tmp/claude-code
 mkdir -p ~/.agents/skills
 
-# Copy all plugin skill folders
-for plugin in /tmp/claude-code/plugins/*/skills/*/; do
-  skill_name=$(basename "$plugin")
-  cp -r "$plugin" ~/.agents/skills/"$skill_name"
+# Copy each plugin directory as a whole unit
+for plugin in /tmp/claude-code/plugins/*/; do
+  plugin_name=$(basename "$plugin")
+  cp -r "$plugin" ~/.agents/skills/"$plugin_name"
 done
 
 rm -rf /tmp/claude-code
@@ -163,17 +155,17 @@ rm -rf /tmp/claude-code
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git ~/claude-code-plugins
 
-# Symlink each skill folder
+# Symlink each plugin directory as a whole unit
 mkdir -p ~/.agents/skills
-for plugin in ~/claude-code-plugins/plugins/*/skills/*/; do
-  skill_name=$(basename "$plugin")
-  ln -sf "$plugin" ~/.agents/skills/"$skill_name"
+for plugin in ~/claude-code-plugins/plugins/*/; do
+  plugin_name=$(basename "$plugin")
+  ln -sfn "$plugin" ~/.agents/skills/"$plugin_name"
 done
 ```
 
 With symlinking, a `git pull` in the cloned repo updates all skills automatically.
 
-Skills are invoked in Codex with `$skill-name` (e.g., `$solid-principles`) or auto-triggered by context, just like in Claude Code. Codex discovers skills from `~/.agents/skills/` (user-level) and `.agents/skills/` (repo-level).
+Skills are invoked in Codex with `$skill-name` (e.g., `$solid-principles`, `$changelog:create`) or auto-triggered by context. Codex discovers skills from `~/.agents/skills/` (user-level) and `.agents/skills/` (repo-level).
 
 ---
 
