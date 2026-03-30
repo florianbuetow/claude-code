@@ -173,7 +173,7 @@ For each rule to install:
 2. If the rule file already exists and matches the curated version, skip it silently.
 3. If the rule file does not exist, create it using the Write tool with the exact content from the curated set above.
 
-If a `hooks/` directory already exists at the project root, also write a copy of each rule file to `hooks/hookify.{name}.local.md` for reference. Do not create the `hooks/` directory if it doesn't exist — `.claude/` is the canonical location.
+`.claude/` is the canonical location for installed rules. The curated rule files also live in this plugin's `rules/` directory as a reference.
 
 ### Step 5: Verify Installation
 
