@@ -72,7 +72,7 @@ claude plugin install agent-guardrails
 
 ### Installing Hooks
 
-See the [hooks installation guide](hooks/README.md) for setup instructions.
+Hooks are bundled with the **agent-guardrails** plugin. Run `/agent-guardrails:install` to set them up.
 
 <details>
 <summary>Manual / Development Installation (Plugins)</summary>
@@ -1008,7 +1008,7 @@ All plugins use progressive disclosure - reference material is loaded only when 
 
 ## Hooks
 
-Behavioral hooks that enforce assistant discipline by blocking common AI anti-patterns. See the [hooks directory](hooks/) for available hooks and installation instructions.
+Behavioral hooks that enforce assistant discipline by blocking common AI anti-patterns. Bundled with the [agent-guardrails](plugins/agent-guardrails/) plugin — run `/agent-guardrails:install` to set up.
 
 ---
 
