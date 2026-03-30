@@ -1,0 +1,17 @@
+{
+  "name": "logbook",
+  "version": "1.0.0",
+  "description": "Analyze Claude Code session logs to generate per-project time and message reports. Breaks down usage by project and branch, groups branches under their parent project, and produces monthly + yearly markdown reports.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "session-analysis",
+    "time-tracking",
+    "usage-stats",
+    "messages",
+    "reports",
+    "productivity"
+  ]
+}

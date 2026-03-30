@@ -2,9 +2,9 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of Claude Code plugins and skills for software engineering workflows.
+A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`12 plugins` · `70+ skills`
+`13 plugins` · `70+ skills` · `2 hooks`
 
 ### Skills
 
@@ -22,6 +22,14 @@ A collection of Claude Code plugins and skills for software engineering workflow
 | [onboarding](#onboarding) | Project onboarding — status briefing from git, issues, and build system |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner — Annex A controls 8.4, 8.25–8.33 |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours — adapts ping interval to your cache TTL (5-min or 1-hour) |
+| [logbook](#logbook) | Session log analytics — time spent and messages exchanged per project/branch, with monthly + yearly reports |
+
+### Hooks
+
+| Hook | Description |
+|------|-------------|
+| [no-speculative-language](#no-speculative-language) | Blocks responses containing hedging or speculative language — forces investigation over guessing |
+| [no-skipping](#no-skipping) | Blocks responses that skip or gloss over work — forces explicit action or explanation |
 
 ---
 
@@ -50,12 +58,39 @@ claude plugin install retrospective
 claude plugin install onboarding
 claude plugin install iso27001-sdlc
 claude plugin install cache-money
+claude plugin install logbook
 ```
 
 **Step 3** - Restart Claude Code.
 
+### Installing Hooks
+
+Hooks are standalone `.local.md` files that go into your project's `.claude/` directory. They require the [hookify](https://github.com/anthropics/claude-plugins-official) plugin to be installed and enabled.
+
+**Install all hooks into the current project:**
+
+```bash
+# From any project directory
+curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-speculative-language.local.md -o .claude/hookify.no-speculative-language.local.md
+curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-skipping.local.md -o .claude/hookify.no-skipping.local.md
+```
+
+**Or tell your AI agent to install them:**
+
+> Install the hookify hooks from https://github.com/florianbuetow/claude-code — copy the `.local.md` files from the `hooks/` directory into this project's `.claude/` directory.
+
+**Or clone and copy:**
+
+```bash
+git clone https://github.com/florianbuetow/claude-code.git /tmp/claude-code
+cp /tmp/claude-code/hooks/*.local.md .claude/
+rm -rf /tmp/claude-code
+```
+
+Hooks take effect immediately — no restart needed.
+
 <details>
-<summary>Manual / Development Installation</summary>
+<summary>Manual / Development Installation (Plugins)</summary>
 
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git
@@ -73,6 +108,7 @@ claude --plugin-dir ./plugins/retrospective
 claude --plugin-dir ./plugins/onboarding
 claude --plugin-dir ./plugins/iso27001-sdlc
 claude --plugin-dir ./plugins/cache-money
+claude --plugin-dir ./plugins/logbook
 ```
 
 </details>
@@ -641,6 +677,37 @@ This plugin detects your cache TTL tier and schedules pings accordingly — ever
 
 ---
 
+## logbook
+
+Session log analytics for Claude Code.
+
+`2 skills` · `1 analysis script` · `Per-project/branch breakdown` · `Monthly + yearly reports`
+
+Every Claude Code session is logged to `~/.claude/projects/` as JSONL files with timestamps. This plugin analyzes those logs to answer two questions: **how much time** did you spend on each project, and **how many messages** did you exchange?
+
+Results are broken down per project with branches grouped under their parent. Git worktree variants (`-git-<branch>`, `--claude-worktrees-<branch>`) are automatically merged into the base project. Idle gaps > 15 minutes are excluded from time calculations.
+
+| Command | What it does |
+|---------|-------------|
+| `logbook:time` | Generate time-per-project reports — monthly + yearly markdown files with inline top-10 preview |
+| `logbook:messages` | Generate message-count reports — your messages vs agent messages, per project/branch |
+
+Each command produces:
+- **Monthly reports:** `YYYYMM-logbook-time.md` / `YYYYMM-logbook-messages.md`
+- **Yearly reports:** `YYYY-logbook-time.md` / `YYYY-logbook-messages.md`
+- **Inline preview:** Top 10 projects table shown directly in the terminal
+
+**Trigger** — Ask Claude about "time spent per project", "session stats", "message count", "usage report", "logbook", or mention time tracking or session analysis.
+
+**CLI usage:**
+```bash
+python3 plugins/logbook/scripts/logbook.py time --preview          # top-10 table only
+python3 plugins/logbook/scripts/logbook.py messages --out docs/reports  # generate all reports
+python3 plugins/logbook/scripts/logbook.py time --year 2026 --month 3   # single month
+```
+
+---
+
 ## Project Structure
 
 ```
@@ -779,14 +846,24 @@ plugins/
   │           │   └── scan_repo.py    # Phase 1: deterministic evidence collection
   │           └── references/
   │               └── controls.md     # Per-control scoring rules & evidence mapping
-  └── cache-money/
+  ├── cache-money/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       └── cache-money/
+  │           ├── SKILL.md            # Skill definition & ping loop workflow
+  │           └── references/
+  │               └── cache-mechanics.md  # Anthropic prompt cache technical details
+  └── logbook/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
+      ├── scripts/
+      │   └── logbook.py              # Session log analysis engine
       └── skills/
-          └── cache-money/
-              ├── SKILL.md            # Skill definition & ping loop workflow
-              └── references/
-                  └── cache-mechanics.md  # Anthropic prompt cache technical details
+          ├── time/
+          │   └── SKILL.md            # Time-per-project report skill
+          └── messages/
+              └── SKILL.md            # Messages-per-project report skill
 ```
 
 ---
@@ -837,6 +914,54 @@ The last 3 months of session logs. Each `.jsonl` file in `~/.claude/projects/` h
 
 **How much context do the plugins use?**
 All plugins use progressive disclosure - reference material is loaded only when needed to minimize token usage.
+
+---
+
+## Hooks
+
+Hooks are [hookify](https://github.com/anthropics/claude-plugins-official) rules that enforce behavior constraints on AI responses. They run automatically on every response and block output that violates the rules, forcing the model to regenerate.
+
+**Prerequisite:** The hookify plugin must be installed and enabled. Install it from the official Claude plugins marketplace:
+
+```bash
+claude plugin marketplace add anthropics/claude-plugins-official
+claude plugin install hookify
+```
+
+### no-speculative-language
+
+Blocks responses containing hedging, guessing, or unverified claims.
+
+**Catches:** "I think", "it seems like", "this should work", "it appears that", "assuming that", "could be due to", "one possible explanation", and 20+ other patterns.
+
+**Why:** AI assistants default to hedging instead of investigating. This hook forces the model to either verify its claims or explicitly state what it does not know.
+
+**File:** [`hooks/hookify.no-speculative-language.local.md`](hooks/hookify.no-speculative-language.local.md)
+
+### no-skipping
+
+Blocks responses that skip work, gloss over details, or hand-wave.
+
+**Catches:** "the rest looks fine", "without running it", "the pattern is the same for the rest", "you get the idea", "similar changes would be needed", and 15+ other patterns.
+
+**Why:** AI assistants take shortcuts by declaring things "fine" without checking, or suggesting the user complete remaining work. This hook forces the model to either do the work or explain why it should not be done.
+
+**File:** [`hooks/hookify.no-skipping.local.md`](hooks/hookify.no-skipping.local.md)
+
+### Managing Hooks
+
+Each hook file has an `enabled` flag in its YAML frontmatter. To disable a hook, set `enabled: false`:
+
+```yaml
+---
+name: no-speculative-language
+enabled: false  # disabled
+event: stop
+...
+---
+```
+
+To remove a hook entirely, delete the `.local.md` file from your project's `.claude/` directory.
 
 ---
 

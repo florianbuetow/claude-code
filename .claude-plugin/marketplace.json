@@ -140,6 +140,17 @@
       },
       "source": "./plugins/cache-money",
       "category": "performance"
+    },
+    {
+      "name": "logbook",
+      "description": "Analyze Claude Code session logs to generate per-project time and message reports. Breaks down usage by project and branch, groups worktree branches under their parent project, and produces monthly and yearly markdown reports with inline top-10 previews.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/logbook",
+      "category": "productivity"
     }
   ]
 }
