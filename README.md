@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`14 plugins` · `70+ skills` · `5 hooks`
+`15 plugins` · `70+ skills` · `5 hooks`
 
 ### Skills
 
@@ -24,6 +24,7 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours — adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [logbook](#logbook) | Session log analytics — time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history — Keep a Changelog format with Semantic Versioning |
+| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — analyze sessions for anti-patterns, install curated rules, refine based on usage |
 
 ### Hooks
 
@@ -64,6 +65,7 @@ claude plugin install iso27001-sdlc
 claude plugin install cache-money
 claude plugin install logbook
 claude plugin install changelog
+claude plugin install agent-guardrails
 ```
 
 **Step 3** - Restart Claude Code.
@@ -118,9 +120,60 @@ claude --plugin-dir ./plugins/iso27001-sdlc
 claude --plugin-dir ./plugins/cache-money
 claude --plugin-dir ./plugins/logbook
 claude --plugin-dir ./plugins/changelog
+claude --plugin-dir ./plugins/agent-guardrails
 ```
 
 </details>
+
+### Using with Codex (OpenAI)
+
+These skills follow the open [Agent Skills](https://agentskills.io) standard (`SKILL.md` files with YAML frontmatter), which means they work with [Codex](https://github.com/openai/codex) out of the box — no modifications needed.
+
+> **Note:** Codex skills are behind a feature flag. Enable them first: `codex --enable skills`
+
+**Option 1** — Install with the [`skills` CLI](https://github.com/vercel-labs/skills) (recommended):
+
+```bash
+# Install all skills from this repo into Codex
+npx skills add florianbuetow/claude-code -a codex -g
+
+# Or install specific skills
+npx skills add florianbuetow/claude-code --skill solid-principles --skill archibald -a codex -g
+```
+
+The `-a codex` flag targets Codex, and `-g` installs globally to `~/.agents/skills/`.
+
+**Option 2** — Clone and copy skill folders directly:
+
+```bash
+git clone https://github.com/florianbuetow/claude-code.git /tmp/claude-code
+mkdir -p ~/.agents/skills
+
+# Copy all plugin skill folders
+for plugin in /tmp/claude-code/plugins/*/skills/*/; do
+  skill_name=$(basename "$plugin")
+  cp -r "$plugin" ~/.agents/skills/"$skill_name"
+done
+
+rm -rf /tmp/claude-code
+```
+
+**Option 3** — Symlink for automatic sync:
+
+```bash
+git clone https://github.com/florianbuetow/claude-code.git ~/claude-code-plugins
+
+# Symlink each skill folder
+mkdir -p ~/.agents/skills
+for plugin in ~/claude-code-plugins/plugins/*/skills/*/; do
+  skill_name=$(basename "$plugin")
+  ln -sf "$plugin" ~/.agents/skills/"$skill_name"
+done
+```
+
+With symlinking, a `git pull` in the cloned repo updates all skills automatically.
+
+Skills are invoked in Codex with `$skill-name` (e.g., `$solid-principles`) or auto-triggered by context, just like in Claude Code. Codex discovers skills from `~/.agents/skills/` (user-level) and `.agents/skills/` (repo-level).
 
 ---
 
@@ -737,6 +790,28 @@ The update skill uses a 3-strategy boundary detection (tag match, date match, co
 
 ---
 
+## agent-guardrails
+
+Data-driven agent behavioral guardrails for Claude Code sessions.
+
+`3 skills` · `Session log analysis` · `5 curated rules` · `Iterative refinement`
+
+Closes the loop on behavioral enforcement: analyze real session logs to discover which anti-patterns occur most frequently, install battle-tested rules to block them, then refine those rules based on continued usage data. Ships with five curated rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping) embedded directly in the install skill — no analysis required to get started.
+
+| Command | What it does |
+|---------|-------------|
+| `agent-guardrails:analyze` | Scan session logs for anti-patterns — produces ranked frequency report with excerpts |
+| `agent-guardrails:install` | Install curated rules or custom rules into `.claude/` — works immediately, no restart |
+| `agent-guardrails:update` | Re-analyze logs against installed rules — finds false positives, missed patterns, suggests refinements |
+
+**Prerequisite:** The [hookify](https://github.com/anthropics/claude-plugins-official) plugin must be installed for rules to take effect. These skills manage the rule files; hookify enforces them.
+
+**Workflow:** `analyze` → `install` → use for a while → `update` → repeat. Or skip straight to `install` to get the curated set immediately.
+
+**Trigger** — Ask Claude to "analyze my sessions for anti-patterns", "install agent guardrails", "set up behavioral guardrails", "update my guardrails", "refine guardrail rules", or mention anti-pattern detection.
+
+---
+
 ## Project Structure
 
 ```
@@ -893,18 +968,26 @@ plugins/
   │       │   └── SKILL.md            # Time-per-project report skill
   │       └── messages/
   │           └── SKILL.md            # Messages-per-project report skill
-  └── changelog/
-      ├── .claude-plugin/
-      │   └── plugin.json             # Plugin manifest
+  ├── changelog/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       ├── changelog/
+  │       │   ├── SKILL.md            # Router: auto-detect create vs update
+  │       │   └── references/
+  │       │       └── format-guide.md # Keep a Changelog format spec
+  │       ├── create/
+  │       │   └── SKILL.md            # Create new CHANGELOG.md from full history
+  │       └── update/
+  │           └── SKILL.md            # Update existing CHANGELOG.md with new entries
+  └── agent-guardrails/
       └── skills/
-          ├── changelog/
-          │   ├── SKILL.md            # Router: auto-detect create vs update
-          │   └── references/
-          │       └── format-guide.md # Keep a Changelog format spec
-          ├── create/
-          │   └── SKILL.md            # Create new CHANGELOG.md from full history
+          ├── analyze/
+          │   └── SKILL.md            # Scan session logs for anti-patterns
+          ├── install/
+          │   └── SKILL.md            # Install curated or custom rules
           └── update/
-              └── SKILL.md            # Update existing CHANGELOG.md with new entries
+              └── SKILL.md            # Refine rules based on usage data
 ```
 
 ---
