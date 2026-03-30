@@ -1,0 +1,16 @@
+{
+  "name": "changelog",
+  "version": "1.0.0",
+  "description": "Generate and maintain CHANGELOG.md files from git commit history using Keep a Changelog format with semantic versioning. Creates new changelogs or appends updates to existing ones.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "changelog",
+    "release-notes",
+    "git-history",
+    "semantic-versioning",
+    "keep-a-changelog"
+  ]
+}

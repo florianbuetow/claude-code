@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`13 plugins` · `70+ skills` · `2 hooks`
+`14 plugins` · `70+ skills` · `5 hooks`
 
 ### Skills
 
@@ -23,6 +23,7 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner — Annex A controls 8.4, 8.25–8.33 |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours — adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [logbook](#logbook) | Session log analytics — time spent and messages exchanged per project/branch, with monthly + yearly reports |
+| [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history — Keep a Changelog format with Semantic Versioning |
 
 ### Hooks
 
@@ -30,6 +31,9 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 |------|-------------|
 | [no-speculative-language](#no-speculative-language) | Blocks responses containing hedging or speculative language — forces investigation over guessing |
 | [no-skipping](#no-skipping) | Blocks responses that skip or gloss over work — forces explicit action or explanation |
+| [no-preference-asking](#no-preference-asking) | Blocks responses that ask for preference instead of acting — forces decision-making |
+| [no-false-completion](#no-false-completion) | Blocks unverified completion claims — forces verification before asserting done |
+| [no-stalling](#no-stalling) | Blocks stalling and over-explaining — forces action over announcements |
 
 ---
 
@@ -59,6 +63,7 @@ claude plugin install onboarding
 claude plugin install iso27001-sdlc
 claude plugin install cache-money
 claude plugin install logbook
+claude plugin install changelog
 ```
 
 **Step 3** - Restart Claude Code.
@@ -73,6 +78,9 @@ Hooks are standalone `.local.md` files that go into your project's `.claude/` di
 # From any project directory
 curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-speculative-language.local.md -o .claude/hookify.no-speculative-language.local.md
 curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-skipping.local.md -o .claude/hookify.no-skipping.local.md
+curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-preference-asking.local.md -o .claude/hookify.no-preference-asking.local.md
+curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-false-completion.local.md -o .claude/hookify.no-false-completion.local.md
+curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-stalling.local.md -o .claude/hookify.no-stalling.local.md
 ```
 
 **Or tell your AI agent to install them:**
@@ -109,6 +117,7 @@ claude --plugin-dir ./plugins/onboarding
 claude --plugin-dir ./plugins/iso27001-sdlc
 claude --plugin-dir ./plugins/cache-money
 claude --plugin-dir ./plugins/logbook
+claude --plugin-dir ./plugins/changelog
 ```
 
 </details>
@@ -708,6 +717,26 @@ python3 plugins/logbook/scripts/logbook.py time --year 2026 --month 3   # single
 
 ---
 
+## changelog
+
+Generate and maintain `CHANGELOG.md` files from git commit history.
+
+`3 skills` · `Keep a Changelog format` · `Semantic Versioning` · `Auto-detect create vs update`
+
+Analyzes git commits and tags to produce human-readable changelogs following the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard. Commits are classified into six categories (Added, Changed, Deprecated, Removed, Fixed, Security) using conventional commit prefixes and keyword matching. Merge commits and internal-only changes are filtered out. Breaking changes are surfaced with `**BREAKING:**` prefixes and migration guidance.
+
+| Command | What it does |
+|---------|-------------|
+| `changelog` | Auto-detects whether to create or update based on file existence |
+| `changelog:create` | Creates a new `CHANGELOG.md` from the full git history |
+| `changelog:update` | Appends new entries since the last documented version |
+
+The update skill uses a 3-strategy boundary detection (tag match, date match, content match) to find where the existing changelog left off. If no new commits exist, it reports the changelog is already up to date without modifying the file.
+
+**Trigger** — Ask Claude to "update the changelog", "generate a changelog", "create CHANGELOG.md", "write release notes", or mention changelog generation.
+
+---
+
 ## Project Structure
 
 ```
@@ -854,16 +883,28 @@ plugins/
   │           ├── SKILL.md            # Skill definition & ping loop workflow
   │           └── references/
   │               └── cache-mechanics.md  # Anthropic prompt cache technical details
-  └── logbook/
+  ├── logbook/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── scripts/
+  │   │   └── logbook.py              # Session log analysis engine
+  │   └── skills/
+  │       ├── time/
+  │       │   └── SKILL.md            # Time-per-project report skill
+  │       └── messages/
+  │           └── SKILL.md            # Messages-per-project report skill
+  └── changelog/
       ├── .claude-plugin/
       │   └── plugin.json             # Plugin manifest
-      ├── scripts/
-      │   └── logbook.py              # Session log analysis engine
       └── skills/
-          ├── time/
-          │   └── SKILL.md            # Time-per-project report skill
-          └── messages/
-              └── SKILL.md            # Messages-per-project report skill
+          ├── changelog/
+          │   ├── SKILL.md            # Router: auto-detect create vs update
+          │   └── references/
+          │       └── format-guide.md # Keep a Changelog format spec
+          ├── create/
+          │   └── SKILL.md            # Create new CHANGELOG.md from full history
+          └── update/
+              └── SKILL.md            # Update existing CHANGELOG.md with new entries
 ```
 
 ---
@@ -932,7 +973,7 @@ claude plugin install hookify
 
 Blocks responses containing hedging, guessing, or unverified claims.
 
-**Catches:** "I think", "it seems like", "this should work", "it appears that", "assuming that", "could be due to", "one possible explanation", and 20+ other patterns.
+**Catches:** "I think", "it seems like", "this should work", "it appears that", "assuming that", "could be due to", "one possible explanation", "may have been", "not sure if", and 25+ other patterns.
 
 **Why:** AI assistants default to hedging instead of investigating. This hook forces the model to either verify its claims or explicitly state what it does not know.
 
@@ -942,11 +983,41 @@ Blocks responses containing hedging, guessing, or unverified claims.
 
 Blocks responses that skip work, gloss over details, or hand-wave.
 
-**Catches:** "the rest looks fine", "without running it", "the pattern is the same for the rest", "you get the idea", "similar changes would be needed", and 15+ other patterns.
+**Catches:** "the rest looks fine", "without running it", "the pattern is the same for the rest", "you get the idea", "similar changes would be needed", "for brevity", "I don't have access", and 20+ other patterns.
 
 **Why:** AI assistants take shortcuts by declaring things "fine" without checking, or suggesting the user complete remaining work. This hook forces the model to either do the work or explain why it should not be done.
 
 **File:** [`hooks/hookify.no-skipping.local.md`](hooks/hookify.no-skipping.local.md)
+
+### no-preference-asking
+
+Blocks responses that ask the user to choose instead of making a decision.
+
+**Catches:** "would you prefer", "would you like me to", "do you want me to", "which option", "shall I", "there are several options", and 15+ other patterns.
+
+**Why:** AI assistants stall by delegating decisions to the user instead of picking the best option and acting. This hook forces the model to make a recommendation and execute it.
+
+**File:** [`hooks/hookify.no-preference-asking.local.md`](hooks/hookify.no-preference-asking.local.md)
+
+### no-false-completion
+
+Blocks responses that claim work is complete without showing verification.
+
+**Catches:** "all done", "fully implemented", "everything works", "implementation is complete", "we're all set", and 10+ other patterns.
+
+**Why:** AI assistants declare victory without running tests or showing proof. This hook forces the model to verify its work before claiming completion.
+
+**File:** [`hooks/hookify.no-false-completion.local.md`](hooks/hookify.no-false-completion.local.md)
+
+### no-stalling
+
+Blocks responses that announce intent to act instead of acting.
+
+**Catches:** "before I proceed", "let me first understand", "a few things to consider", "it's worth noting", "let me explain", "taking a step back", and 10+ other patterns.
+
+**Why:** AI assistants pad responses with announcements of what they're about to do instead of doing it. This hook forces the model to act directly.
+
+**File:** [`hooks/hookify.no-stalling.local.md`](hooks/hookify.no-stalling.local.md)
 
 ### Managing Hooks
 
