@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`15 plugins` · `70+ skills` · `5 hooks`
+`15 plugins` · `80+ skills` · `5 hooks`
 
 ### Skills
 
@@ -72,32 +72,7 @@ claude plugin install agent-guardrails
 
 ### Installing Hooks
 
-Hooks are standalone `.local.md` files that go into your project's `.claude/` directory. They require the [hookify](https://github.com/anthropics/claude-plugins-official) plugin to be installed and enabled.
-
-**Install all hooks into the current project:**
-
-```bash
-# From any project directory
-curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-speculative-language.local.md -o .claude/hookify.no-speculative-language.local.md
-curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-skipping.local.md -o .claude/hookify.no-skipping.local.md
-curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-preference-asking.local.md -o .claude/hookify.no-preference-asking.local.md
-curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-false-completion.local.md -o .claude/hookify.no-false-completion.local.md
-curl -sL https://raw.githubusercontent.com/florianbuetow/claude-code/main/hooks/hookify.no-stalling.local.md -o .claude/hookify.no-stalling.local.md
-```
-
-**Or tell your AI agent to install them:**
-
-> Install the hookify hooks from https://github.com/florianbuetow/claude-code — copy the `.local.md` files from the `hooks/` directory into this project's `.claude/` directory.
-
-**Or clone and copy:**
-
-```bash
-git clone https://github.com/florianbuetow/claude-code.git /tmp/claude-code
-cp /tmp/claude-code/hooks/*.local.md .claude/
-rm -rf /tmp/claude-code
-```
-
-Hooks take effect immediately — no restart needed.
+See the [hooks installation guide](hooks/README.md) for setup instructions.
 
 <details>
 <summary>Manual / Development Installation (Plugins)</summary>
@@ -1033,79 +1008,7 @@ All plugins use progressive disclosure - reference material is loaded only when 
 
 ## Hooks
 
-Hooks are [hookify](https://github.com/anthropics/claude-plugins-official) rules that enforce behavior constraints on AI responses. They run automatically on every response and block output that violates the rules, forcing the model to regenerate.
-
-**Prerequisite:** The hookify plugin must be installed and enabled. Install it from the official Claude plugins marketplace:
-
-```bash
-claude plugin marketplace add anthropics/claude-plugins-official
-claude plugin install hookify
-```
-
-### no-speculative-language
-
-Blocks responses containing hedging, guessing, or unverified claims.
-
-**Catches:** "I think", "it seems like", "this should work", "it appears that", "assuming that", "could be due to", "one possible explanation", "may have been", "not sure if", and 25+ other patterns.
-
-**Why:** AI assistants default to hedging instead of investigating. This hook forces the model to either verify its claims or explicitly state what it does not know.
-
-**File:** [`hooks/hookify.no-speculative-language.local.md`](hooks/hookify.no-speculative-language.local.md)
-
-### no-skipping
-
-Blocks responses that skip work, gloss over details, or hand-wave.
-
-**Catches:** "the rest looks fine", "without running it", "the pattern is the same for the rest", "you get the idea", "similar changes would be needed", "for brevity", "I don't have access", and 20+ other patterns.
-
-**Why:** AI assistants take shortcuts by declaring things "fine" without checking, or suggesting the user complete remaining work. This hook forces the model to either do the work or explain why it should not be done.
-
-**File:** [`hooks/hookify.no-skipping.local.md`](hooks/hookify.no-skipping.local.md)
-
-### no-preference-asking
-
-Blocks responses that ask the user to choose instead of making a decision.
-
-**Catches:** "would you prefer", "would you like me to", "do you want me to", "which option", "shall I", "there are several options", and 15+ other patterns.
-
-**Why:** AI assistants stall by delegating decisions to the user instead of picking the best option and acting. This hook forces the model to make a recommendation and execute it.
-
-**File:** [`hooks/hookify.no-preference-asking.local.md`](hooks/hookify.no-preference-asking.local.md)
-
-### no-false-completion
-
-Blocks responses that claim work is complete without showing verification.
-
-**Catches:** "all done", "fully implemented", "everything works", "implementation is complete", "we're all set", and 10+ other patterns.
-
-**Why:** AI assistants declare victory without running tests or showing proof. This hook forces the model to verify its work before claiming completion.
-
-**File:** [`hooks/hookify.no-false-completion.local.md`](hooks/hookify.no-false-completion.local.md)
-
-### no-stalling
-
-Blocks responses that announce intent to act instead of acting.
-
-**Catches:** "before I proceed", "let me first understand", "a few things to consider", "it's worth noting", "let me explain", "taking a step back", and 10+ other patterns.
-
-**Why:** AI assistants pad responses with announcements of what they're about to do instead of doing it. This hook forces the model to act directly.
-
-**File:** [`hooks/hookify.no-stalling.local.md`](hooks/hookify.no-stalling.local.md)
-
-### Managing Hooks
-
-Each hook file has an `enabled` flag in its YAML frontmatter. To disable a hook, set `enabled: false`:
-
-```yaml
----
-name: no-speculative-language
-enabled: false  # disabled
-event: stop
-...
----
-```
-
-To remove a hook entirely, delete the `.local.md` file from your project's `.claude/` directory.
+Behavioral hooks that enforce assistant discipline by blocking common AI anti-patterns. See the [hooks directory](hooks/) for available hooks and installation instructions.
 
 ---
 
