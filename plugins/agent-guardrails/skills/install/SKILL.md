@@ -1,6 +1,6 @@
 ---
 name: agent-guardrails-install
-description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes five battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
+description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes six battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
 ---
 
 # Agent Guardrails Install
@@ -27,6 +27,7 @@ Install agent behavioral guardrail rules into the current project. Generates a b
 | 3 | `no-preference-asking` | Blocks delegating decisions to the user |
 | 4 | `no-false-completion` | Blocks unverified completion claims |
 | 5 | `no-skipping` | Blocks skipping work or hand-waving |
+| 6 | `no-dismissing` | Blocks dismissing issues without investigation |
 
 ## Workflow
 
@@ -121,6 +122,7 @@ Show what was installed:
 | no-preference-asking | Installed |
 | no-false-completion | Installed |
 | no-skipping | Installed |
+| no-dismissing | Installed |
 
 **Script:** `.claude/hooks/stop-guardrails.sh`
 **Config:** `.claude/settings.local.json` (Stop hook)
@@ -136,7 +138,7 @@ Rules trigger on the assistant's Stop event. To test, try writing a response wit
 
 ## Custom Rules
 
-If the user provides a custom behavior description (not one of the five curated rules), add a new grep block to the bash script following the same pattern:
+If the user provides a custom behavior description (not one of the six curated rules), add a new grep block to the bash script following the same pattern:
 
 ```bash
 # {kebab-case-name}

@@ -1,6 +1,6 @@
 # agent-guardrails
 
-Behavioral guardrails for Claude Code agents. Five battle-tested rules enforced via a Stop hook bash script, with skills for data-driven analysis and tuning.
+Behavioral guardrails for Claude Code agents. Six battle-tested rules enforced via a Stop hook bash script, with skills for data-driven analysis and tuning.
 
 ## Installation
 
@@ -39,18 +39,19 @@ Assistant response -> Stop hook -> stop-guardrails.sh -> block / allow
 | `no-preference-asking` | Delegating decisions to the user ("would you prefer", "shall I") |
 | `no-false-completion` | Claiming completion without evidence ("all done", "fully implemented") |
 | `no-skipping` | Skipping work or hand-waving ("the rest looks fine", "for brevity") |
+| `no-dismissing` | Dismissing issues without investigation ("not a real bug", "can be ignored", "just a warning") |
 
 ## Quick Start
 
 ```
-/agent-guardrails:install     # Install all five rules into your project
+/agent-guardrails:install     # Install all six rules into your project
 /agent-guardrails:analyze     # Scan session logs for anti-patterns
 /agent-guardrails:update      # Tune rules based on real usage data
 ```
 
 ### Install
 
-Copies a bundled bash script to `.claude/hooks/stop-guardrails.sh` and registers it in `.claude/settings.local.json`. Specify rule names to install a subset, or run with no arguments for all five.
+Copies a bundled bash script to `.claude/hooks/stop-guardrails.sh` and registers it in `.claude/settings.local.json`. Specify rule names to install a subset, or run with no arguments for all six.
 
 ### Analyze
 

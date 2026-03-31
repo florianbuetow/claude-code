@@ -30,7 +30,7 @@ Read the canonical rule definitions from the plugin's `rules/` directory:
 
 **Source of truth:** `${CLAUDE_PLUGIN_ROOT}/rules/no-*.md`
 
-Read each rule file's YAML frontmatter to extract `name`, `pattern`, and `message` fields. The five baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`.
+Read each rule file's YAML frontmatter to extract `name`, `pattern`, and `message` fields. The six baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`, `no-dismissing`.
 
 ### Step 3: Analyze Recent Sessions
 

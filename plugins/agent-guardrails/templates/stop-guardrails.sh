@@ -36,6 +36,11 @@ if echo "$message" | grep -qiE '(i('\''m| am) skipping|skip(ping)? this|let('\''
   blocked+=("**no-skipping**: Don't skip or hand-wave. If something shouldn't be done, explain why. If it should be done, do it.")
 fi
 
+# no-dismissing
+if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|pre-existing (error|warning|bug|issue)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure))'; then
+  blocked+=("**no-dismissing**: Don't dismiss issues without investigation. Diagnose the cause, then decide if action is needed.")
+fi
+
 if [ ${#blocked[@]} -eq 0 ]; then
   echo '{}'
   exit 0
