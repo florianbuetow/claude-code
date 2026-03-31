@@ -1,6 +1,6 @@
 {
   "name": "agent-guardrails",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "description": "Behavioral guardrails for Claude Code agents. Five battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping) enforced via a Stop hook bash script. Includes analyze, install, and update skills for data-driven tuning.",
   "author": {
     "name": "Florian Buetow",
