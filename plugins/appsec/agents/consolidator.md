@@ -1,7 +1,7 @@
 ---
 name: consolidator
 description: Spawned after all parallel red team analysis agents complete their work. Merges, deduplicates, cross-references, and ranks findings from multiple agents into a single consolidated security report with attack chains and prioritized remediation order.
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: blue
 ---

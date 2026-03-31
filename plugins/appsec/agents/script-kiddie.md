@@ -1,7 +1,7 @@
 ---
 name: script-kiddie
 description: Simulates a low-skill opportunistic attacker who uses automated tools, public exploit databases, and common scanning techniques to find easy wins in the codebase
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---

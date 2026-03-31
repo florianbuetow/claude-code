@@ -1,7 +1,7 @@
 ---
 name: hacktivist
 description: Simulates an ideologically motivated medium-skill attacker seeking maximum public embarrassment through data leaks, defacement, and service disruption
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---
