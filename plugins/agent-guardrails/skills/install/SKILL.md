@@ -26,111 +26,17 @@ claude plugin install hookify
 
 These five rules are proven in production use. Each targets a specific anti-pattern in assistant behavior.
 
-### Rule 1: no-speculative-language
+**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
 
-**File:** `.claude/hookify.no-speculative-language.local.md`
+| # | Rule | Installed as |
+|---|------|-------------|
+| 1 | `no-speculative-language` | `.claude/hookify.no-speculative-language.local.md` |
+| 2 | `no-stalling` | `.claude/hookify.no-stalling.local.md` |
+| 3 | `no-preference-asking` | `.claude/hookify.no-preference-asking.local.md` |
+| 4 | `no-false-completion` | `.claude/hookify.no-false-completion.local.md` |
+| 5 | `no-skipping` | `.claude/hookify.no-skipping.local.md` |
 
-```markdown
----
-name: no-speculative-language
-enabled: true
-event: stop
-pattern: (?i)(probably|most likely|possibly|perhaps|presumably|I believe|I think|I'?m (fairly |not entirely |pretty )?confident|if I recall correctly|as far as I know|from my understanding|it (seems|appears) (like|that|to be)|it looks like|this (looks|seems) (correct|right)|that looks right|I'?ll? assume|assuming that|this should (work|fix|resolve|handle|do the trick)|should be fine|everything should be working|that should do it|likely caused by|might be happening because|could be (due to|a|caused)|one possible explanation|a common cause|may have (already|been)|may be (a|the|related|caused)|might have|could have been|not sure (if|whether|why|what)|I'?m not certain)
-action: block
----
-
-**Stop - speculative language detected.**
-
-You used hedging or speculative language (e.g., "probably", "I think", "this should work", "it seems like", "likely caused by", "may have been", "not sure if"). Don't guess. Either:
-1. **Investigate** to confirm the cause or result, or
-2. **State explicitly** what you know and what you don't know.
-
-No hedging. No unverified claims. Verify before asserting.
-```
-
-### Rule 2: no-stalling
-
-**File:** `.claude/hookify.no-stalling.local.md`
-
-```markdown
----
-name: no-stalling
-enabled: true
-event: stop
-pattern: (?i)(let me take a step back|taking a step back|before I proceed|before we proceed|before I continue|a few things to consider|there are some considerations|it'?s worth noting|it'?s important to note|one thing to keep in mind|let me (first )?explain|to summarize what|to clarify what|let me first understand|let me first check|now let me also)
-action: block
----
-
-**Stop - you're stalling instead of acting.**
-
-You used stalling language (e.g., "before I proceed", "let me first understand", "a few things to consider", "it's worth noting"). Stop padding and act:
-1. If you need information, **go get it** — don't announce that you will.
-2. If you have information, **act on it** — don't re-explain it.
-3. If there's a real blocker, **state it directly** in one sentence.
-```
-
-### Rule 3: no-preference-asking
-
-**File:** `.claude/hookify.no-preference-asking.local.md`
-
-```markdown
----
-name: no-preference-asking
-enabled: true
-event: stop
-pattern: (?i)(would you prefer|would you like me to|would you rather|do you want me to|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))
-action: block
----
-
-**Stop - you're asking for preference instead of acting.**
-
-You asked the user to choose instead of making a decision yourself (e.g., "would you prefer", "would you like me to", "which option", "shall I"). Don't stall by delegating decisions:
-1. **Pick the best option** and do it.
-2. If genuinely ambiguous with significant trade-offs, **state your recommendation and why**, then act on it.
-3. The user can redirect you if they disagree.
-```
-
-### Rule 4: no-false-completion
-
-**File:** `.claude/hookify.no-false-completion.local.md`
-
-```markdown
----
-name: no-false-completion
-enabled: true
-event: stop
-pattern: (?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)
-action: block
----
-
-**Stop - unverified completion claim detected.**
-
-You claimed the work is complete (e.g., "all done", "fully implemented", "everything works") without showing verification. Don't claim completion without evidence:
-1. **Run the tests** or relevant verification commands.
-2. **Show the output** proving it works.
-3. Only claim completion after verification succeeds.
-```
-
-### Rule 5: no-skipping
-
-**File:** `.claude/hookify.no-skipping.local.md`
-
-```markdown
----
-name: no-skipping
-enabled: true
-event: stop
-pattern: (?i)(i('m| am) skipping|skip(ping)? this|let('s| us) skip|we('ll| will) skip|i('ll| will) skip|the rest (looks|seems|is) fine|everything else (seems|looks|is) (correct|fine|ok)|that part should be fine|should be straightforward|without (seeing|running|testing)|I haven'?t tested this|similar changes would be needed|you get the idea|the pattern is the same|and so on|the other files don'?t need|don'?t think we need to change|I won'?t go through every|and similar for the (other|rest)|the same (approach|pattern|logic) (applies|works) for|I'?ll leave (that|the rest|it) (to|for|as)|left as an exercise|beyond the scope|outside the scope|for brevity|I don'?t have access|I can'?t access)
-action: block
----
-
-**Stop - you're skipping or glossing over work.**
-
-You either announced you're skipping something, or you glossed over details (e.g., "the rest looks fine", "without running it", "similar changes would be needed", "you get the idea", "for brevity", "I don't have access"). Don't skip and don't hand-wave:
-1. If something shouldn't be done, **explain why**.
-2. If it should be done, **do it**.
-3. Never skip without the user's explicit approval.
-```
+Read the canonical rule content from the `rules/` directory when installing. Do not hardcode rule content in this skill — the `rules/` files are the single source of truth.
 
 ## Workflow
 

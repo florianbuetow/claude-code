@@ -9,47 +9,21 @@ Scan Claude Code session logs to detect recurring anti-patterns in assistant res
 
 ## Known Anti-Pattern Categories
 
-These are the established categories with proven regex patterns. Scan for ALL of them plus any novel patterns discovered during analysis.
+The canonical regex patterns live in the plugin's `rules/` directory — one `.local.md` file per category. **Always read the patterns from those files** rather than hardcoding them, so analysis stays in sync with installed/refined rules.
 
-### 1. Speculative Language
-**What it looks like:** Hedging, guessing, unverified claims.
-**Signal phrases:** "probably", "I think", "this should work", "it seems like", "likely caused by", "may have been", "not sure if", "I'm fairly confident", "if I recall correctly", "as far as I know", "one possible explanation"
-**Proven regex:**
-```
-(?i)(probably|most likely|possibly|perhaps|presumably|I believe|I think|I'?m (fairly |not entirely |pretty )?confident|if I recall correctly|as far as I know|from my understanding|it (seems|appears) (like|that|to be)|it looks like|this (looks|seems) (correct|right)|that looks right|I'?ll? assume|assuming that|this should (work|fix|resolve|handle|do the trick)|should be fine|everything should be working|that should do it|likely caused by|might be happening because|could be (due to|a|caused)|one possible explanation|a common cause|may have (already|been)|may be (a|the|related|caused)|might have|could have been|not sure (if|whether|why|what)|I'?m not certain)
-```
+**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
 
-### 2. Stalling
-**What it looks like:** Padding, announcing intent instead of acting, re-explaining known context.
-**Signal phrases:** "let me take a step back", "before I proceed", "a few things to consider", "it's worth noting", "let me first understand", "now let me also"
-**Proven regex:**
-```
-(?i)(let me take a step back|taking a step back|before I proceed|before we proceed|before I continue|a few things to consider|there are some considerations|it'?s worth noting|it'?s important to note|one thing to keep in mind|let me (first )?explain|to summarize what|to clarify what|let me first understand|let me first check|now let me also)
-```
+Read each rule file's YAML frontmatter to extract the `pattern` and `name` fields. The five categories are:
 
-### 3. Preference-Asking
-**What it looks like:** Delegating decisions to user instead of choosing and acting.
-**Signal phrases:** "would you prefer", "would you like me to", "shall I", "which option would you", "happy to go either way", "let me know which"
-**Proven regex:**
-```
-(?i)(would you prefer|would you like me to|would you rather|do you want me to|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))
-```
+| # | Category | Rule file |
+|---|----------|-----------|
+| 1 | Speculative Language | `hookify.no-speculative-language.local.md` |
+| 2 | Stalling | `hookify.no-stalling.local.md` |
+| 3 | Preference-Asking | `hookify.no-preference-asking.local.md` |
+| 4 | False Completion | `hookify.no-false-completion.local.md` |
+| 5 | Skipping | `hookify.no-skipping.local.md` |
 
-### 4. False Completion
-**What it looks like:** Claiming work is done without showing verification output.
-**Signal phrases:** "all done", "we're all set", "fully implemented", "everything is working", "the fix is complete"
-**Proven regex:**
-```
-(?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)
-```
-
-### 5. Skipping
-**What it looks like:** Glossing over work, hand-waving, leaving things "as an exercise".
-**Signal phrases:** "I'm skipping", "the rest looks fine", "without running it", "you get the idea", "for brevity", "beyond the scope", "I don't have access"
-**Proven regex:**
-```
-(?i)(i('m| am) skipping|skip(ping)? this|let('s| us) skip|we('ll| will) skip|i('ll| will) skip|the rest (looks|seems|is) fine|everything else (seems|looks|is) (correct|fine|ok)|that part should be fine|should be straightforward|without (seeing|running|testing)|I haven'?t tested this|similar changes would be needed|you get the idea|the pattern is the same|and so on|the other files don'?t need|don'?t think we need to change|I won'?t go through every|and similar for the (other|rest)|the same (approach|pattern|logic) (applies|works) for|I'?ll leave (that|the rest|it) (to|for|as)|left as an exercise|beyond the scope|outside the scope|for brevity|I don'?t have access|I can'?t access)
-```
+Scan for ALL of them plus any novel patterns discovered during analysis.
 
 ## Workflow
 
@@ -69,7 +43,7 @@ Create a Python script at `/tmp/agent-guardrails-analyze.py` that:
 
 1. Reads each JSONL file
 2. Extracts assistant message text from `type: "assistant"` entries where `message.content[].type == "text"`
-3. Tests each message against ALL five known anti-pattern regexes above
+3. Tests each message against ALL five anti-pattern regexes loaded from the `rules/` files (see table above)
 4. For each match, records:
    - Category name
    - The matched phrase

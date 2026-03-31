@@ -2,7 +2,7 @@
 name: no-stalling
 enabled: true
 event: stop
-pattern: (?i)(let me take a step back|taking a step back|before I proceed|before we proceed|before I continue|a few things to consider|there are some considerations|it'?s worth noting|it'?s important to note|one thing to keep in mind|let me (first )?explain|to summarize what|to clarify what|let me first understand|let me first check|now let me also)
+pattern: (?i)(let me take a step back|taking a step back|before I proceed|before we proceed|before I continue|a few things to consider|there are some considerations|it'?s worth noting|it'?s important to note|one thing to keep in mind|let me (first )?explain|to summarize what|to clarify what|let me first understand|now let me also)
 action: block
 ---
 
