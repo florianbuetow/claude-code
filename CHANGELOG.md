@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed `tools` frontmatter format in all 7 appsec agent files from comma-separated string to proper YAML array, ensuring tool restrictions are enforced.
+- Fixed 5 plugins (cache-money, changelog, logbook, onboarding, agent-guardrails) claiming MIT license without including a LICENSE file.
 - Fixed "let me first check" false positive in agent-guardrails no-stalling rule pattern.
 - Fixed stale `hooks/` path reference in agent-guardrails update skill.
 - Fixed Codex installation instructions to install whole plugin directories instead of individual skills.
