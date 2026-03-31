@@ -43,18 +43,13 @@ Build and run a Python analysis script at `/tmp/agent-guardrails-update.py` that
    - **Matches per rule** — how many times each rule's pattern was found in raw assistant text
    - **Match excerpts** — 200-char context around each match (up to 10 per rule)
    - **Phrase frequency** — which specific phrases trigger each rule most often
-5. Also runs the full anti-pattern scan using the five baseline regexes below to find **uncovered patterns** — anti-patterns present in logs that no installed rule catches
+5. Also runs a full anti-pattern scan to find **uncovered patterns** — anti-patterns present in logs that no installed rule catches. Load the baseline regexes from the plugin's canonical rule files:
+
+**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
+
+Read each rule file's YAML frontmatter `pattern` field. The five baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`.
+
 6. Outputs structured JSON to stdout
-
-**Baseline anti-pattern regexes** (use these for the uncovered-pattern scan):
-
-| Category | Regex |
-|----------|-------|
-| Speculative Language | `(?i)(probably\|most likely\|possibly\|perhaps\|presumably\|I believe\|I think\|I'?m (fairly \|not entirely \|pretty )?confident\|if I recall correctly\|as far as I know\|from my understanding\|it (seems\|appears) (like\|that\|to be)\|it looks like\|this (looks\|seems) (correct\|right)\|that looks right\|I'?ll? assume\|assuming that\|this should (work\|fix\|resolve\|handle\|do the trick)\|should be fine\|everything should be working\|that should do it\|likely caused by\|might be happening because\|could be (due to\|a\|caused)\|one possible explanation\|a common cause\|may have (already\|been)\|may be (a\|the\|related\|caused)\|might have\|could have been\|not sure (if\|whether\|why\|what)\|I'?m not certain)` |
-| Stalling | `(?i)(let me take a step back\|taking a step back\|before I proceed\|before we proceed\|before I continue\|a few things to consider\|there are some considerations\|it'?s worth noting\|it'?s important to note\|one thing to keep in mind\|let me (first )?explain\|to summarize what\|to clarify what\|let me first understand\|let me first check\|now let me also)` |
-| Preference-Asking | `(?i)(would you prefer\|would you like me to\|would you rather\|do you want me to\|which approach would you\|which option would you\|what would you prefer\|let me know which\|let me know how you\|there are a few approaches\|there are several options\|here are some options\|which would you like\|happy to go either way\|shall I\|what.*feels right\|which level feels right\|which.*do you (want\|prefer\|think))` |
-| False Completion | `(?i)(all done\|all set\|we'?re all set\|we'?re good\|you'?re all set\|that'?s everything\|nothing else needs\|no other changes\|the fix is complete\|implementation is complete\|fully implemented\|fully working\|everything is working\|everything works)` |
-| Skipping | `(?i)(i('m\| am) skipping\|skip(ping)? this\|let('s\| us) skip\|we('ll\| will) skip\|i('ll\| will) skip\|the rest (looks\|seems\|is) fine\|everything else (seems\|looks\|is) (correct\|fine\|ok)\|that part should be fine\|should be straightforward\|without (seeing\|running\|testing)\|I haven'?t tested this\|similar changes would be needed\|you get the idea\|the pattern is the same\|and so on\|the other files don'?t need\|don'?t think we need to change\|I won'?t go through every\|and similar for the (other\|rest)\|the same (approach\|pattern\|logic) (applies\|works) for\|I'?ll leave (that\|the rest\|it) (to\|for\|as)\|left as an exercise\|beyond the scope\|outside the scope\|for brevity\|I don'?t have access\|I can'?t access)` |
 
 **Script requirements:**
 - Python stdlib only (json, re, os, glob, sys, collections)
@@ -183,7 +178,6 @@ After presenting the report, apply the recommended changes:
 
 1. **For pattern refinements:** Edit the `.claude/hookify.*.local.md` file with the updated regex using the Edit tool
 2. **For new rules:** Create the file using the Write tool
-3. **Also update** the `hooks/` copy if it exists
 
 After each edit, read the file back to verify the change was applied correctly.
 
