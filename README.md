@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`15 plugins` · `80+ skills` · `5 hooks`
+`15 plugins` · `80+ skills`
 
 ### Skills
 
@@ -25,16 +25,6 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 | [logbook](#logbook) | Session log analytics — time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history — Keep a Changelog format with Semantic Versioning |
 | [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — analyze sessions for anti-patterns, install curated rules, refine based on usage |
-
-### Hooks
-
-| Hook | Description |
-|------|-------------|
-| [no-speculative-language](#no-speculative-language) | Blocks responses containing hedging or speculative language — forces investigation over guessing |
-| [no-skipping](#no-skipping) | Blocks responses that skip or gloss over work — forces explicit action or explanation |
-| [no-preference-asking](#no-preference-asking) | Blocks responses that ask for preference instead of acting — forces decision-making |
-| [no-false-completion](#no-false-completion) | Blocks unverified completion claims — forces verification before asserting done |
-| [no-stalling](#no-stalling) | Blocks stalling and over-explaining — forces action over announcements |
 
 ---
 
@@ -70,9 +60,19 @@ claude plugin install agent-guardrails
 
 **Step 3** - Restart Claude Code.
 
-### Installing Hooks
+### Updating
 
-Hooks are bundled with the **agent-guardrails** plugin. Run `/agent-guardrails:install` to set them up.
+To update all installed plugins from this marketplace to their latest versions:
+
+```bash
+claude plugin marketplace update florianbuetow-plugins
+```
+
+To verify an installed plugin version:
+
+```bash
+find ~/.claude/plugins -name "plugin.json" -path "*<plugin-name>*" -exec grep version {} \;
+```
 
 <details>
 <summary>Manual / Development Installation (Plugins)</summary>
