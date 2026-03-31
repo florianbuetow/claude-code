@@ -1,7 +1,7 @@
 ---
 name: nation-state
 description: Spawned during red team analysis when critical infrastructure or high-value targets are assessed. Simulates an Advanced Persistent Threat actor with unlimited time, resources, and sophistication who chains multiple weaknesses together to achieve persistent access, covert exfiltration, and lateral movement across system boundaries.
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---

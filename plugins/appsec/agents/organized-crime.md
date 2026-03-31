@@ -1,7 +1,7 @@
 ---
 name: organized-crime
 description: Simulates a professional criminal operation with high technical skill seeking financial gain through payment data interception, credential harvesting, PII theft, and ransomware deployment vectors
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---

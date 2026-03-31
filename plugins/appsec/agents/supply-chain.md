@@ -1,7 +1,7 @@
 ---
 name: supply-chain
 description: Spawned during red team analysis to evaluate supply chain attack surface. Simulates a targeted dependency compromiser who has taken control of one of the project's dependencies and wants to maximize blast radius through build pipelines, update mechanisms, and transitive trust relationships.
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added no-dismissing rule to agent-guardrails plugin (v2.1.0).
 - Added plugin.json manifest for agent-guardrails plugin.
 - Added agent-guardrails plugin with five behavioral guardrail rules for blocking AI anti-patterns (speculative language, stalling, preference-asking, false completion, skipping).
 - Added Codex (OpenAI) installation instructions to README — skills CLI, clone-and-copy, and symlink methods.
@@ -29,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Replaced hookify dependency with self-contained bash Stop hook in agent-guardrails (v2.0.0).
+- Removed hooks section from README - hooks are an implementation detail of plugins.
+- Replaced unicode em dashes with ASCII hyphens in README.
 - Deduplicated regex patterns in agent-guardrails: analyze, install, and update skills now read from `rules/` files as single source of truth.
 - Consolidated hookify hook rules from top-level `hooks/` directory into agent-guardrails plugin as single source of truth.
 - Cleaned up README: deduplicated hooks section, fixed skill count, updated paths.

@@ -1,7 +1,7 @@
 ---
 name: insider
 description: Simulates a malicious authenticated user with domain knowledge who attempts privilege escalation, data exfiltration, and persistent backdoor access using legitimate credentials
-tools: Glob, Grep, Read, Bash
+tools: ["Glob", "Grep", "Read", "Bash"]
 model: sonnet
 color: red
 ---
