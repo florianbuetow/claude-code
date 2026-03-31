@@ -9,24 +9,30 @@ Re-analyze session logs against installed guardrail rules to measure effectivene
 
 ## Workflow
 
-### Step 1: Load Existing Rules
+### Step 1: Load Installed Rules
 
-Read all installed guardrail rules:
+Read the installed guardrail script:
 
 ```bash
-ls .claude/hookify.*.local.md 2>/dev/null
+cat .claude/hooks/stop-guardrails.sh 2>/dev/null
 ```
 
-For each rule file, extract:
-- `name` from frontmatter
-- `enabled` status
-- `event` type
-- `pattern` regex
-- `action` (warn/block)
+Parse each grep block to extract:
+- Rule name (from the `# {name}` comment)
+- Pattern (from the `grep -qiE` argument)
+- Message (from the `blocked+=` argument)
 
-If no rules are installed, tell the user to run `/agent-guardrails:install` first and stop.
+If no script exists, tell the user to run `/agent-guardrails:install` first and stop.
 
-### Step 2: Analyze Recent Sessions
+### Step 2: Load Canonical Rule Definitions
+
+Read the canonical rule definitions from the plugin's `rules/` directory:
+
+**Source of truth:** `${CLAUDE_PLUGIN_ROOT}/rules/no-*.md`
+
+Read each rule file's YAML frontmatter to extract `name`, `pattern`, and `message` fields. The five baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`.
+
+### Step 3: Analyze Recent Sessions
 
 Find session logs from the period since rules were installed. Default to last 7 days; accept `$ARGUMENTS` for custom ranges (e.g., "update last 30 days").
 
@@ -43,12 +49,7 @@ Build and run a Python analysis script at `/tmp/agent-guardrails-update.py` that
    - **Matches per rule** — how many times each rule's pattern was found in raw assistant text
    - **Match excerpts** — 200-char context around each match (up to 10 per rule)
    - **Phrase frequency** — which specific phrases trigger each rule most often
-5. Also runs a full anti-pattern scan to find **uncovered patterns** — anti-patterns present in logs that no installed rule catches. Load the baseline regexes from the plugin's canonical rule files:
-
-**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
-
-Read each rule file's YAML frontmatter `pattern` field. The five baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`.
-
+5. Also runs a full anti-pattern scan using the canonical rule definitions to find **uncovered patterns** — anti-patterns present in logs that no installed rule catches
 6. Outputs structured JSON to stdout
 
 **Script requirements:**
@@ -57,7 +58,7 @@ Read each rule file's YAML frontmatter `pattern` field. The five baseline catego
 - Skip subagent sessions
 - Accept `--days N` argument
 
-### Step 3: Assess Rule Effectiveness
+### Step 4: Assess Rule Effectiveness
 
 For each installed rule, classify it into one of four states:
 
@@ -70,7 +71,7 @@ For each installed rule, classify it into one of four states:
 Detected when the pattern matches legitimate assistant text. Common indicators:
 - Rule matches inside code blocks or tool output (not assistant prose)
 - Rule matches in contexts where the phrase is appropriate (e.g., "I think" in "I think we should" when giving a recommendation the user asked for)
-- Very high match count relative to other rules (possible over-triggering)
+- Very high match count relative to other rules (over-triggering)
 
 **Action:** Suggest tightening the regex. Provide the specific false-positive excerpts and a refined pattern.
 
@@ -88,12 +89,12 @@ Detected when the full anti-pattern scan finds instances that the installed rule
 
 **Action:** Note as "no matches" — cannot determine effectiveness without matches. Suggest the user check if the behavior was actually prevented or if the pattern needs testing.
 
-### Step 4: Check for Uncovered Patterns
+### Step 5: Check for Uncovered Patterns
 
 Compare the full anti-pattern scan results against installed rules. For each anti-pattern category:
 
-- If a rule exists for it → covered (assess effectiveness above)
-- If no rule exists → **uncovered gap**
+- If a rule exists for it -> covered (assess effectiveness above)
+- If no rule exists -> **uncovered gap**
 
 Report uncovered gaps with:
 - Category name
@@ -101,7 +102,7 @@ Report uncovered gaps with:
 - Top phrases found
 - Recommended rule (use curated rule from `/agent-guardrails:install` if available)
 
-### Step 5: Present Update Report
+### Step 6: Present Update Report
 
 Format results inline:
 
@@ -160,8 +161,7 @@ Add: `I won'?t bother|close enough|good enough for now|that'?ll do`
 |----------|--------------|-----------|
 | Excessive apologizing | 7 | No |
 
-**Suggested new rule:** `hookify.no-apologizing.local.md`
-(Use /agent-guardrails:install to add it, or provide custom content below)
+**Suggested new rule:** Add a `# no-apologizing` grep block to `.claude/hooks/stop-guardrails.sh`
 
 ### Recommendations
 
@@ -172,12 +172,12 @@ Add: `I won'?t bother|close enough|good enough for now|that'?ll do`
 5. **Monitor no-preference-asking** — no data yet, keep enabled
 ```
 
-### Step 6: Apply Updates
+### Step 7: Apply Updates
 
 After presenting the report, apply the recommended changes:
 
-1. **For pattern refinements:** Edit the `.claude/hookify.*.local.md` file with the updated regex using the Edit tool
-2. **For new rules:** Create the file using the Write tool
+1. **For pattern refinements:** Edit `.claude/hooks/stop-guardrails.sh` with the updated grep pattern using the Edit tool
+2. **For new rules:** Add a new grep block to `.claude/hooks/stop-guardrails.sh` following the existing pattern
 
 After each edit, read the file back to verify the change was applied correctly.
 
@@ -186,11 +186,11 @@ Report what was changed:
 ```
 ## Changes Applied
 
-- Updated `.claude/hookify.no-stalling.local.md` — removed "let me first check" from pattern
-- Updated `.claude/hookify.no-skipping.local.md` — added 4 new phrases to pattern
-- Created `.claude/hookify.no-apologizing.local.md` — new rule
+- Updated `no-stalling` pattern in `.claude/hooks/stop-guardrails.sh` — removed false-positive trigger
+- Updated `no-skipping` pattern in `.claude/hooks/stop-guardrails.sh` — added 4 new phrases
+- Added `no-apologizing` rule to `.claude/hooks/stop-guardrails.sh` — new grep block
 
-All changes are active immediately.
+Script changes are active immediately.
 ```
 
 ## Edge Cases
@@ -201,4 +201,4 @@ All changes are active immediately.
 
 **If rules were recently installed (< 2 days):** Note that the sample size is small and results may not be representative. Still run the analysis but flag the limitation.
 
-**If a rule has been customized from the curated version:** Respect the customization. Base refinement suggestions on the user's version, not the curated original.
+**If the user has custom rules not in the curated set:** Respect the customization. Base refinement suggestions on the user's version, not the curated original.
