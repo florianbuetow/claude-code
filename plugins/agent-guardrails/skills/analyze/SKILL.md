@@ -9,19 +9,19 @@ Scan Claude Code session logs to detect recurring anti-patterns in assistant res
 
 ## Known Anti-Pattern Categories
 
-The canonical regex patterns live in the plugin's `rules/` directory — one `.local.md` file per category. **Always read the patterns from those files** rather than hardcoding them, so analysis stays in sync with installed/refined rules.
+The canonical regex patterns live in the plugin's `rules/` directory — one `.md` file per category. **Always read the patterns from those files** rather than hardcoding them, so analysis stays in sync with installed/refined rules.
 
-**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
+**Source of truth:** `${CLAUDE_PLUGIN_ROOT}/rules/no-*.md`
 
-Read each rule file's YAML frontmatter to extract the `pattern` and `name` fields. The five categories are:
+Read each rule file's YAML frontmatter to extract the `name`, `pattern`, and `message` fields. The five categories are:
 
 | # | Category | Rule file |
 |---|----------|-----------|
-| 1 | Speculative Language | `hookify.no-speculative-language.local.md` |
-| 2 | Stalling | `hookify.no-stalling.local.md` |
-| 3 | Preference-Asking | `hookify.no-preference-asking.local.md` |
-| 4 | False Completion | `hookify.no-false-completion.local.md` |
-| 5 | Skipping | `hookify.no-skipping.local.md` |
+| 1 | Speculative Language | `no-speculative-language.md` |
+| 2 | Stalling | `no-stalling.md` |
+| 3 | Preference-Asking | `no-preference-asking.md` |
+| 4 | False Completion | `no-false-completion.md` |
+| 5 | Skipping | `no-skipping.md` |
 
 Scan for ALL of them plus any novel patterns discovered during analysis.
 
@@ -95,7 +95,7 @@ Format the analysis as a ranked report, inline in the response:
 > "...I think this change will fix the issue. The error was probably caused by..."
 > "...this should work now. Let me know if..."
 
-**Recommended rule:** `hookify.no-speculative-language.local.md` (see /agent-guardrails:install)
+**Recommended rule:** Install via /agent-guardrails:install
 
 ---
 [Continue for each category...]

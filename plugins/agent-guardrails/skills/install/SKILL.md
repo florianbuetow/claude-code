@@ -1,149 +1,146 @@
 ---
 name: agent-guardrails-install
-description: Install agent behavioral guardrail rules into a project's .claude/ directory. Includes a curated set of five battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping) that can be installed immediately, or install custom rules from /agent-guardrails:analyze results. Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline. Requires the hookify plugin as the runtime engine.
+description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes five battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
 ---
 
 # Agent Guardrails Install
 
-Install agent behavioral guardrail rules into the current project. Includes five battle-tested curated rules ready for immediate use, plus support for custom rules from analysis results.
+Install agent behavioral guardrail rules into the current project. Generates a bash script Stop hook and configures `settings.local.json` — no external plugin dependencies.
 
-These rules are enforced by the [hookify](https://github.com/anthropics/claude-plugins-official) plugin, which provides the runtime engine that loads and evaluates `.claude/hookify.*.local.md` rule files on every tool use and stop event.
+## How It Works
 
-## Prerequisites
-
-The hookify plugin must be installed for these rules to take effect. Verify:
-
-```bash
-ls ~/.claude/plugins/cache/*/hookify/*/hooks/stop.py 2>/dev/null | head -1
-```
-
-If no result, the hookify plugin is not installed. Tell the user to install it first:
-```bash
-claude plugin install hookify
-```
+1. A bundled bash script template lives at `templates/stop-guardrails.sh` inside this plugin
+2. Rule definitions in `rules/no-*.md` are the source of truth for patterns and messages
+3. The install skill copies the template to `.claude/hooks/stop-guardrails.sh` in the target project
+4. The script is registered as a Stop hook in `.claude/settings.local.json`
+5. No runtime dependencies — just bash, jq, and grep
 
 ## Curated Rule Set
 
-These five rules are proven in production use. Each targets a specific anti-pattern in assistant behavior.
+**Rule definitions:** `plugins/agent-guardrails/rules/no-*.md`
+**Bundled script:** `plugins/agent-guardrails/templates/stop-guardrails.sh`
 
-**Source of truth:** `plugins/agent-guardrails/rules/hookify.no-*.local.md`
-
-| # | Rule | Installed as |
+| # | Rule | Description |
 |---|------|-------------|
-| 1 | `no-speculative-language` | `.claude/hookify.no-speculative-language.local.md` |
-| 2 | `no-stalling` | `.claude/hookify.no-stalling.local.md` |
-| 3 | `no-preference-asking` | `.claude/hookify.no-preference-asking.local.md` |
-| 4 | `no-false-completion` | `.claude/hookify.no-false-completion.local.md` |
-| 5 | `no-skipping` | `.claude/hookify.no-skipping.local.md` |
-
-Read the canonical rule content from the `rules/` directory when installing. Do not hardcode rule content in this skill — the `rules/` files are the single source of truth.
+| 1 | `no-speculative-language` | Blocks hedging, guessing, unverified claims |
+| 2 | `no-stalling` | Blocks stalling language, padding before action |
+| 3 | `no-preference-asking` | Blocks delegating decisions to the user |
+| 4 | `no-false-completion` | Blocks unverified completion claims |
+| 5 | `no-skipping` | Blocks skipping work or hand-waving |
 
 ## Workflow
 
 ### Step 1: Check Current State
 
-Check what guardrail rules already exist in the project:
+Check what guardrail files already exist in the project:
 
 ```bash
-ls .claude/hookify.*.local.md 2>/dev/null
+ls .claude/hooks/stop-guardrails.sh 2>/dev/null
+cat .claude/settings.local.json 2>/dev/null
 ```
-
-Read any existing rules to avoid overwriting customized versions.
 
 ### Step 2: Determine What to Install
 
 **If `$ARGUMENTS` contains specific rule names** (e.g., "install no-stalling no-skipping"):
-- Install only the named rules from the curated set above.
+- Copy the template, then remove the grep blocks for rules NOT in the list.
 
 **If `$ARGUMENTS` mentions "all" or "curated"** (e.g., "install all"):
-- Install all five curated rules.
+- Copy the full template as-is.
 
 **If `$ARGUMENTS` is empty:**
-- Install all five curated rules. This is the default — do not ask the user to choose.
+- Copy the full template as-is. This is the default — do not ask the user to choose.
 
-**If `$ARGUMENTS` references analysis results** (e.g., "install from analysis"):
-- Use the analysis report from a prior `/agent-guardrails:analyze` run to determine which rules to install.
-- If no analysis has been run in this conversation, run `/agent-guardrails:analyze` first, then install based on the top categories.
-
-### Step 3: Create .claude Directory
+### Step 3: Create Directories
 
 ```bash
-mkdir -p .claude
+mkdir -p .claude/hooks
 ```
 
-### Step 4: Write Rule Files
+### Step 4: Copy the Bash Script Template
 
-For each rule to install:
+Read the bundled template from `${CLAUDE_PLUGIN_ROOT}/templates/stop-guardrails.sh` and write it to `.claude/hooks/stop-guardrails.sh` in the target project.
 
-1. If the rule file already exists AND has been customized (content differs from curated version), **skip it** and note that the existing version was preserved.
-2. If the rule file already exists and matches the curated version, skip it silently.
-3. If the rule file does not exist, create it using the Write tool with the exact content from the curated set above.
+If only a subset of rules was requested (Step 2), remove the unwanted grep blocks from the copied script before writing.
 
-`.claude/` is the canonical location for installed rules. The curated rule files also live in this plugin's `rules/` directory as a reference.
+If the user has an existing `.claude/hooks/stop-guardrails.sh` with custom rules (grep blocks not in the curated set), preserve those custom blocks when overwriting.
 
-### Step 5: Verify Installation
-
-After writing all files, verify they were created correctly:
+### Step 5: Make Script Executable
 
 ```bash
-ls -la .claude/hookify.*.local.md
+chmod +x .claude/hooks/stop-guardrails.sh
 ```
 
-Read back one of the files to confirm content is correct.
+### Step 6: Configure settings.local.json
 
-### Step 6: Report Results
+Read the existing `.claude/settings.local.json` if it exists. Merge the Stop hook entry into it, preserving any existing hooks and permissions.
 
-Show inline what was installed:
+The Stop hook entry to add:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/stop-guardrails.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+If a Stop hook for `stop-guardrails.sh` already exists, leave it as-is (just update the script file).
+
+### Step 7: Verify Installation
+
+After writing all files, verify:
+
+```bash
+ls -la .claude/hooks/stop-guardrails.sh
+head -5 .claude/hooks/stop-guardrails.sh
+cat .claude/settings.local.json | jq '.hooks.Stop'
+```
+
+### Step 8: Report Results
+
+Show what was installed:
 
 ```
 ## Agent Guardrails Installed
 
-| Rule | Status | Action |
-|------|--------|--------|
-| no-speculative-language | Installed | block |
-| no-stalling | Installed | block |
-| no-preference-asking | Installed | block |
-| no-false-completion | Installed | block |
-| no-skipping | Installed | block |
+| Rule | Status |
+|------|--------|
+| no-speculative-language | Installed |
+| no-stalling | Installed |
+| no-preference-asking | Installed |
+| no-false-completion | Installed |
+| no-skipping | Installed |
 
-**Location:** .claude/hookify.*.local.md
-**Runtime:** hookify plugin (stop event)
+**Script:** `.claude/hooks/stop-guardrails.sh`
+**Config:** `.claude/settings.local.json` (Stop hook)
+**Runtime:** bash + jq + grep (no plugin dependencies)
 **Effect:** Immediate — no restart needed.
 
-Rules will trigger on the assistant's next stop event. To test, try writing a response with "I think" or "this should work" — the stop hook will block it.
+Rules trigger on the assistant's Stop event. To test, try writing a response with "I think" or "this should work" — the stop hook will block it.
 
-**To customize:** Edit any .claude/hookify.*.local.md file directly.
-**To disable:** Set `enabled: false` in the rule's frontmatter.
+**To customize:** Edit `.claude/hooks/stop-guardrails.sh` directly.
+**To add/remove rules:** Re-run /agent-guardrails:install with specific rule names.
 **To refine:** Run /agent-guardrails:update after using the rules for a few sessions.
 ```
 
 ## Custom Rules
 
-If the user provides a custom behavior description (not one of the five curated rules), create a new rule following this template:
+If the user provides a custom behavior description (not one of the five curated rules), add a new grep block to the bash script following the same pattern:
 
-```markdown
----
-name: {kebab-case-name}
-enabled: true
-event: {bash|file|stop|prompt|all}
-pattern: {regex pattern}
-action: {warn|block}
----
-
-**{Title of the violation}**
-
-{Explanation of what was detected and why it's problematic.}
-
-{Numbered steps for how to correct the behavior:}
-1. {Step 1}
-2. {Step 2}
-3. {Step 3}
+```bash
+# {kebab-case-name}
+if echo "$message" | grep -qiE '{pattern}'; then
+  blocked+=("**{kebab-case-name}**: {message}")
+fi
 ```
-
-**Naming convention:** Start with `no-` for blocking rules, `warn-` for warning rules.
-
-**Event selection:**
-- `stop` — for assistant behavioral patterns (language, claims, stalling)
-- `bash` — for dangerous shell commands
-- `file` — for problematic code patterns in edits
-- `prompt` — for user prompt validation

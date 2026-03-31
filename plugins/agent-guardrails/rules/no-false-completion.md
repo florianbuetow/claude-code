@@ -1,9 +1,7 @@
 ---
 name: no-false-completion
-enabled: true
-event: stop
 pattern: (?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)
-action: block
+message: "Run tests or verification commands and show the output before claiming completion."
 ---
 
 **Stop - unverified completion claim detected.**
