@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Expanded no-preference-asking guardrail with 6 new pattern families: seeking-approval, "let me know", "anything else", "your call/up to you", "what would you like to", and "or do you/should we" alternatives — catching ~350 additional low-legit questions identified from 850-session analysis (v2.1.4).
 - Added `want me to...?` and `should I...?` patterns to no-preference-asking guardrail (v2.1.3).
 - Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
 - Used `$CLAUDE_PROJECT_DIR` variable for hook command path instead of relative `bash` invocation in agent-guardrails install skill (v2.1.2).
