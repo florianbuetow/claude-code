@@ -1,6 +1,6 @@
 ---
 name: no-preference-asking
-pattern: (?i)(would you prefer|would you like me to|would you rather|do you want me to|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))
+pattern: (?i)(would you prefer|would you like me to|would you rather|do you want me to|want me to\b.*\?|should I\b.*\?|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))
 message: "Do not ask for preference unless it is unclear from context, instructions, or specifications what the best choice is. Do not take shortcuts. Pick the best choice from an engineering perspective that creates a high-quality, low-maintenance solution aligned with the specifications, instructions, or intent. Only ask the user if you are unable to determine the best choice after thorough investigation — and explain exactly why you need clarification."
 ---
 

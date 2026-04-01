@@ -30,7 +30,7 @@ if echo "$message" | grep -qiE '(let me take a step back|taking a step back|befo
 fi
 
 # no-preference-asking
-if echo "$message" | grep -qiE '(would you prefer|would you like me to|would you rather|do you want me to|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))'; then
+if echo "$message" | grep -qiE '(would you prefer|would you like me to|would you rather|do you want me to|want me to\b.*\?|should I\b.*\?|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))'; then
   blocked+=("**no-preference-asking**: Do not ask for preference unless it is unclear from context, instructions, or specifications what the best choice is. Do not take shortcuts. Pick the best choice from an engineering perspective that creates a high-quality, low-maintenance solution aligned with the specifications, instructions, or intent. Only ask the user if you are unable to determine the best choice after thorough investigation — and explain exactly why you need clarification.")
 fi
 
@@ -55,10 +55,7 @@ if [ ${#blocked[@]} -eq 0 ]; then
 fi
 
 # Build block response
-reason=""
-for msg in "${blocked[@]}"; do
-  reason="${reason}${msg}\n\n"
-done
+reason=$(printf '%s\n' "${blocked[@]}")
 
 jq -n --arg reason "$reason" '{
   "decision": "block",
