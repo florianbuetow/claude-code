@@ -110,8 +110,8 @@ If a commit does not clearly fit any category (e.g., pure CI/CD, docs-only, or t
 
 Versions are determined from git tags matching semver patterns:
 - `v1.2.3`, `1.2.3`, `v1.0.0-beta.1`
-- Fall back to chronological grouping if no tags exist.
-- The `[Unreleased]` section captures commits after the latest tag.
+- Fall back to date-based grouping if no tags exist — group commits by week or month to produce 4–12 meaningful sections. Never place all commits under a single `[Unreleased]` heading.
+- The `[Unreleased]` section captures commits after the latest tag or most recent date group.
 
 ## Version Links
 
