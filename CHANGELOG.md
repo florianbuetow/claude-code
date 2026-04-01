@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
+- Used `$CLAUDE_PROJECT_DIR` variable for hook command path instead of relative `bash` invocation in agent-guardrails install skill (v2.1.2).
+
+### Fixed
+
+- Added infinite loop prevention guard to stop-guardrails hook to avoid re-triggering when `stop_hook_active` is already set (v2.1.2).
+
 ### Added
 
 - Added no-dismissing rule to agent-guardrails plugin (v2.1.0).
