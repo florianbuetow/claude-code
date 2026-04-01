@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added `want me to...?` and `should I...?` patterns to no-preference-asking guardrail (v2.1.3).
 - Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
 - Used `$CLAUDE_PROJECT_DIR` variable for hook command path instead of relative `bash` invocation in agent-guardrails install skill (v2.1.2).
 
 ### Fixed
 
+- Fixed literal `\n\n` appearing in stop hook output instead of actual newlines in agent-guardrails (v2.1.3).
 - Added infinite loop prevention guard to stop-guardrails hook to avoid re-triggering when `stop_hook_active` is already set (v2.1.2).
 
 ### Added
