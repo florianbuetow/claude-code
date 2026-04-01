@@ -2,6 +2,14 @@
 set -euo pipefail
 
 input=$(cat)
+
+# Prevent infinite loop: if hook already fired on this response, let it through
+stop_hook_active=$(echo "$input" | jq -r '.stop_hook_active // false')
+if [ "$stop_hook_active" = "true" ]; then
+  echo '{}'
+  exit 0
+fi
+
 message=$(echo "$input" | jq -r '.last_assistant_message // ""')
 
 if [ -z "$message" ]; then
