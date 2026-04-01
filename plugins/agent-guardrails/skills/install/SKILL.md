@@ -86,7 +86,7 @@ The Stop hook entry to add:
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/stop-guardrails.sh",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-guardrails.sh",
             "timeout": 5000
           }
         ]
