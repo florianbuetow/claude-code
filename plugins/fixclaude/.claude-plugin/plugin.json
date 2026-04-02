@@ -1,0 +1,20 @@
+{
+  "name": "fixclaude",
+  "version": "0.1.0",
+  "description": "Reverse the built-in Claude Code limitations discovered in the source code leak. Installs production-grade agent directives that override verification gates, context decay, brevity mandates, and silent truncation — the same fixes Anthropic uses internally.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "fix",
+    "claude-md",
+    "agent-directives",
+    "context-decay",
+    "verification",
+    "source-leak",
+    "performance",
+    "override"
+  ]
+}
