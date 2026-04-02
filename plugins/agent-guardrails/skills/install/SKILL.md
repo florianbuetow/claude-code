@@ -127,9 +127,9 @@ Show what was installed:
 **Script:** `.claude/hooks/stop-guardrails.sh`
 **Config:** `.claude/settings.local.json` (Stop hook)
 **Runtime:** bash + jq + grep (no plugin dependencies)
-**Effect:** Immediate — no restart needed.
+**Effect:** Requires a session restart. Run `/exit` and start a new Claude session for hooks to take effect.
 
-Rules trigger on the assistant's Stop event. To test, try writing a response with "I think" or "this should work" — the stop hook will block it.
+Rules trigger on the assistant's Stop event. To test after restarting, run `/agent-guardrails:test`.
 
 **To customize:** Edit `.claude/hooks/stop-guardrails.sh` directly.
 **To add/remove rules:** Re-run /agent-guardrails:install with specific rule names.
