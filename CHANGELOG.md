@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `/agent-guardrails:test` skill for verifying installed hook patterns — checks hook installation, runs 2 test phrases per rule (12 positive + 4 negative), stops on first failure (v3.2.1).
 - Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
 
 ### Changed
 
 - Reverted agent-guardrails to stable v2.1.5 rule set under version 3.2.0 — the v3.0.0–v3.1.2 series introduced overbroad patterns (wh-word catch-all in no-preference-asking blocked legitimate questions, expanded no-false-completion caught factual status reports) and scope creep (PreToolUse/PostToolUse hooks). Restored to 6 battle-tested Stop hook rules.
+
+### Fixed
+
+- Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration requires a session restart (v3.2.1).
 - Made onboarding plugin reading of project instruction files (AGENTS.md, CLAUDE.md, GEMINI.md, COPILOT.md) mandatory and cross-platform (v1.0.1).
 - Registered fixclaude plugin in marketplace manifest.
 - Consolidated README installation docs into Quickstart section with alphabetically sorted plugin list.
@@ -79,4 +84,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/13ceb26...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/b6d7dde...HEAD
