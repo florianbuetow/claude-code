@@ -11,15 +11,17 @@ Orient in the current project by gathering context from multiple sources: projec
 
 Execute all steps below. Run independent steps in parallel where possible.
 
-### Step 1: Read Project Instructions
+### Step 1: Read Project Instructions (MANDATORY)
 
-Read `AGENTS.md` (or `CLAUDE.md` if no AGENTS.md exists) to understand:
+You MUST read `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and `COPILOT.md` in the project root. Skip any that don't exist, but read all that do. If a file explicitly instructs you to read another file, read that file too. If both files contain the same content (e.g., one simply redirects to the other), only read it once. When both files exist and their rules conflict, `AGENTS.md` takes precedence.
+
+Extract from these files:
 - Tech stack and language versions
 - Project conventions and rules
 - Directory structure
 - What tools and validators are used
 
-If CLAUDE.md redirects to AGENTS.md, follow the redirect.
+Follow the instructions and rules found in these files during this session.
 
 ### Step 2: Gather State (run in parallel)
 
