@@ -8,24 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added 5 new agent-guardrails rules: no-echo-back, no-robotic-comments, no-over-explaining (Stop), no-blind-edit (PreToolUse/Edit + PostToolUse/Read), and no-destructive-bash (PreToolUse/Bash) — introducing PreToolUse and PostToolUse hook support (v3.0.0).
 - Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
 
-### Fixed
-
-- Narrowed `false positive` pattern in no-dismissing to `\ba false positive` — "zero false positives" (test results) no longer triggers, while "this is a false positive" (dismissal) still does (v3.1.2).
-- Expanded no-robotic-comments to detect `#` comment syntax (shell, Python, YAML) alongside `//` (JS/TS) — pattern uses `(\/{2}|#)` prefix group (v3.1.1).
-- Added test skill (`/agent-guardrails:test`) that verifies all hook patterns fire correctly — checks hook installation first, runs 70+ test phrases across all 9 rules plus negative tests, stops on first failure (v3.1.0).
-- Pruned 14 redundant phrase patterns from no-preference-asking now subsumed by structural patterns and broader pattern groups; synced rule file prose with hook's three-layer detection strategy (v3.0.5).
-- Added wh-word catch-all to no-preference-asking: `\b(what|which|who|whom|whose|where|when|why|how)\b[^.!:?]*\?` catches any question-word sentence ending with `?` that structural patterns miss — no more phrase allowlists for novel deferral phrasings (v3.0.4).
-- Removed false trailing `?` requirement from `want me to` and `should I` patterns in no-preference-asking — these are preference-asking regardless of punctuation (v3.0.3).
-- Synced no-preference-asking stop hook patterns with rule file — 18 patterns from v2.1.4 (let me know, does this look right, sound good, your call, up to you, anything else, etc.) were defined in the rule but never added to the hook template (v3.0.2).
-- Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration in settings.local.json requires a session restart (v3.0.1).
-
 ### Changed
 
-- Expanded no-false-completion and no-dismissing guardrail patterns in agent-guardrails (v3.0.0).
+- Reverted agent-guardrails to stable v2.1.5 rule set under version 3.2.0 — the v3.0.0–v3.1.2 series introduced overbroad patterns (wh-word catch-all in no-preference-asking blocked legitimate questions, expanded no-false-completion caught factual status reports) and scope creep (PreToolUse/PostToolUse hooks). Restored to 6 battle-tested Stop hook rules.
+- Made onboarding plugin reading of project instruction files (AGENTS.md, CLAUDE.md, GEMINI.md, COPILOT.md) mandatory and cross-platform (v1.0.1).
 - Registered fixclaude plugin in marketplace manifest.
 - Consolidated README installation docs into Quickstart section with alphabetically sorted plugin list.
 - Condensed README subtitle into single line.
@@ -90,4 +79,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/045d39e...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/13ceb26...HEAD
