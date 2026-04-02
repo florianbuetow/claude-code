@@ -143,11 +143,22 @@ fi
 - "Let me start by understanding the architecture."
 - "I'm going to begin by reviewing the tests."
 
-**no-robotic-comments:**
+**no-robotic-comments (// style):**
 - "// This function handles the authentication flow"
 - "// Import the necessary modules"
 - "// Initialize the database connection"
 - "// Validate the input parameters"
+
+**no-robotic-comments (# style):**
+- "# This function handles authentication"
+- "# Import the necessary modules"
+- "# Initialize the database"
+- "# Validate the input"
+- "# Handle the request"
+- "# Set up the event listeners"
+- "# Process the data"
+- "# Check if the user is authenticated"
+- "# Ensure that the connection is valid"
 
 **no-over-explaining:**
 - "The reason I chose this approach is for maintainability."
@@ -175,6 +186,10 @@ fi
 - "I made the change you requested."
 - "The test suite passes."
 - "We should use dependency injection here."
+- "## Step 1: Install"
+- "# TODO: fix this later"
+- "# Why: the API requires auth before query"
+- "# HACK: workaround for upstream bug"
 
 ### Step 3: Report Results
 
