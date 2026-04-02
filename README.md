@@ -4,7 +4,7 @@
 
 A collection of Claude Code plugins, skills, and hooks for software engineering workflows.
 
-`15 plugins` · `80+ skills`
+`16 plugins` · `80+ skills`
 
 ### Skills
 
@@ -24,7 +24,8 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
-| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails - analyze sessions for anti-patterns, install curated rules, refine based on usage |
+| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails - 11 rules across Stop, PreToolUse, and PostToolUse hooks |
+| [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
 
 ---
 
@@ -56,6 +57,7 @@ claude plugin install cache-money
 claude plugin install logbook
 claude plugin install changelog
 claude plugin install agent-guardrails
+claude plugin install fixclaude
 ```
 
 **Step 3** - Restart Claude Code.
@@ -96,6 +98,7 @@ claude --plugin-dir ./plugins/cache-money
 claude --plugin-dir ./plugins/logbook
 claude --plugin-dir ./plugins/changelog
 claude --plugin-dir ./plugins/agent-guardrails
+claude --plugin-dir ./plugins/fixclaude
 ```
 
 </details>
@@ -759,21 +762,40 @@ The update skill uses a 3-strategy boundary detection (tag match, date match, co
 
 Data-driven agent behavioral guardrails for Claude Code sessions.
 
-`3 skills` · `Session log analysis` · `5 curated rules` · `Iterative refinement`
+`3 skills` · `11 rules` · `3 hook types` · `Iterative refinement`
 
-Closes the loop on behavioral enforcement: analyze real session logs to discover which anti-patterns occur most frequently, install battle-tested rules to block them, then refine those rules based on continued usage data. Ships with five curated rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping) embedded directly in the install skill - no analysis required to get started.
+Enforces agent discipline through three hook types: **Stop hooks** block anti-patterns in assistant output (hedging, stalling, skipping, false completions, plan echoing, robotic comments, over-explaining), **PreToolUse hooks** intercept dangerous tool calls before execution (editing unread files, destructive bash commands), and a **PostToolUse hook** tracks file reads for stateful enforcement.
 
 | Command | What it does |
 |---------|-------------|
 | `agent-guardrails:analyze` | Scan session logs for anti-patterns - produces ranked frequency report with excerpts |
-| `agent-guardrails:install` | Install curated rules or custom rules into `.claude/` - works immediately, no restart |
+| `agent-guardrails:install` | Install all 11 rules into `.claude/` - works immediately, no restart. Re-run to upgrade after plugin update. |
 | `agent-guardrails:update` | Re-analyze logs against installed rules - finds false positives, missed patterns, suggests refinements |
 
-**Prerequisite:** The [hookify](https://github.com/anthropics/claude-plugins-official) plugin must be installed for rules to take effect. These skills manage the rule files; hookify enforces them.
+**No external dependencies** — just bash, jq, and grep. No hookify plugin required.
 
 **Workflow:** `analyze` → `install` → use for a while → `update` → repeat. Or skip straight to `install` to get the curated set immediately.
 
 **Trigger** - Ask Claude to "analyze my sessions for anti-patterns", "install agent guardrails", "set up behavioral guardrails", "update my guardrails", "refine guardrail rules", or mention anti-pattern detection.
+
+---
+
+## fixclaude
+
+Production-grade CLAUDE.md directives that override Claude Code's built-in limitations.
+
+`4 skills` · `9 directive sections` · `Gap analysis`
+
+Reverse the built-in Claude Code limitations discovered in the source code leak. Installs production-grade agent directives covering pre-work discipline, intent understanding, code quality, context management, file system as state, edit safety, prompt cache awareness, self-improvement, and housekeeping.
+
+| Command | What it does |
+|---------|-------------|
+| `fixclaude:install` | Auto-detect and route to init or update |
+| `fixclaude:init` | Create a new CLAUDE.md with all 9 directive sections |
+| `fixclaude:update` | Merge directives into an existing CLAUDE.md without destroying project-specific instructions |
+| `fixclaude:analyze` | Gap analysis — maps each directive to a specific Claude Code limitation |
+
+**Trigger** - Ask Claude to "fix claude", "create claude md", "install fixclaude directives", "analyze claude md gaps", or mention Claude Code limitations.
 
 ---
 
@@ -945,14 +967,51 @@ plugins/
   │       │   └── SKILL.md            # Create new CHANGELOG.md from full history
   │       └── update/
   │           └── SKILL.md            # Update existing CHANGELOG.md with new entries
-  └── agent-guardrails/
+  ├── agent-guardrails/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   ├── rules/                      # Rule definitions (source of truth)
+  │   │   ├── no-speculative-language.md
+  │   │   ├── no-stalling.md
+  │   │   ├── no-preference-asking.md
+  │   │   ├── no-false-completion.md
+  │   │   ├── no-skipping.md
+  │   │   ├── no-dismissing.md
+  │   │   ├── no-echo-back.md
+  │   │   ├── no-robotic-comments.md
+  │   │   ├── no-over-explaining.md
+  │   │   ├── no-blind-edit.md
+  │   │   └── no-destructive-bash.md
+  │   ├── templates/                   # Hook script templates
+  │   │   ├── stop-guardrails.sh       # Stop hook (9 output rules)
+  │   │   ├── pretooluse-edit-guardrail.sh   # PreToolUse: no-blind-edit
+  │   │   ├── posttooluse-read-tracker.sh    # PostToolUse: read tracking
+  │   │   └── pretooluse-bash-guardrail.sh   # PreToolUse: no-destructive-bash
+  │   └── skills/
+  │       ├── analyze/
+  │       │   └── SKILL.md            # Scan session logs for anti-patterns
+  │       ├── install/
+  │       │   └── SKILL.md            # Install curated or custom rules
+  │       └── update/
+  │           └── SKILL.md            # Refine rules based on usage data
+  └── fixclaude/
+      ├── .claude-plugin/
+      │   └── plugin.json             # Plugin manifest
+      ├── LICENSE
+      ├── references/
+      │   └── claude-md-template.md   # Production-grade CLAUDE.md template
       └── skills/
-          ├── analyze/
-          │   └── SKILL.md            # Scan session logs for anti-patterns
           ├── install/
-          │   └── SKILL.md            # Install curated or custom rules
-          └── update/
-              └── SKILL.md            # Refine rules based on usage data
+          │   └── SKILL.md            # Auto-detect init vs update
+          ├── init/
+          │   └── SKILL.md            # Create new CLAUDE.md
+          ├── update/
+          │   └── SKILL.md            # Merge into existing CLAUDE.md
+          └── analyze/
+              ├── SKILL.md            # Gap analysis
+              └── references/
+                  └── source-leak-findings.md  # 7 documented findings
 ```
 
 ---

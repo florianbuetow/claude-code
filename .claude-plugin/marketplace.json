@@ -165,8 +165,8 @@
     },
     {
       "name": "agent-guardrails",
-      "description": "Data-driven agent behavioral guardrails: analyze Claude Code session logs for recurring anti-patterns (hedging, stalling, skipping, false completions, preference-asking), install a curated set of five battle-tested rules, and iteratively refine them based on real usage data. Requires the hookify plugin as the runtime engine.",
-      "version": "1.0.0",
+      "description": "Behavioral guardrails for Claude Code agents. Eleven rules across three hook types: Stop hooks (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing, no-echo-back, no-robotic-comments, no-over-explaining), PreToolUse hooks (no-blind-edit, no-destructive-bash). Includes analyze, install, and update skills for data-driven tuning.",
+      "version": "3.0.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"

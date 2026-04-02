@@ -35,7 +35,7 @@ if echo "$message" | grep -qiE '(would you prefer|would you like me to|would you
 fi
 
 # no-false-completion
-if echo "$message" | grep -qiE '(all done|all set|we'\''re all set|we'\''re good|you'\''re all set|that'\''s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)'; then
+if echo "$message" | grep -qiE '(all done|all set|we'\''re all set|we'\''re good|you'\''re all set|that'\''s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works|Done[.!]|Complete[.!]|Finished[.!]|task is (complete|done|finished)|changes are (in|done|ready|committed|pushed)|that'\''s it[.!]|good to go|ready (to go|for review|to merge))'; then
   blocked+=("**no-false-completion**: Run tests or verification commands and show the output before claiming completion.")
 fi
 
@@ -45,8 +45,23 @@ if echo "$message" | grep -qiE '(i('\''m| am) skipping|skip(ping)? this|let('\''
 fi
 
 # no-dismissing
-if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|pre-existing (error|warning|bug|issue)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure))'; then
-  blocked+=("**no-dismissing**: Don't dismiss issues without investigation. Diagnose the cause, then decide if action is needed.")
+if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|pre-existing (error|warning|bug|issue)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure)|that'\''s fine|this is fine|a non-issue|just (cosmetic|informational|noise)|shouldn'\''t (matter|cause|be a problem))'; then
+  blocked+=("**no-dismissing**: Don't dismiss issues without investigation. Diagnose the cause, then decide if action is needed. If you believe something is fine, show the evidence.")
+fi
+
+# no-echo-back
+if echo "$message" | grep -qiE '(I'\''ll (now |first |start by |proceed to |begin by )|Here'\''s (what I'\''ll|my plan|the plan)|Let me (start|begin) by |First,? I'\''ll |I'\''m going to (start|begin) by |Let me (now )?go ahead and |I'\''ll go ahead and |Let me walk (you )?through)'; then
+  blocked+=("**no-echo-back**: The user said go. Execute — don't restate the plan.")
+fi
+
+# no-robotic-comments
+if echo "$message" | grep -qiE '(\/\/ (This (function|method|class|component|module|hook|handler|service|helper|utility) (handles|is responsible for|provides|manages|implements|creates|defines|sets up|configures|ensures|takes care of)|Import(s| the| necessary| required)|Initialize(s)? the|Handle(s)? the|Set(s)? up the|Check(s)? (if|whether) the|Ensure(s)? (that )?the|Validate(s)? the|Process(es)? the|Helper (function|method) (to|for|that)))'; then
+  blocked+=("**no-robotic-comments**: Write human code. Remove robotic comment blocks that describe what is obvious from the code itself.")
+fi
+
+# no-over-explaining
+if echo "$message" | grep -qiE '(The reason (I|for this|behind this|we)|This change (ensures|makes sure|guarantees|is needed)|I (chose|went with|opted for|decided on|used) this approach because|This is (necessary|needed|required) because|What this does is|The purpose of this (change|update|fix|refactor) is|I made this change (because|to ensure|so that)|This (ensures|guarantees|makes sure) that the)'; then
+  blocked+=("**no-over-explaining**: Don't over-explain obvious changes. The diff speaks for itself.")
 fi
 
 if [ ${#blocked[@]} -eq 0 ]; then
