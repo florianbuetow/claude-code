@@ -1,6 +1,6 @@
 {
   "name": "agent-guardrails",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Behavioral guardrails for Claude Code agents. Eleven rules across three hook types: Stop hooks (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing, no-echo-back, no-robotic-comments, no-over-explaining), PreToolUse hooks (no-blind-edit, no-destructive-bash). Includes analyze, install, and update skills for data-driven tuning.",
   "author": {
     "name": "Florian Buetow",
