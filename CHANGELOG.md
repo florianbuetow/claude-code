@@ -8,10 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added 5 new agent-guardrails rules: no-echo-back, no-robotic-comments, no-over-explaining (Stop), no-blind-edit (PreToolUse/Edit + PostToolUse/Read), and no-destructive-bash (PreToolUse/Bash) — introducing PreToolUse and PostToolUse hook support (v3.0.0).
+- Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
 
 ### Changed
 
+- Expanded no-false-completion and no-dismissing guardrail patterns in agent-guardrails (v3.0.0).
+- Registered fixclaude plugin in marketplace manifest.
+- Consolidated README installation docs into Quickstart section with alphabetically sorted plugin list.
+- Condensed README subtitle into single line.
 - Expanded no-preference-asking guardrail with 6 new pattern families: seeking-approval, "let me know", "anything else", "your call/up to you", "what would you like to", and "or do you/should we" alternatives — catching ~350 additional low-legit questions identified from 850-session analysis (v2.1.4).
 - Added `want me to...?` and `should I...?` patterns to no-preference-asking guardrail (v2.1.3).
 - Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
@@ -73,4 +79,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/1a42ba5...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/045d39e...HEAD
