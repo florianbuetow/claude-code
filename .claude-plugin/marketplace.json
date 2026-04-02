@@ -173,6 +173,17 @@
       },
       "source": "./plugins/agent-guardrails",
       "category": "productivity"
+    },
+    {
+      "name": "fixclaude",
+      "description": "Reverse the built-in Claude Code limitations discovered in the source code leak. Installs production-grade agent directives that override verification gates, context decay, brevity mandates, and silent truncation. Includes gap analysis against 7 documented findings.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/fixclaude",
+      "category": "productivity"
     }
   ]
 }
