@@ -45,7 +45,7 @@ if echo "$message" | grep -qiE '(i('\''m| am) skipping|skip(ping)? this|let('\''
 fi
 
 # no-dismissing
-if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|pre-existing (error|warning|bug|issue)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure)|that'\''s fine|this is fine|a non-issue|just (cosmetic|informational|noise)|shouldn'\''t (matter|cause|be a problem))'; then
+if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|pre-existing (error|warning|bug|issue)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|\ba false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure)|that'\''s fine|this is fine|a non-issue|just (cosmetic|informational|noise)|shouldn'\''t (matter|cause|be a problem))'; then
   blocked+=("no-dismissing: Don't dismiss issues without investigation. Diagnose the cause, then decide if action is needed. If you believe something is fine, show the evidence.")
 fi
 
