@@ -1,6 +1,6 @@
 ---
 name: no-false-completion
-pattern: (?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works|Done[.!]|Complete[.!]|Finished[.!]|task is (complete|done|finished)|changes are (in|done|ready|committed|pushed)|that'?s it[.!]|good to go|ready (to go|for review|to merge))
+pattern: (?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)
 message: "Run tests or verification commands and show the output before claiming completion."
 ---
 
