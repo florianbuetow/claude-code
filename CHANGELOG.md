@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
 
+### Fixed
+
+- Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration in settings.local.json requires a session restart (v3.0.1).
+
 ### Changed
 
 - Expanded no-false-completion and no-dismissing guardrail patterns in agent-guardrails (v3.0.0).
