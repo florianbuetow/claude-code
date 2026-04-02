@@ -191,7 +191,7 @@ Show what was installed:
 **Scripts:** `.claude/hooks/stop-guardrails.sh`, `pretooluse-edit-guardrail.sh`, `posttooluse-read-tracker.sh`, `pretooluse-bash-guardrail.sh`
 **Config:** `.claude/settings.local.json` (Stop + PreToolUse + PostToolUse hooks)
 **Runtime:** bash + jq + grep (no plugin dependencies)
-**Effect:** Immediate — no restart needed.
+**Effect:** Requires a session restart. Run `/exit` and start a new Claude session for hooks to take effect.
 
 Stop rules trigger when the assistant finishes a response. PreToolUse rules trigger before Edit and Bash tool calls. The read tracker (PostToolUse) silently records Read calls for the no-blind-edit rule.
 
