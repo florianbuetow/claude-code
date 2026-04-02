@@ -11,11 +11,22 @@ A collection of `16 plugins` and `80+ skills` for Claude Code.
 claude plugin marketplace add florianbuetow/claude-code
 
 # 2. Install plugins (pick what you need)
+claude plugin install solid-principles
+claude plugin install beyond-solid-principles
+claude plugin install archibald
+claude plugin install kiss
+claude plugin install appsec
+claude plugin install spec-writer
+claude plugin install spec-dd
+claude plugin install explain-system-tradeoffs
+claude plugin install retrospective
+claude plugin install onboarding
+claude plugin install iso27001-sdlc
+claude plugin install cache-money
+claude plugin install logbook
+claude plugin install changelog
 claude plugin install agent-guardrails
 claude plugin install fixclaude
-claude plugin install solid-principles
-claude plugin install archibald
-# ... see full list below
 
 # 3. Restart Claude Code
 
