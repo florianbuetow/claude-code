@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Synced no-preference-asking stop hook patterns with rule file — 18 patterns from v2.1.4 (let me know, does this look right, sound good, your call, up to you, anything else, etc.) were defined in the rule but never added to the hook template (v3.0.2).
 - Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration in settings.local.json requires a session restart (v3.0.1).
 
 ### Changed
