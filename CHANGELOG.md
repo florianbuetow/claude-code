@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Added wh-word catch-all to no-preference-asking: `\b(what|which|who|whom|whose|where|when|why|how)\b[^.!:?]*\?` catches any question-word sentence ending with `?` that structural patterns miss — no more phrase allowlists for novel deferral phrasings (v3.0.4).
 - Removed false trailing `?` requirement from `want me to` and `should I` patterns in no-preference-asking — these are preference-asking regardless of punctuation (v3.0.3).
 - Synced no-preference-asking stop hook patterns with rule file — 18 patterns from v2.1.4 (let me know, does this look right, sound good, your call, up to you, anything else, etc.) were defined in the rule but never added to the hook template (v3.0.2).
 - Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration in settings.local.json requires a session restart (v3.0.1).
