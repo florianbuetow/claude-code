@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Expanded no-robotic-comments to detect `#` comment syntax (shell, Python, YAML) alongside `//` (JS/TS) — pattern uses `(\/{2}|#)` prefix group (v3.1.1).
 - Added test skill (`/agent-guardrails:test`) that verifies all hook patterns fire correctly — checks hook installation first, runs 70+ test phrases across all 9 rules plus negative tests, stops on first failure (v3.1.0).
 - Pruned 14 redundant phrase patterns from no-preference-asking now subsumed by structural patterns and broader pattern groups; synced rule file prose with hook's three-layer detection strategy (v3.0.5).
 - Added wh-word catch-all to no-preference-asking: `\b(what|which|who|whom|whose|where|when|why|how)\b[^.!:?]*\?` catches any question-word sentence ending with `?` that structural patterns miss — no more phrase allowlists for novel deferral phrasings (v3.0.4).

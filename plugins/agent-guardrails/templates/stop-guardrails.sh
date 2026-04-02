@@ -55,7 +55,7 @@ if echo "$message" | grep -qiE '(I'\''ll (now |first |start by |proceed to |begi
 fi
 
 # no-robotic-comments
-if echo "$message" | grep -qiE '(\/\/ (This (function|method|class|component|module|hook|handler|service|helper|utility) (handles|is responsible for|provides|manages|implements|creates|defines|sets up|configures|ensures|takes care of)|Import(s| the| necessary| required)|Initialize(s)? the|Handle(s)? the|Set(s)? up the|Check(s)? (if|whether) the|Ensure(s)? (that )?the|Validate(s)? the|Process(es)? the|Helper (function|method) (to|for|that)))'; then
+if echo "$message" | grep -qiE '((\/{2}|#) (This (function|method|class|component|module|hook|handler|service|helper|utility) (handles|is responsible for|provides|manages|implements|creates|defines|sets up|configures|ensures|takes care of)|Import(s| the| necessary| required)|Initialize(s)? the|Handle(s)? the|Set(s)? up the|Check(s)? (if|whether) the|Ensure(s)? (that )?the|Validate(s)? the|Process(es)? the|Helper (function|method) (to|for|that)))'; then
   blocked+=("no-robotic-comments: Write human code. Remove robotic comment blocks that describe what is obvious from the code itself.")
 fi
 
