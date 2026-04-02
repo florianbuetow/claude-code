@@ -11,22 +11,22 @@ A collection of `16 plugins` and `80+ skills` for Claude Code.
 claude plugin marketplace add florianbuetow/claude-code
 
 # 2. Install plugins (pick what you need)
-claude plugin install solid-principles
-claude plugin install beyond-solid-principles
-claude plugin install archibald
-claude plugin install kiss
-claude plugin install appsec
-claude plugin install spec-writer
-claude plugin install spec-dd
-claude plugin install explain-system-tradeoffs
-claude plugin install retrospective
-claude plugin install onboarding
-claude plugin install iso27001-sdlc
-claude plugin install cache-money
-claude plugin install logbook
-claude plugin install changelog
 claude plugin install agent-guardrails
+claude plugin install appsec
+claude plugin install archibald
+claude plugin install beyond-solid-principles
+claude plugin install cache-money
+claude plugin install changelog
+claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
+claude plugin install iso27001-sdlc
+claude plugin install kiss
+claude plugin install logbook
+claude plugin install onboarding
+claude plugin install retrospective
+claude plugin install solid-principles
+claude plugin install spec-dd
+claude plugin install spec-writer
 
 # 3. Restart Claude Code
 
@@ -38,22 +38,22 @@ claude plugin marketplace update florianbuetow-plugins
 
 | Skill | Description |
 |-------|-------------|
-| [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
-| [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
-| [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
-| [K.I.S.S.](#kiss) | Code and architecture simplicity analysis - complexity, abstraction, redundancy, architecture |
-| [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
-| [spec-writer](#spec-writer) | Expert-guided software specification documents |
-| [spec-dd](#spec-dd) | Specification-driven development workflow |
-| [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
-| [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
-| [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
-| [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner - Annex A controls 8.4, 8.25–8.33 |
-| [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
-| [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
-| [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
 | [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails - 11 rules across Stop, PreToolUse, and PostToolUse hooks |
+| [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
+| [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
+| [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
+| [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
+| [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
+| [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
+| [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner - Annex A controls 8.4, 8.25–8.33 |
+| [K.I.S.S.](#kiss) | Code and architecture simplicity analysis - complexity, abstraction, redundancy, architecture |
+| [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
+| [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
+| [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
+| [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
+| [spec-dd](#spec-dd) | Specification-driven development workflow |
+| [spec-writer](#spec-writer) | Expert-guided software specification documents |
 
 ---
 
