@@ -6,6 +6,25 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 
 `16 plugins` · `80+ skills`
 
+## Quickstart
+
+```bash
+# 1. Add the marketplace
+claude plugin marketplace add florianbuetow/claude-code
+
+# 2. Install plugins (pick what you need)
+claude plugin install agent-guardrails
+claude plugin install fixclaude
+claude plugin install solid-principles
+claude plugin install archibald
+# ... see full list below
+
+# 3. Restart Claude Code
+
+# Update all installed plugins to latest versions
+claude plugin marketplace update florianbuetow-plugins
+```
+
 ### Skills
 
 | Skill | Description |
@@ -33,72 +52,34 @@ A collection of Claude Code plugins, skills, and hooks for software engineering 
 
 All plugins are installed from the same marketplace.
 
-**Step 1** - Add the marketplace:
-
 ```bash
+# Add the marketplace (one time)
 claude plugin marketplace add florianbuetow/claude-code
+
+# Install any plugin by name
+claude plugin install <plugin-name>
 ```
 
-**Step 2** - Install the plugin(s) you want:
-
-```bash
-claude plugin install solid-principles
-claude plugin install beyond-solid-principles
-claude plugin install archibald
-claude plugin install kiss
-claude plugin install appsec
-claude plugin install spec-writer
-claude plugin install spec-dd
-claude plugin install explain-system-tradeoffs
-claude plugin install retrospective
-claude plugin install onboarding
-claude plugin install iso27001-sdlc
-claude plugin install cache-money
-claude plugin install logbook
-claude plugin install changelog
-claude plugin install agent-guardrails
-claude plugin install fixclaude
-```
-
-**Step 3** - Restart Claude Code.
+Restart Claude Code after installing. Available plugins: `solid-principles`, `beyond-solid-principles`, `archibald`, `kiss`, `appsec`, `spec-writer`, `spec-dd`, `explain-system-tradeoffs`, `retrospective`, `onboarding`, `iso27001-sdlc`, `cache-money`, `logbook`, `changelog`, `agent-guardrails`, `fixclaude`.
 
 ### Updating
 
-To update all installed plugins from this marketplace to their latest versions:
-
 ```bash
+# Update all installed plugins to latest versions
 claude plugin marketplace update florianbuetow-plugins
-```
 
-To verify an installed plugin version:
-
-```bash
+# Verify a plugin version
 find ~/.claude/plugins -name "plugin.json" -path "*<plugin-name>*" -exec grep version {} \;
 ```
 
 <details>
-<summary>Manual / Development Installation (Plugins)</summary>
+<summary>Manual / Development Installation</summary>
 
 ```bash
 git clone https://github.com/florianbuetow/claude-code.git
 cd claude-code
 # Load a plugin directory for this session only
-claude --plugin-dir ./plugins/solid-principles
-claude --plugin-dir ./plugins/beyond-solid-principles
-claude --plugin-dir ./plugins/archibald
-claude --plugin-dir ./plugins/kiss
-claude --plugin-dir ./plugins/appsec
-claude --plugin-dir ./plugins/spec-writer
-claude --plugin-dir ./plugins/spec-dd
-claude --plugin-dir ./plugins/explain-system-tradeoffs
-claude --plugin-dir ./plugins/retrospective
-claude --plugin-dir ./plugins/onboarding
-claude --plugin-dir ./plugins/iso27001-sdlc
-claude --plugin-dir ./plugins/cache-money
-claude --plugin-dir ./plugins/logbook
-claude --plugin-dir ./plugins/changelog
-claude --plugin-dir ./plugins/agent-guardrails
-claude --plugin-dir ./plugins/fixclaude
+claude --plugin-dir ./plugins/<plugin-name>
 ```
 
 </details>
