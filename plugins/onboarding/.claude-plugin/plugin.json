@@ -1,6 +1,6 @@
 {
   "name": "onboarding",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Project onboarding skill that orients AI agents by gathering context from project instructions, git state, issue trackers, and build systems to produce a concise status briefing with suggested next steps.",
   "author": {
     "name": "Florian Buetow"
