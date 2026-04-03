@@ -1,0 +1,16 @@
+{
+  "name": "sessionlog",
+  "version": "0.0.1",
+  "description": "Export Claude Code session logs as standard LLM conversation JSON and human-readable TXT. Identify current session, export individual sessions, or batch-export all sessions for a project.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "session-log",
+    "export",
+    "conversation",
+    "jsonl",
+    "llm-format"
+  ]
+}

@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `16 plugins` and `80+ skills` for Claude Code.
+A collection of `17 plugins` and `80+ skills` for Claude Code.
 
 ## Quickstart
 
@@ -26,6 +26,7 @@ claude plugin install onboarding
 claude plugin install retrospective
 claude plugin install solid-principles
 claude plugin install spec-dd
+claude plugin install sessionlog
 claude plugin install spec-writer
 
 # 3. Restart Claude Code
@@ -51,6 +52,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
 | [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
+| [sessionlog](#sessionlog) | Export session logs as standard LLM conversation JSON and TXT transcripts |
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
@@ -69,7 +71,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `solid-principles`, `beyond-solid-principles`, `archibald`, `kiss`, `appsec`, `spec-writer`, `spec-dd`, `explain-system-tradeoffs`, `retrospective`, `onboarding`, `iso27001-sdlc`, `cache-money`, `logbook`, `changelog`, `agent-guardrails`, `fixclaude`.
+Restart Claude Code after installing. Available plugins: `solid-principles`, `beyond-solid-principles`, `archibald`, `kiss`, `appsec`, `spec-writer`, `spec-dd`, `explain-system-tradeoffs`, `retrospective`, `onboarding`, `iso27001-sdlc`, `cache-money`, `logbook`, `changelog`, `agent-guardrails`, `fixclaude`, `sessionlog`.
 
 ### Updating
 
@@ -617,6 +619,43 @@ Starting a new session or resuming after a break? This plugin gathers context fr
 | `onboard` | Full project onboarding briefing |
 
 **Trigger** - Ask Claude to onboard, get oriented, catch you up, show project state, or suggest what to work on next.
+
+---
+
+## sessionlog
+
+Export Claude Code session logs as portable conversation files.
+
+`3 skills` · `1 export script` · `JSON + TXT output` · `Batch export`
+
+Every Claude Code session is stored as JSONL in `~/.claude/projects/`, but that format is internal — you can't feed it to another LLM, share it with a colleague, or archive it alongside your code. This plugin converts session logs into two portable formats: standard LLM conversation JSON (the `{role, content}` array format used by OpenAI, Anthropic, and every major inference API) and a human-readable TXT transcript.
+
+| Command | What it does |
+|---------|-------------|
+| `sessionlog:info` | Show current session ID, log file path, and project session directory |
+| `sessionlog:export` | Export current session to JSON + TXT (default: `docs/sessionlogs/`) |
+| `sessionlog:export-all` | Batch-export every session for the current project |
+
+**JSON output** follows the de facto standard for multi-turn LLM conversations:
+
+```json
+[
+  {"role": "user", "content": "Hello"},
+  {"role": "assistant", "content": [{"type": "text", "text": "Hi there!"}]}
+]
+```
+
+**TXT output** is a plain-text transcript:
+
+```
+Session: f6c53fff-d3a3-460f-8347-11e2b7c757f8
+
+[user] Hello
+
+[assistant] Hi there!
+```
+
+**Trigger** — Ask Claude to "show session info", "export session log", "export this session", "export all sessions", "convert session to json", or mention session log export.
 
 ---
 
