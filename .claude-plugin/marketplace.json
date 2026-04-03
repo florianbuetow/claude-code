@@ -56,7 +56,7 @@
     {
       "name": "spec-dd",
       "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline with advisory quality gates: behavioral specification, test specification, implementation specification, and alignment review.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -89,7 +89,7 @@
     {
       "name": "appsec",
       "description": "Comprehensive application security toolbox for Claude Code. 62 skills across 8 frameworks (OWASP Top 10, OWASP API Top 10, STRIDE, PASTA, LINDDUN, MITRE ATT&CK, SANS/CWE Top 25, DREAD), red team simulation with 6 attacker personas plus consolidator, and interactive security education.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -122,7 +122,7 @@
     {
       "name": "iso27001-sdlc",
       "description": "Scan a software repository for ISO 27001:2022 compliance of its software development controls (Annex A 8.4, 8.25–8.33). Produces a per-control compliance gap report covering source code access, secure SDLC, application security requirements, secure architecture, secure coding, security testing, outsourced development, environment separation, change management, and test data.",
-      "version": "0.1.0",
+      "version": "1.0.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -133,7 +133,7 @@
     {
       "name": "cache-money",
       "description": "Keep the Anthropic prompt cache warm during Claude Code sessions by scheduling lightweight pings at regular intervals, reducing token costs by up to 90% on cached context.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -155,7 +155,7 @@
     {
       "name": "changelog",
       "description": "Generate and maintain CHANGELOG.md files from git commit history using Keep a Changelog format with Semantic Versioning. Auto-detects create vs update. Classifies commits into six categories, filters internal changes, and surfaces breaking changes with migration guidance.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
