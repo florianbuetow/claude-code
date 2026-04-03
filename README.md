@@ -95,6 +95,17 @@ claude --plugin-dir ./plugins/<plugin-name>
 
 </details>
 
+### Using the Justfile
+
+If you have [just](https://github.com/casey/just) installed, you can manage the marketplace and plugins with:
+
+```bash
+just install   # Add marketplace and install all plugins
+just update    # Update marketplace and all installed plugins
+just status    # Show installed vs repo plugin versions
+just validate  # Validate plugin and marketplace manifests
+```
+
 ### Using with Codex (OpenAI)
 
 These skills follow the open [Agent Skills](https://agentskills.io) standard (`SKILL.md` files with YAML frontmatter), which means they work with [Codex](https://github.com/openai/codex) out of the box - no modifications needed. Codex recursively discovers all `SKILL.md` files within each plugin directory. Subcommands use namespaced names (e.g., `changelog:create`, `logbook:time`) to avoid collisions.
