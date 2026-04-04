@@ -632,7 +632,7 @@ def score_models(analysis):
     mix = analysis["mix"]
     opus_pct = mix.get("opus", {}).get("pct", 0)
     tiers_used = sum(1 for t in ("opus", "sonnet", "haiku") if mix.get(t, {}).get("count", 0) > 0)
-    if tiers_used >= 3:
+    if tiers_used >= 3 and opus_pct < 50:
         return 5
     if tiers_used >= 2 and opus_pct < 50:
         return 4
@@ -702,7 +702,12 @@ def fmt_cost(c):
 
 
 def fmt_pct(p):
-    return f"{p * 100:.0f}%"
+    v = p * 100
+    if v == 0:
+        return "0%"
+    if v < 1:
+        return f"{v:.1f}%"
+    return f"{v:.0f}%"
 
 
 # ── Report Generation ────────────────────────────────────────────────
