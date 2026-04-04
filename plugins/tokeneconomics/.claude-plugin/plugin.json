@@ -1,0 +1,18 @@
+{
+  "name": "tokeneconomics",
+  "version": "0.1.0",
+  "description": "Analyze Claude Code session token usage to flag waste risks and cost optimization opportunities. Reviews per-message token data including cache efficiency, conversation sprawl, model selection, and estimated costs across projects.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "token-usage",
+    "cost-optimization",
+    "session-analysis",
+    "cache-efficiency",
+    "token-economics",
+    "usage-limits"
+  ]
+}
