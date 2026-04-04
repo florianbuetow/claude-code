@@ -187,8 +187,8 @@
     },
     {
       "name": "sessionlog",
-      "description": "Export Claude Code session logs as standard LLM conversation JSON and human-readable TXT transcripts. Compact sessions into resumable context files. Identify current session, export individual sessions, batch-export all project sessions, or report token usage statistics.",
-      "version": "0.0.3",
+      "description": "Export Claude Code session logs as standard LLM conversation JSON and human-readable TXT transcripts. Compact sessions into resumable context files. Recap recent sessions for quick context recovery. Identify current session, export individual sessions, batch-export all project sessions, or report token usage statistics.",
+      "version": "0.0.4",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
