@@ -67,7 +67,8 @@ install:
     claude plugin marketplace add {{marketplace_source}} 2>&1
     echo ""
     printf "Installing plugins...\n"
-    for plugin in $(jq -r '.plugins[].name' .claude-plugin/marketplace.json); do
+    for plugin_dir in plugins/*/; do
+        plugin=$(basename "$plugin_dir")
         printf "  Installing %s...\n" "$plugin"
         claude plugin install "$plugin@{{marketplace_name}}" 2>&1
     done
@@ -85,10 +86,17 @@ update:
     printf "Updating marketplace {{marketplace_name}}...\n"
     claude plugin marketplace update {{marketplace_name}} 2>&1
     echo ""
+    installed_list=$(claude plugin list 2>&1)
     printf "Updating plugins...\n"
-    for plugin in $(jq -r '.plugins[].name' .claude-plugin/marketplace.json); do
-        printf "  Updating %s...\n" "$plugin"
-        claude plugin update "$plugin@{{marketplace_name}}" 2>&1
+    for plugin_dir in plugins/*/; do
+        plugin=$(basename "$plugin_dir")
+        if echo "$installed_list" | grep -q "❯ ${plugin}@{{marketplace_name}}"; then
+            printf "  Updating %s...\n" "$plugin"
+            claude plugin update "$plugin@{{marketplace_name}}" 2>&1
+        else
+            printf "  Installing %s (not yet installed)...\n" "$plugin"
+            claude plugin install "$plugin@{{marketplace_name}}" 2>&1
+        fi
     done
     echo ""
     printf "\033[32m✓ Update completed — restart Claude Code to pick up changes\033[0m\n"
