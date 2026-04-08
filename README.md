@@ -45,6 +45,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
+| [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner - Annex A controls 8.4, 8.25–8.33 |
@@ -836,6 +837,23 @@ Reverse the built-in Claude Code limitations discovered in the source code leak.
 | `fixclaude:analyze` | Gap analysis — maps each directive to a specific Claude Code limitation |
 
 **Trigger** - Ask Claude to "fix claude", "create claude md", "install fixclaude directives", "analyze claude md gaps", or mention Claude Code limitations.
+
+---
+
+## context-research
+
+Autonomous AI research pipeline that identifies, analyzes, and synthesizes SOTA research via Hugging Face and ArXiv.
+
+`1 skill` · `3-phase pipeline` · `Weighted ranking` · `Parallel extraction`
+
+Designed for engineering-grade deep dives into AI topics. Searches Hugging Face papers, ranks by relevance/recency/impact, extracts benchmarks and metrics from full-text markdown, and produces thematic synthesis reports organized by architectural shifts, universal bottlenecks, and production trade-offs.
+
+**Phases:**
+1. **Discovery & Ranking** — Weighted scoring (50% relevance, 25% recency, 25% impact) with sparse-result fallback to web search
+2. **Deep Extraction** — Parallel fetch of top 3-5 papers with shallow-content detection and ArXiv PDF fallback
+3. **Thematic Synthesis** — Cross-paper taxonomy: architectural shifts, bottlenecks/patterns, production trade-offs
+
+**Trigger** - Ask for a deep dive, SOTA analysis, or implementation risk assessment on any AI topic (e.g., "research KV-cache optimization", "context compression SOTA").
 
 ---
 

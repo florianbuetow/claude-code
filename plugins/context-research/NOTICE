@@ -1,0 +1,8 @@
+This plugin contains code derived from the huggingface-papers skill in the
+huggingface/skills repository (https://github.com/huggingface/skills).
+
+Original work copyright Hugging Face, licensed under the Apache License,
+Version 2.0. A copy of the Apache License is included in LICENSE-APACHE.
+
+The full text of the Apache License 2.0 can also be obtained at:
+http://www.apache.org/licenses/LICENSE-2.0
