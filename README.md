@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `17 plugins` and `80+ skills` for Claude Code.
+A collection of `19 plugins` and `80+ skills` for Claude Code.
 
 ## Quickstart
 
@@ -17,6 +17,7 @@ claude plugin install archibald
 claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
+claude plugin install context-research
 claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
 claude plugin install iso27001-sdlc
@@ -28,6 +29,7 @@ claude plugin install solid-principles
 claude plugin install spec-dd
 claude plugin install sessionlog
 claude plugin install spec-writer
+claude plugin install tokeneconomics
 
 # 3. Restart Claude Code
 
@@ -57,6 +59,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
+| [tokeneconomics](#tokeneconomics) | Session token usage analysis - cache efficiency, conversation sprawl, model selection, cost optimization |
 
 ---
 
@@ -72,7 +75,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `solid-principles`, `beyond-solid-principles`, `archibald`, `kiss`, `appsec`, `spec-writer`, `spec-dd`, `explain-system-tradeoffs`, `retrospective`, `onboarding`, `iso27001-sdlc`, `cache-money`, `logbook`, `changelog`, `agent-guardrails`, `fixclaude`, `sessionlog`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
 
 ### Updating
 
@@ -638,7 +641,7 @@ Starting a new session or resuming after a break? This plugin gathers context fr
 
 Export Claude Code session logs as portable conversation files.
 
-`3 skills` · `1 export script` · `JSON + TXT output` · `Batch export`
+`7 skills` · `1 export script` · `JSON + TXT output` · `Batch export`
 
 Every Claude Code session is stored as JSONL in `~/.claude/projects/`, but that format is internal — you can't feed it to another LLM, share it with a colleague, or archive it alongside your code. This plugin converts session logs into two portable formats: standard LLM conversation JSON (the `{role, content}` array format used by OpenAI, Anthropic, and every major inference API) and a human-readable TXT transcript.
 
@@ -647,6 +650,10 @@ Every Claude Code session is stored as JSONL in `~/.claude/projects/`, but that 
 | `sessionlog:info` | Show current session ID, log file path, and project session directory |
 | `sessionlog:export` | Export current session to JSON + TXT (default: `docs/sessionlogs/`) |
 | `sessionlog:export-all` | Batch-export every session for the current project |
+| `sessionlog:compact` | Compress current session into a resumable context file |
+| `sessionlog:continue` | Restore context from a previously compacted session |
+| `sessionlog:tokenusage` | Report input/output token usage for the current session |
+| `sessionlog:recap` | Quick TLDR summary of recent sessions |
 
 **JSON output** follows the de facto standard for multi-turn LLM conversations:
 
@@ -667,7 +674,7 @@ Session: f6c53fff-d3a3-460f-8347-11e2b7c757f8
 [assistant] Hi there!
 ```
 
-**Trigger** — Ask Claude to "show session info", "export session log", "export this session", "export all sessions", "convert session to json", or mention session log export.
+**Trigger** — Ask Claude to "show session info", "export session log", "export all sessions", "compact session", "continue session", "token usage", "recap sessions", or mention session log export.
 
 ---
 
@@ -854,6 +861,18 @@ Designed for engineering-grade deep dives into AI topics. Searches Hugging Face 
 3. **Thematic Synthesis** — Cross-paper taxonomy: architectural shifts, bottlenecks/patterns, production trade-offs
 
 **Trigger** - Ask for a deep dive, SOTA analysis, or implementation risk assessment on any AI topic (e.g., "research KV-cache optimization", "context compression SOTA").
+
+---
+
+## tokeneconomics
+
+Analyze Claude Code session token usage to flag waste and optimization opportunities.
+
+`1 skill` · `6 analysis dimensions` · `Scoring & cost estimation`
+
+Reviews per-message token data from Claude Code sessions, analyzing cache efficiency, conversation sprawl, model selection, and estimated costs. Produces a scored report with actionable recommendations for reducing token spend.
+
+**Trigger** - Ask to "analyze token usage", "check token efficiency", "audit token spend", or "reduce token costs".
 
 ---
 
