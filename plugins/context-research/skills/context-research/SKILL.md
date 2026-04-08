@@ -44,7 +44,7 @@ The saved report file must contain everything the user will learn from this rese
 
 1.  **Two canonical summary locations — no others**:
     - **Key Takeaways** (Phase 4): 5–8 actionable insight bullets, immediately after the header. Keep it sharp — do not expand it to absorb recap content.
-    - **Appendix: Execution Notes**: placed at the end of the document. Holds the research-process recap: which papers were picked and why, cross-paper findings, methodology notes, and any synthesis that doesn't fit the main taxonomy.
+    - **Appendix: Execution Notes**: placed at the end of the document. Holds the research-process recap: which papers were picked and why, cross-paper findings, methodology notes, and any synthesis that doesn't fit the main taxonomy. Structure it as short prose paragraphs under three fixed sub-headings in this order: **Paper Selection** (what was picked and why), **Cross-Paper Findings** (themes spanning multiple papers), **Methodology Notes** (how the research was conducted, fallbacks used, gaps encountered).
     Do not invent other summary sections.
 2.  **Persist before replying**: Both sections must exist in the file on disk before you compose the chat reply.
 3.  **Draft the reply from the file**: Compose the chat reply by quoting or paraphrasing directly from the saved document — not by writing it independently. The file drives the reply, never the reverse.
