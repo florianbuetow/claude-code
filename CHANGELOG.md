@@ -8,9 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added context-research plugin (v0.0.1) — autonomous AI research pipeline that discovers, ranks, and synthesizes SOTA papers via Hugging Face and ArXiv APIs. Three-phase workflow: intelligent discovery with weighted ranking, parallel deep extraction with shallow-content fallback, and thematic synthesis reporting. Derived from huggingface/skills (Apache 2.0).
+- Added tokeneconomics plugin (v0.1.0) — analyzes Claude Code session token usage across 6 dimensions (cache efficiency, conversation sprawl, model selection, cost estimation) to flag waste and optimization opportunities.
+- Added sessionlog:recap skill for quick TLDR summaries of recent sessions.
+- Added sessionlog:compact and sessionlog:continue skills for session context preservation across compaction.
+- Added sessionlog:tokenusage skill for per-session input/output token reporting.
+- Added justfile for plugin marketplace management (`just install`, `just update`, `just status`, `just validate`).
 - Added `/agent-guardrails:test` skill for verifying installed hook patterns — checks hook installation, runs 2 test phrases per rule (12 positive + 4 negative), stops on first failure (v3.2.1).
 - Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
+
+### Fixed
+
+- Fixed plugin auto-discovery to scan directories and install missing plugins during `just update`.
+- Fixed tokeneconomics model scoring threshold and percentage formatting.
+- Synced marketplace manifest versions with actual plugin versions.
 
 ### Changed
 
@@ -84,4 +96,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/b6d7dde...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/aa1df20...HEAD
