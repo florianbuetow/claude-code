@@ -36,6 +36,9 @@ Avoid individual paper summaries. Organize the report by **Technical Taxonomy**:
 2.  **Universal Bottlenecks/Patterns**: Identify cross-paper themes (e.g., "Information Loss," "Latency-Accuracy Trade-offs," or "Context Saturation").
 3.  **Production Trade-offs**: Analyze the cost of implementation (e.g., KV-cache invalidation, API overhead).
 
+## Phase 4: Key Takeaways
+After synthesis, write a **Key Takeaways** section placed immediately after the report header (before the first numbered section). This should be a concise bulleted list (5-8 bullets) of the most actionable insights distilled from the full report. Each bullet should be self-contained and useful without reading the rest of the document.
+
 ---
 
 # PART 2: Technical Specifications
