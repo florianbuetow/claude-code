@@ -199,7 +199,7 @@
     {
       "name": "context-research",
       "description": "Autonomous AI research pipeline that identifies, analyzes, and synthesizes SOTA AI research via Hugging Face and ArXiv. Discovers and ranks papers by relevance/recency/impact, extracts benchmarks from full-text markdown, and produces thematic synthesis reports.",
-      "version": "0.0.2",
+      "version": "0.0.3",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
