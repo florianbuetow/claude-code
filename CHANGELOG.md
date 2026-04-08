@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- context-research: bumped to v0.0.3 — added Phase 5 "Document Completeness" rule. The saved report must contain everything the user will learn, including execution recaps and process meta-commentary. Defines two canonical summary locations (Key Takeaways at top, Appendix: Execution Notes at bottom) and requires composing the chat reply by quoting the saved file.
+
 ### Added
 
 - Added context-research plugin (v0.0.1) — autonomous AI research pipeline that discovers, ranks, and synthesizes SOTA papers via Hugging Face and ArXiv APIs. Three-phase workflow: intelligent discovery with weighted ranking, parallel deep extraction with shallow-content fallback, and thematic synthesis reporting. Derived from huggingface/skills (Apache 2.0).

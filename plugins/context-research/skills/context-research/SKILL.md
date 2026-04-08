@@ -39,6 +39,16 @@ Avoid individual paper summaries. Organize the report by **Technical Taxonomy**:
 ## Phase 4: Key Takeaways
 After synthesis, write a **Key Takeaways** section placed immediately after the report header (before the first numbered section). This should be a concise bulleted list (5-8 bullets) of the most actionable insights distilled from the full report. Each bullet should be self-contained and useful without reading the rest of the document.
 
+## Phase 5: Document Completeness (MANDATORY)
+The saved report file must contain everything the user will learn from this research — **including execution recaps, cross-paper findings, picked-paper rationales, and any process meta-commentary**. Do not rationalize any category of content as "meta" and therefore chat-only. If it's worth telling the user, it's worth saving.
+
+1.  **Two canonical summary locations — no others**:
+    - **Key Takeaways** (Phase 4): 5–8 actionable insight bullets, immediately after the header. Keep it sharp — do not expand it to absorb recap content.
+    - **Appendix: Execution Notes**: placed at the end of the document. Holds the research-process recap: which papers were picked and why, cross-paper findings, methodology notes, and any synthesis that doesn't fit the main taxonomy.
+    Do not invent other summary sections.
+2.  **Persist before replying**: Both sections must exist in the file on disk before you compose the chat reply.
+3.  **Draft the reply from the file**: Compose the chat reply by quoting or paraphrasing directly from the saved document — not by writing it independently. The file drives the reply, never the reverse.
+
 ---
 
 # PART 2: Technical Specifications
