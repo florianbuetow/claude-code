@@ -1,6 +1,6 @@
 {
   "name": "context-research",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An autonomous research pipeline that uses the Hugging Face API to find, analyze, and synthesize AI research into a technical report. Use this for deep dives into technical AI topics.",
   "author": {
     "name": "Florian Buetow",
