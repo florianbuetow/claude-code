@@ -1,12 +1,12 @@
 ---
 name: no-false-completion
 pattern: (?i)(all done|all set|we'?re all set|we'?re good|you'?re all set|that'?s everything|nothing else needs|no other changes|the fix is complete|implementation is complete|fully implemented|fully working|everything is working|everything works)
-message: "Run tests or verification commands and show the output before claiming completion."
+message: "That sounds great. However, did you verify your results. Run all available tests and show their output. Do a manual check of the changes. If this is a web project, use Playwright MCP or CLI to manually test the changes and features you implemented. Show the verification output, then restate your completion claim."
 ---
 
-**Stop - unverified completion claim detected.**
+Did you verify your results.
 
-You claimed the work is complete (e.g., "all done", "fully implemented", "everything works") without showing verification. Don't claim completion without evidence:
-1. **Run the tests** or relevant verification commands.
-2. **Show the output** proving it works.
-3. Only claim completion after verification succeeds.
+1. Run all available tests and show their output.
+2. Do a manual check of the changes.
+3. If this is a web project, use Playwright MCP or CLI to manually test the changes and features you implemented.
+4. Show the verification output, then restate your completion claim.

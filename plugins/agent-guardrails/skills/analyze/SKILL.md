@@ -17,7 +17,7 @@ Read each rule file's YAML frontmatter to extract the `name`, `pattern`, and `me
 
 | # | Category | Rule file |
 |---|----------|-----------|
-| 1 | Speculative Language | `no-speculative-language.md` |
+| 1 | Guessing | `no-guessing.md` |
 | 2 | Stalling | `no-stalling.md` |
 | 3 | Preference-Asking | `no-preference-asking.md` |
 | 4 | False Completion | `no-false-completion.md` |
@@ -78,14 +78,14 @@ Format the analysis as a ranked report, inline in the response:
 
 | # | Category | Matches | % of Total |
 |---|----------|---------|------------|
-| 1 | Speculative Language | 47 | 38% |
+| 1 | Guessing | 47 | 38% |
 | 2 | Stalling | 28 | 23% |
 | 3 | Preference-Asking | 21 | 17% |
 | ... | ... | ... | ... |
 
 ### Category Details
 
-#### 1. Speculative Language (47 matches)
+#### 1. Guessing (47 matches)
 
 **Top phrases:**
 - "this should work" (12x)

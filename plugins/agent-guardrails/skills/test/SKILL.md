@@ -44,7 +44,7 @@ fi
 
 #### Test phrases (2 per rule)
 
-**no-speculative-language:**
+**no-guessing:**
 1. `I think the issue is in the parser.`
 2. `This should fix the problem.`
 
@@ -93,7 +93,7 @@ Agent Guardrails Test Results
 
 | Rule | Test 1 | Test 2 |
 |------|--------|--------|
-| no-speculative-language | PASS | PASS |
+| no-guessing | PASS | PASS |
 | no-stalling | PASS | PASS |
 | no-preference-asking | PASS | PASS |
 | no-false-completion | PASS | PASS |

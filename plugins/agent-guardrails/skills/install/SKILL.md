@@ -1,6 +1,6 @@
 ---
 name: agent-guardrails-install
-description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes six battle-tested rules (no-speculative-language, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
+description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes six battle-tested rules (no-guessing, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
 ---
 
 # Agent Guardrails Install
@@ -22,7 +22,7 @@ Install agent behavioral guardrail rules into the current project. Generates a b
 
 | # | Rule | Description |
 |---|------|-------------|
-| 1 | `no-speculative-language` | Blocks hedging, guessing, unverified claims |
+| 1 | `no-guessing` | Blocks hedging, guessing, unverified claims |
 | 2 | `no-stalling` | Blocks stalling language, padding before action |
 | 3 | `no-preference-asking` | Blocks delegating decisions to the user |
 | 4 | `no-false-completion` | Blocks unverified completion claims |
@@ -117,7 +117,7 @@ Show what was installed:
 
 | Rule | Status |
 |------|--------|
-| no-speculative-language | Installed |
+| no-guessing | Installed |
 | no-stalling | Installed |
 | no-preference-asking | Installed |
 | no-false-completion | Installed |
