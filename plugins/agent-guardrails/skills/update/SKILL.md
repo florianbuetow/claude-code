@@ -30,7 +30,7 @@ Read the canonical rule definitions from the plugin's `rules/` directory:
 
 **Source of truth:** `${CLAUDE_PLUGIN_ROOT}/rules/no-*.md`
 
-Read each rule file's YAML frontmatter to extract `name`, `pattern`, and `message` fields. The six baseline categories are: `no-speculative-language`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`, `no-dismissing`.
+Read each rule file's YAML frontmatter to extract `name`, `pattern`, and `message` fields. The six baseline categories are: `no-guessing`, `no-stalling`, `no-preference-asking`, `no-false-completion`, `no-skipping`, `no-dismissing`.
 
 ### Step 3: Analyze Recent Sessions
 
@@ -117,7 +117,7 @@ Format results inline:
 
 | Rule | Status | Matches | Assessment |
 |------|--------|---------|------------|
-| no-speculative-language | enabled | 23 | Working well |
+| no-guessing | enabled | 23 | Working well |
 | no-stalling | enabled | 5 | Too aggressive (2 false positives) |
 | no-preference-asking | enabled | 0 | No data |
 | no-false-completion | enabled | 8 | Working well |
@@ -168,7 +168,7 @@ Add: `I won'?t bother|close enough|good enough for now|that'?ll do`
 1. **Update no-stalling** — tighten pattern to reduce false positives
 2. **Update no-skipping** — expand pattern to catch missed phrases
 3. **Install no-apologizing** — new pattern detected, not yet covered
-4. **Keep no-speculative-language** — working well, no changes needed
+4. **Keep no-guessing** — working well, no changes needed
 5. **Monitor no-preference-asking** — no data yet, keep enabled
 ```
 

@@ -34,7 +34,7 @@ Assistant response -> Stop hook -> stop-guardrails.sh -> block / allow
 
 | Rule | What It Catches |
 |------|----------------|
-| `no-speculative-language` | Hedging, guessing, unverified claims ("probably", "I think", "this should work") |
+| `no-guessing` | Hedging, guessing, unverified claims ("probably", "I think", "this should work") |
 | `no-stalling` | Padding before action ("before I proceed", "a few things to consider") |
 | `no-preference-asking` | Delegating decisions to the user ("would you prefer", "shall I") |
 | `no-false-completion` | Claiming completion without evidence ("all done", "fully implemented") |
@@ -77,9 +77,9 @@ After installation, your project will have:
 Edit `.claude/hooks/stop-guardrails.sh` directly. Each rule is a grep block:
 
 ```bash
-# no-speculative-language
+# no-guessing
 if echo "$message" | grep -qiE '(pattern...)'; then
-  blocked+=("**no-speculative-language**: Message...")
+  blocked+=("**no-guessing**: Message...")
 fi
 ```
 
