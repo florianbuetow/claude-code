@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Renamed agent-guardrails rule `no-speculative-language` to `no-guessing` across all files — the rule detects unverified claims, not language style (v3.3.0).
+- Rewrote all six agent-guardrails feedback messages to remove rule names, markdown formatting, and detection signal leaks — the model now receives only behavioral corrections without knowing which pattern triggered detection (v3.3.0).
+- Redesigned agent-guardrails feedback prompts to align with operational intent: keep working (no-stalling, no-skipping), re-read requirements before escalating (no-preference-asking with ESCALATING QUESTION format), verify with tests and Playwright before claiming done (no-false-completion), investigate before asserting (no-guessing), show evidence before dismissing (no-dismissing) (v3.3.0).
+
+### Added
+
+- Added detection patterns for `have not verified/confirmed/checked/validated/tested` and `haven't verified/...` to agent-guardrails no-skipping rule — catches agents disclosing they skipped verification instead of actually verifying (v3.2.2).
+- Added detection patterns for dismissive `pre-existing` usage and `the only failure/error/...` to agent-guardrails no-dismissing rule — catches agents minimizing real failures as pre-existing or singular (v3.3.0).
+
+### Changed
+
 - context-research: bumped to v0.0.3 — added Phase 5 "Document Completeness" rule. The saved report must contain everything the user will learn, including execution recaps and process meta-commentary. Defines two canonical summary locations (Key Takeaways at top, Appendix: Execution Notes at bottom) and requires composing the chat reply by quoting the saved file.
 
 ### Added
@@ -100,4 +111,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/aa1df20...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/d54af43...HEAD
