@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `19 plugins` and `80+ skills` for Claude Code.
+A collection of `19 plugins` and `95 skills` for Claude Code.
 
 ## Quickstart
 
@@ -41,7 +41,7 @@ claude plugin marketplace update florianbuetow-plugins
 
 | Skill | Description |
 |-------|-------------|
-| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails - 11 rules across Stop, PreToolUse, and PostToolUse hooks |
+| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — 6 rules via Stop hook with intent-aligned feedback |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
@@ -810,15 +810,16 @@ The update skill uses a 3-strategy boundary detection (tag match, date match, co
 
 Data-driven agent behavioral guardrails for Claude Code sessions.
 
-`3 skills` · `11 rules` · `3 hook types` · `Iterative refinement`
+`4 skills` · `6 rules` · `Stop hook` · `Iterative refinement`
 
-Enforces agent discipline through three hook types: **Stop hooks** block anti-patterns in assistant output (hedging, stalling, skipping, false completions, plan echoing, robotic comments, over-explaining), **PreToolUse hooks** intercept dangerous tool calls before execution (editing unread files, destructive bash commands), and a **PostToolUse hook** tracks file reads for stateful enforcement.
+Enforces agent discipline through a Stop hook that detects anti-patterns in assistant output: guessing without verification, stalling instead of acting, asking preferences instead of deciding, claiming completion without evidence, skipping work, and dismissing issues without investigation. Feedback messages guide the model toward the correct behavior without revealing which pattern triggered detection.
 
 | Command | What it does |
 |---------|-------------|
-| `agent-guardrails:analyze` | Scan session logs for anti-patterns - produces ranked frequency report with excerpts |
-| `agent-guardrails:install` | Install all 11 rules into `.claude/` - works immediately, no restart. Re-run to upgrade after plugin update. |
-| `agent-guardrails:update` | Re-analyze logs against installed rules - finds false positives, missed patterns, suggests refinements |
+| `agent-guardrails:analyze` | Scan session logs for anti-patterns — produces ranked frequency report with excerpts |
+| `agent-guardrails:install` | Install all 6 rules into `.claude/` — works immediately, no restart. Re-run to upgrade after plugin update. |
+| `agent-guardrails:test` | Verify installed hook patterns — runs 2 test phrases per rule, stops on first failure |
+| `agent-guardrails:update` | Re-analyze logs against installed rules — finds false positives, missed patterns, suggests refinements |
 
 **No external dependencies** — just bash, jq, and grep. No hookify plugin required.
 
@@ -1049,7 +1050,7 @@ plugins/
   │   │   └── plugin.json             # Plugin manifest
   │   ├── LICENSE
   │   ├── rules/                      # Rule definitions (source of truth)
-  │   │   ├── no-speculative-language.md
+  │   │   ├── no-guessing.md
   │   │   ├── no-stalling.md
   │   │   ├── no-preference-asking.md
   │   │   ├── no-false-completion.md
