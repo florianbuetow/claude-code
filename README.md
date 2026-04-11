@@ -73,6 +73,10 @@ A colored context window progress bar for the Claude Code CLI status line — se
 
 A shell helper that lets you interactively pick a local LM Studio model and launch Claude Code against it. Models are listed grouped by publisher with size and context length info. The selected model is auto-loaded before launching and auto-unloaded afterwards. See [scripts/claude-lmstudio/](scripts/claude-lmstudio/) for details.
 
+### pix — Run pi with Local LM Studio Models
+
+A shell helper that lets you interactively pick a local LM Studio model and launch [pi](https://github.com/badlogic/pi-mono) against it. Works the same as `claudex` but configures pi's `~/.pi/agent/models.json` instead of env vars. See [scripts/pi-lmstudio/](scripts/pi-lmstudio/) for details.
+
 ---
 
 ## Installation
