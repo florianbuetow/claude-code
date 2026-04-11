@@ -1,0 +1,16 @@
+{
+  "name": "orchestrator",
+  "version": "0.2.0",
+  "description": "Produces evidence-based model routing plans: maps each task unit to the best-suited AI model (Claude, GPT, Gemini, open-weight) using a 30-category task taxonomy, decision rules, and per-unit rationale, context briefing, and failure-mode warnings.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "model-routing",
+    "orchestration",
+    "task-mapping",
+    "multi-model",
+    "agent-team"
+  ]
+}

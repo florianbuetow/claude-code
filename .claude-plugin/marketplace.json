@@ -217,6 +217,17 @@
       },
       "source": "./plugins/tokeneconomics",
       "category": "performance"
+    },
+    {
+      "name": "orchestrator",
+      "description": "Produces evidence-based model routing plans: maps each task unit to the best-suited AI model (Claude, GPT, Gemini, open-weight) using a 30-category task taxonomy, decision rules, and per-unit rationale, context briefing, and failure-mode warnings.",
+      "version": "0.2.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/orchestrator",
+      "category": "productivity"
     }
   ]
 }
