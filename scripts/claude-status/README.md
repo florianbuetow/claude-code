@@ -8,7 +8,7 @@ Adds a colored context window progress bar to the Claude Code CLI status line. S
 - **Yellow** — 70–79%
 - **Red** — 80% and above
 
-<img src="statusbar.jpg" alt="Status bar showing green, yellow, and red states">
+<img src="statusbar.jpg" alt="Status bar showing green, yellow, and red states" width="640">
 
 ---
 
