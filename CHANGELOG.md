@@ -6,8 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added orchestrator plugin with maptasks skill for intelligent task categorization and mapping across domain models.
+- Added claude-context-status script to visualize context window usage with colored progress bars.
+
 ### Changed
 
+- Updated README documentation to use `<img>` tags for natural image sizing instead of Markdown.
+- Synced agent-guardrails section in README with v3.3.0 changes and updated marketplace skill count to 95.
 - Renamed agent-guardrails rule `no-speculative-language` to `no-guessing` across all files — the rule detects unverified claims, not language style (v3.3.0).
 - Rewrote all six agent-guardrails feedback messages to remove rule names, markdown formatting, and detection signal leaks — the model now receives only behavioral corrections without knowing which pattern triggered detection (v3.3.0).
 - Redesigned agent-guardrails feedback prompts to align with operational intent: keep working (no-stalling, no-skipping), re-read requirements before escalating (no-preference-asking with ESCALATING QUESTION format), verify with tests and Playwright before claiming done (no-false-completion), investigate before asserting (no-guessing), show evidence before dismissing (no-dismissing) (v3.3.0).
