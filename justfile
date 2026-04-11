@@ -48,6 +48,7 @@ help:
     @echo ""
     @printf "\033[0;33mSetup & Lifecycle:\033[0m\n"
     @printf "  %-38s %s\n" "install" "Add marketplace and install all plugins"
+    @printf "  %-38s %s\n" "uninstall <plugin>" "Uninstall a plugin by name"
     @printf "  %-38s %s\n" "update" "Update marketplace and all installed plugins"
     @printf "  %-38s %s\n" "help" "Show this help information"
     @echo ""
@@ -67,13 +68,30 @@ install:
     claude plugin marketplace add {{marketplace_source}} 2>&1
     echo ""
     printf "Installing plugins...\n"
-    for plugin_dir in plugins/*/; do
-        plugin=$(basename "$plugin_dir")
-        printf "  Installing %s...\n" "$plugin"
-        claude plugin install "$plugin@{{marketplace_name}}" 2>&1
+    installed_list=$(claude plugin list 2>&1)
+    for plugin in $(jq -r '.plugins[].name' .claude-plugin/marketplace.json); do
+        if echo "$installed_list" | grep -q "❯ ${plugin}@{{marketplace_name}}"; then
+            printf "  Skipping %s (already installed)\n" "$plugin"
+        else
+            printf "  Installing %s...\n" "$plugin"
+            claude plugin install "$plugin@{{marketplace_name}}" --scope user 2>&1
+        fi
     done
     echo ""
     printf "\033[32m✓ Install completed — restart Claude Code to pick up new plugins\033[0m\n"
+    echo ""
+
+# Uninstall a plugin by name
+uninstall plugin:
+    #!/usr/bin/env bash
+    set -e
+    echo ""
+    printf "\033[0;34m=== Uninstalling Plugin ===\033[0m\n"
+    echo ""
+    printf "Uninstalling {{plugin}}...\n"
+    claude plugin uninstall "{{plugin}}@{{marketplace_name}}" --scope user 2>&1
+    echo ""
+    printf "\033[32m✓ Uninstall completed — restart Claude Code to pick up changes\033[0m\n"
     echo ""
 
 # Update marketplace and all installed plugins to latest versions
@@ -86,16 +104,15 @@ update:
     printf "Updating marketplace {{marketplace_name}}...\n"
     claude plugin marketplace update {{marketplace_name}} 2>&1
     echo ""
-    installed_list=$(claude plugin list 2>&1)
     printf "Updating plugins...\n"
-    for plugin_dir in plugins/*/; do
-        plugin=$(basename "$plugin_dir")
+    installed_list=$(claude plugin list 2>&1)
+    for plugin in $(jq -r '.plugins[].name' .claude-plugin/marketplace.json); do
         if echo "$installed_list" | grep -q "❯ ${plugin}@{{marketplace_name}}"; then
             printf "  Updating %s...\n" "$plugin"
-            claude plugin update "$plugin@{{marketplace_name}}" 2>&1
+            claude plugin update "$plugin@{{marketplace_name}}" --scope user 2>&1
         else
             printf "  Installing %s (not yet installed)...\n" "$plugin"
-            claude plugin install "$plugin@{{marketplace_name}}" 2>&1
+            claude plugin install "$plugin@{{marketplace_name}}" --scope user 2>&1
         fi
     done
     echo ""
@@ -112,12 +129,17 @@ status:
     printf "  %-25s %-15s %-15s %s\n" "------" "----" "---------" "------"
     installed_list=$(claude plugin list 2>&1)
     jq -r '.plugins[] | "\(.name) \(.version)"' .claude-plugin/marketplace.json | while read -r name repo_version; do
+        install_count=$(echo "$installed_list" \
+            | grep -c "❯ ${name}@{{marketplace_name}}" || true)
         installed_version=$(echo "$installed_list" \
-            | grep -A1 "❯ ${name}@{{marketplace_name}}" \
+            | grep -A3 "❯ ${name}@{{marketplace_name}}" \
             | grep "Version:" \
+            | head -1 \
             | sed 's/.*Version: //' \
             | tr -d '[:space:]')
-        if [ -z "$installed_version" ]; then
+        if [ "$install_count" -gt 1 ]; then
+            printf "  %-25s %-15s \033[31m%-15s %s\033[0m\n" "$name" "$repo_version" "$installed_version" "✗ duplicate installs ($install_count)"
+        elif [ -z "$installed_version" ]; then
             printf "  %-25s %-15s %-15s \033[31m%s\033[0m\n" "$name" "$repo_version" "—" "not installed"
         elif [ "$installed_version" = "$repo_version" ]; then
             printf "  %-25s %-15s \033[32m%-15s %s\033[0m\n" "$name" "$repo_version" "$installed_version" "✓ match"
