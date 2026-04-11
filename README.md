@@ -65,7 +65,7 @@ claude plugin marketplace update florianbuetow-plugins
 
 ## Useful Scripts
 
-<img src="scripts/claude-status/statusbar.jpg" alt="Context window status bar">
+<img src="scripts/claude-status/statusbar.jpg" alt="Context window status bar" width="640">
 
 A colored context window progress bar for the Claude Code CLI status line — see [scripts/claude-status/](scripts/claude-status/) for installation instructions.
 
