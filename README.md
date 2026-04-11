@@ -69,6 +69,10 @@ claude plugin marketplace update florianbuetow-plugins
 
 A colored context window progress bar for the Claude Code CLI status line — see [scripts/claude-status/](scripts/claude-status/) for installation instructions.
 
+### claudex — Run Claude Code with Local LM Studio Models
+
+A shell helper that lets you interactively pick a local LM Studio model and launch Claude Code against it. Models are listed grouped by publisher with size and context length info. The selected model is auto-loaded before launching and auto-unloaded afterwards. See [scripts/claude-lmstudio/](scripts/claude-lmstudio/) for details.
+
 ---
 
 ## Installation
