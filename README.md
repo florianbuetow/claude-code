@@ -63,6 +63,14 @@ claude plugin marketplace update florianbuetow-plugins
 
 ---
 
+## Useful Scripts
+
+![Context window status bar](scripts/claude-status/statusbar.jpg)
+
+A colored context window progress bar for the Claude Code CLI status line — see [scripts/claude-status/](scripts/claude-status/) for installation instructions.
+
+---
+
 ## Installation
 
 All plugins are installed from the same marketplace.
