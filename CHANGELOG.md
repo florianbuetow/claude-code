@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added claudex script for running Claude Code with local LM Studio models — interactive model picker with auto-load/unload.
 - Added orchestrator plugin with maptasks skill for intelligent task categorization and mapping across domain models.
 - Added claude-context-status script to visualize context window usage with colored progress bars.
+
+### Changed
+
+- Improved plugin management: added `uninstall` command and refined `install`/`update` logic.
 
 ### Changed
 
