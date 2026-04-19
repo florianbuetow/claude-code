@@ -22,6 +22,15 @@ After making changes to any plugin, always run these three steps as the final pa
 
 Only declare work complete after `just status` shows all plugins matching.
 
+### Version Bump Rule (CRITICAL)
+
+When updating a plugin (any change that warrants a new version), the version number lives in **two** files. Both MUST be bumped together in the same commit:
+
+1. `plugins/<name>/.claude-plugin/plugin.json` — the plugin's own manifest
+2. `.claude-plugin/marketplace.json` — the marketplace entry for that plugin (find the object where `"name": "<plugin>"` and update its `version` field)
+
+If only `plugin.json` is bumped, `just update` becomes a no-op (marketplace still advertises the old version, so `claude plugin update` sees nothing newer) and `just status` shows mismatch forever.
+
 ## Available Commands
 
 - `just install` — First-time setup: add marketplace and install all plugins
