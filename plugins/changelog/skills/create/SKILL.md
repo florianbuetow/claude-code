@@ -7,6 +7,42 @@ description: This skill should be used when the user asks to "create a changelog
 
 Create a new `CHANGELOG.md` from scratch by analyzing the full git history. Follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) with [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Reasoning Discipline
+
+This task involves multi-step reasoning across many commits: read each commit message, infer the user-facing impact, choose a category, and synthesize related commits into a single bullet. Think carefully through each commit before writing — do not fall back to keyword-only classification or verbatim copying of commit messages.
+
+## Concision Target
+
+Calibrate output to these exact shapes. Do not exceed them.
+
+- **One bullet:** ≤15 words, one sentence, past tense, capitalized first word, ends with a period.
+- **One category:** 2–5 bullets. If a category would have >5 bullets, merge related ones until ≤5.
+- **One version or date section:** 2–5 populated category headings. Omit any category with zero bullets.
+- **Whole output:** a reader should scan one version section in under 30 seconds.
+
+### Preferred bullet examples
+
+> - Added OAuth 2.0 login with Google and GitHub providers.
+> - Fixed crash when uploading files larger than 2GB.
+> - Reduced dashboard load time by 40%.
+> - **BREAKING:** Removed `/api/v1/users`. Migrate to `/api/v2/users`.
+
+### Preferred section example
+
+```markdown
+## 2026-03-15
+
+### Added
+
+- OAuth 2.0 login with Google and GitHub providers.
+- Dark mode toggle in the settings panel.
+
+### Fixed
+
+- Fixed crash when uploading files larger than 2GB.
+- Corrected timezone display in the activity log.
+```
+
 ## Workflow
 
 ### Step 1: Gather Git Context
@@ -59,13 +95,29 @@ For each section (tag-based or date-based), classify commits into six categories
 | Fixed | `fix:`, "bug", "patch", "resolve", "correct" |
 | Security | `security:`, "CVE", "vulnerability" |
 
-**Skip merge commits** — Merge commits (e.g., "Merge branch ...", "Merge pull request ...") duplicate the merged commits.
+**Skip merge commits** — Merge commits whose subject starts with `Merge branch ` or `Merge pull request ` duplicate the merged commits. Skip them unconditionally.
 
-**Omit** commits that are purely internal (CI/CD, docs-only, trivial chores) unless user-facing.
+**Omit these commit types unless the change is visible to end users of the software (not developers):**
 
-**Prefix priority** — When a conventional commit prefix is present (e.g., `feat:`, `fix:`), use it to determine the category. Only fall back to keyword matching when no recognized prefix exists.
+- CI/CD config: files under `.github/`, `.gitlab-ci.yml`, `Jenkinsfile`, `.circleci/`, `azure-pipelines.yml`
+- Docs-only: `README.md`, `CONTRIBUTING.md`, `docs/**`, inline comments, docstrings
+- Lint/format config: `.eslintrc*`, `.prettierrc*`, `.editorconfig`, `.rubocop.yml`, `pyproject.toml` tool sections
+- Dependency bumps with no behavior change: dependabot, renovate, `package-lock.json`-only, `Gemfile.lock`-only
+- Whitespace-only, typo-only, or comment-only edits
+- Test-only additions (`tests/**`, `*_test.go`, `*.spec.ts`) with no corresponding source change
 
-**Synthesize, do not copy** — Group related commits into single user-facing bullet points. Write short, specific, past-tense descriptions focused on what the user sees or feels.
+**Keep** commits in the above categories when they ship user-visible behavior — e.g., a CI fix that unblocks a release, a test that fixes a regression users reported, a dependency bump that closes a CVE.
+
+**Prefix priority** — When a conventional commit prefix is present (`feat:`, `fix:`, `refactor:`, `perf:`, `security:`, `deprecate:`, `remove:`, with optional scope like `feat(auth):`), the prefix determines the category. Do not re-infer from the body. Fall back to keyword matching only when no recognized prefix exists.
+
+**Synthesize, do not copy** — Group related commits into single user-facing bullet points describing the end state, not the chronology. Commits are "related" if **any** of these apply:
+
+- Same user-visible feature or capability (e.g., three commits all touching the login flow)
+- Same file, directory, or module scope
+- Shared conventional-commit scope prefix (e.g., `feat(auth):` then `fix(auth):` then `refactor(auth):`)
+- Iterative fixes on the same bug: initial fix commit plus one or more follow-up correction commits
+
+Write one short, specific, past-tense sentence per bullet focused on what the user sees or feels.
 
 ### Step 4: Write the File
 
@@ -75,7 +127,7 @@ Build the file with:
 1. `# Changelog` header and standard intro paragraph referencing Keep a Changelog and SemVer
 2. `## [Unreleased]` section (just the heading, no empty sub-headings)
 3. One section per version or date group, in reverse chronological order:
-   - **Tagged releases:** `## [X.Y.Z] – YYYY-MM-DD`
+   - **Tagged releases:** `## [X.Y.Z] - YYYY-MM-DD` (use ASCII hyphen, not en-dash)
    - **Date-based groups:** `## YYYY-MM-DD` (start date of the group)
 4. Only category headings that have entries (omit empty ones)
 5. Reference-style version comparison links at the bottom (for tagged versions; omit for date-based groups)
@@ -88,14 +140,16 @@ Show the full generated changelog content inline.
 
 ## Key Rules
 
+- **Concision target** — ≤15 words per bullet, 2–5 bullets per category, 2–5 categories per section.
 - **Date-based sections are mandatory** — Never produce a single flat list. Every changelog must have multiple dated sections that tell the project's story over time.
-- **For humans, not machines** — Never dump raw git log. Synthesize into user-facing descriptions.
-- **Be specific** — "Fixed crash when uploading large files", not "Bug fixes".
+- **For humans, not machines** — Write user-facing descriptions (e.g., "Added dark mode toggle"). Do not dump raw git log lines.
+- **Be specific** — Write "Fixed crash when uploading large files" rather than "Bug fixes".
 - **Canonical category order** — Added, Changed, Deprecated, Removed, Fixed, Security.
 - **Omit empty categories** — Only include headings that have entries.
 - **Past tense consistently** — "Added", "Fixed", "Removed".
 - **Call out breaking changes** — Prefix with `**BREAKING:**`, describe impact, provide migration path.
 - **Deprecate before removing** — Mention the target major version when deprecating.
+- **ASCII hyphen in version headings** — `## [X.Y.Z] - YYYY-MM-DD`. Never en-dash (`–`) or em-dash (`—`).
 
 ## Reference Files
 

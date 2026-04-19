@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] – 2026-03-30
+## [1.0.0] - 2026-03-30
 
 Initial stable release.
 
@@ -47,7 +47,7 @@ Initial stable release.
 
 ## Overall Structure
 
-- One section per **version** (e.g., `## [1.2.0] – 2026-03-30`), in **reverse chronological order** (newest on top).
+- One section per **version** (e.g., `## [1.2.0] - 2026-03-30`), in **reverse chronological order** (newest on top). Use an ASCII hyphen (`-`) between the version and the date — never an en-dash (`–`) or em-dash (`—`). Spec-compliant parsers expect the hyphen.
 - Each version entry lists the **release date** and then grouped changes under semantic categories.
 - The file starts with `# Changelog` and a brief intro paragraph.
 - An `[Unreleased]` section at the top collects changes not yet in a tagged release.
@@ -101,7 +101,7 @@ If a commit does not clearly fit any category (e.g., pure CI/CD, docs-only, or t
 ## Workflow and Maintenance
 
 - Keep an `[Unreleased]` section at the top and add changes there as work progresses.
-- When cutting a new release, rename `## [Unreleased]` to `## [X.Y.Z] – YYYY-MM-DD`, then add a fresh `## [Unreleased]` above it.
+- When cutting a new release, rename `## [Unreleased]` to `## [X.Y.Z] - YYYY-MM-DD` (ASCII hyphen), then add a fresh `## [Unreleased]` above it.
 - Breaking changes live under `Removed` or `Changed` and correspond to `MAJOR` semver bumps.
 - New backwards-compatible features correspond to `MINOR` bumps.
 - Bug fixes correspond to `PATCH` bumps.
@@ -126,31 +126,70 @@ At the bottom of the file (no heading, just bare reference-style links), maintai
 
 Detect the remote URL from `git remote get-url origin` and construct links accordingly. Support both GitHub and GitLab URL formats.
 
-## Common Mistakes to Avoid
+## Patterns to Follow
 
-### Copy-pasting commit logs
-Raw `git log` or PR titles ("fix typo", "refactor foo") are noisy and not user-facing. Group multiple commits into one user-visible change and summarize the outcome, not the technical steps.
+Each subsection shows the **preferred** shape first, then a contrasting anti-pattern to avoid.
 
-### Being too vague or generic
-"Various improvements" or "Bug fixes and performance improvements" without specifics. Users cannot tell if the update matters to them. Be specific: "Fixed crash when uploading large files" or "Reduced page load time by up to 40%."
+### Synthesize related commits into one bullet
 
-### Ignoring breaking changes
-Not clearly calling out breaking changes or hiding them in a long list. Use `Removed` or `Changed` headings, describe the effect, and provide a migration path (e.g., "API v1 endpoints removed; use v2 instead").
+**Preferred:** Merge related commits into one user-facing bullet describing the end state.
 
-### Inconsistent structure or tone
-Mixing formats between versions (sometimes grouped by category, sometimes chronologically). Stick to the standard headings and keep bullets short and uniform.
+> - Added OAuth 2.0 login with Google and GitHub providers.
 
-### Information overload
-Listing every tiny tweak, internal refactor, or doc fix that does not affect users. Only include **notable changes** — things users will see or feel. Put purely internal changes in internal docs or PR summaries.
+**Avoid:** Copy-pasting raw `git log` entries or PR titles like `fix typo` or `refactor foo`. These are developer-facing noise, not user-facing changes.
 
-### Too technical without context
-Writing only for developers with jargon like "Refactored auth middleware for JWT validation." Explain the user-facing effect: "Login is now more reliable across different browsers."
+### Be specific and concrete
 
-### Skipping releases
-Only documenting "big" releases and leaving minor/patch versions empty erodes trust. If there are no notable changes, say so explicitly: "No user-facing changes; internal fixes only."
+**Preferred:** Name the exact user-facing symptom or outcome.
 
-### Batching changes
-Letting many changes accumulate and dumping them all into one giant entry. Keep the `[Unreleased]` section updated incrementally, then split into version-specific entries at release time.
+> - Fixed crash when uploading files larger than 2GB.
+> - Reduced dashboard load time by 40%.
+
+**Avoid:** Vague wrappers like "Various improvements" or "Bug fixes and performance improvements." Users cannot tell whether the release matters to them.
+
+### Surface breaking changes prominently
+
+**Preferred:** Prefix with `**BREAKING:**`, describe the user-visible effect, and provide a concrete migration step.
+
+> - **BREAKING:** Removed `/api/v1/users`. Replace with `/api/v2/users` — the response now returns `user_id` instead of `userId`.
+
+**Avoid:** Burying a breaking change inside a long `Changed` list with no label, no impact description, and no migration path.
+
+### Keep structure uniform across versions
+
+**Preferred:** Every version section uses the same canonical category order (Added, Changed, Deprecated, Removed, Fixed, Security). Omit only empty categories. Bullets share the same past-tense, ≤15-word shape.
+
+**Avoid:** Mixing grouped-by-category in one section with a chronological prose list in another. Mixing verb tenses or bullet styles between versions.
+
+### Only include notable, user-facing changes
+
+**Preferred:** Include changes users will see, feel, or act on. If a release has none, write exactly:
+
+> No user-facing changes; internal fixes only.
+
+**Avoid:** Listing every internal refactor, lint config tweak, or doc fix. Non-user-facing changes belong in PR summaries, not the changelog.
+
+### Describe user impact, not implementation
+
+**Preferred:** Translate the technical change into what the user now experiences.
+
+> - Login now works reliably in Firefox, Safari, and Edge.
+
+**Avoid:** Implementation-speak like "Refactored auth middleware for JWT validation." The user does not care which middleware changed.
+
+### Document every release, even empty ones
+
+**Preferred:** Every tagged release gets a section. If nothing user-facing changed, use the exact line:
+
+> No user-facing changes; internal fixes only.
+
+**Avoid:** Skipping minor or patch versions because "nothing big happened." Silent releases erode reader trust.
+
+### Maintain `[Unreleased]` incrementally
+
+**Preferred:** Add bullets to `[Unreleased]` as work lands. At release time, rename the heading to `## [X.Y.Z] - YYYY-MM-DD` (ASCII hyphen) and open a fresh empty `[Unreleased]` above it.
+
+**Avoid:** Letting many changes accumulate and dumping them all into one giant entry at release time.
 
 ## Handling Breaking Changes
 
@@ -205,3 +244,49 @@ Use the inline `**BREAKING:**` prefix for all breaking changes. This is scannabl
 ### Never hide breaking changes
 
 Do not bury breaking changes in a long list of minor tweaks under `Changed`. They must stand out — either through the `**BREAKING:**` prefix or by being listed first within their category section.
+
+## Handling Yanked Releases
+
+A yanked release is a version that was published, then withdrawn (e.g., discovered a critical bug, broken package, or security flaw after release). Keep a Changelog 1.1.0 requires a specific marker so humans and parsers can identify withdrawn versions.
+
+### Mark the version heading with `[YANKED]`
+
+Append the literal, uppercased `[YANKED]` tag after the date:
+
+```markdown
+## [1.2.1] - 2026-03-20 [YANKED]
+```
+
+Rules:
+
+- The tag is uppercase and in square brackets exactly as shown.
+- Keep the ASCII hyphen between version and date.
+- The yanked section's body remains in place — do **not** delete it. Readers need to see what the yanked release claimed to ship.
+
+### Add a one-line explanation below the heading
+
+State why it was yanked so users understand the impact:
+
+```markdown
+## [1.2.1] - 2026-03-20 [YANKED]
+
+Yanked because of a regression that corrupted session state on reconnect. Use 1.2.2 or later.
+```
+
+### Never silently delete a released version
+
+Even if the release was broken, the entry stays. Yanking is metadata, not erasure. Removing the entry hides history from anyone pinned to that version.
+
+### Do not yank `[Unreleased]`
+
+`[Unreleased]` is not a release. If work in progress is abandoned, delete or revise the relevant bullets directly; do not mark `[Unreleased]` as yanked.
+
+### Updating CHANGELOG.md to mark a yanked version
+
+When the user asks to yank version X.Y.Z:
+
+1. Locate the existing `## [X.Y.Z] - YYYY-MM-DD` heading.
+2. Append ` [YANKED]` (single space, brackets, uppercase).
+3. Insert a one-line explanation directly below the heading.
+4. Leave all existing bullets in place.
+5. Do not touch other versions.
