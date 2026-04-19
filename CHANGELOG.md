@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added pi-lmstudio script for running Claude with local models — lightweight alternative to claudex with direct model loading.
 - Added claudex script for running Claude Code with local LM Studio models — interactive model picker with auto-load/unload.
 - Added orchestrator plugin with maptasks skill for intelligent task categorization and mapping across domain models.
 - Added claude-context-status script to visualize context window usage with colored progress bars.
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Improved plugin management: added `uninstall` command and refined `install`/`update` logic.
+- Updated changelog plugin with improved skill descriptions and formatting guide for better UX.
 
 ### Changed
 
