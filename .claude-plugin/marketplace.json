@@ -228,6 +228,17 @@
       },
       "source": "./plugins/orchestrator",
       "category": "productivity"
+    },
+    {
+      "name": "progressive-disclosure",
+      "description": "Analyze and restructure how a repository progressively discloses its documentation through soul files (CLAUDE.md, AGENTS.md, GEMINI.md, COPILOT.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes to prevent context rot.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/progressive-disclosure",
+      "category": "development"
     }
   ]
 }
