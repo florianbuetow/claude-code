@@ -6,6 +6,7 @@ description: >
   "check session management", or mentions "authentication", "passwords", "MFA",
   "sessions", or "brute force" in a security context. Maps to OWASP Top 10 2021
   A07: Identification and Authentication Failures.
+disable-model-invocation: true
 ---
 
 # Identification and Authentication Failures

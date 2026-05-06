@@ -1,6 +1,7 @@
 ---
 name: maptasks
 description: Use when you have a specified engineering task or task list and need to decide which AI model should handle each work unit — routes tasks across Claude Opus/Sonnet/Haiku, GPT-5.4 family, GPT-5.3-Codex, and Gemini 2.5/3 with per-unit category, evidence-based rationale, context briefing, and failure-mode warnings. Also checks whether the task is broken down enough and proposes finer decomposition before routing.
+disable-model-invocation: false
 ---
 
 # maptasks — Route Engineering Work to the Right Model

@@ -7,6 +7,7 @@ description: >
   interfaces". Also triggers when the user asks about exposed APIs,
   form handlers, file upload endpoints, WebSocket handlers, CLI argument
   parsers, or wants to understand where external data enters the system.
+disable-model-invocation: true
 ---
 
 # Attack Surface Mapping

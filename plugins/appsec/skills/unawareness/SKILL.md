@@ -6,6 +6,7 @@ description: >
   "check for hidden data collection", "audit user consent flows", or mentions
   "unawareness" in a privacy context. Maps to LINDDUN category U. No STRIDE
   equivalent exists.
+disable-model-invocation: true
 ---
 
 # Unawareness Analysis (LINDDUN U)

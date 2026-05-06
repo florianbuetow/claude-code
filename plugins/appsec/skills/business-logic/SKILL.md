@@ -7,6 +7,7 @@ description: >
   security", or mentions "business logic", "workflow bypass", "negative
   amount", "coupon abuse", "self-referral", "state manipulation", or
   "time-based exploit" in a security context.
+disable-model-invocation: true
 ---
 
 # Business Logic Security (BIZ)

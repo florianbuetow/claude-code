@@ -10,6 +10,7 @@ description: >
   subagent suggestions, slash command ideas, or asks about improving their AI-assisted
   development process. Supports analyzing all dimensions at once or focusing on a single
   dimension.
+disable-model-invocation: false
 ---
 
 # Retrospective — Developer-AI Workflow Analysis

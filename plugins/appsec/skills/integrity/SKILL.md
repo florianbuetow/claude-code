@@ -6,6 +6,7 @@ description: >
   security", "check SRI", or mentions "deserialization", "integrity", "pipeline
   security", "code signing", or "supply chain" in a security context. Maps to
   OWASP Top 10 2021 A08: Software and Data Integrity Failures.
+disable-model-invocation: true
 ---
 
 # Software and Data Integrity Failures

@@ -6,6 +6,7 @@ description: >
   "check for hardcoded keys", or mentions "cryptography", "encryption",
   "hashing", "TLS", "certificates", or "random number generation" in a security
   context. Maps to OWASP Top 10 2021 A02: Cryptographic Failures.
+disable-model-invocation: true
 ---
 
 # Cryptographic Failures (A02:2021)

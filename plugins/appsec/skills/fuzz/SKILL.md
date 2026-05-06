@@ -7,6 +7,7 @@ description: >
   triggers when the user wants intelligent test inputs for input parsers,
   API endpoints, file format handlers, or needs context-aware injection
   payloads for security testing.
+disable-model-invocation: true
 ---
 
 # Fuzz Input Generation

@@ -7,6 +7,7 @@ description: >
   costs", "optimize token usage", "check my burn rate", or mentions token
   waste, session costs, usage limits, cache efficiency, or conversation
   sprawl.
+disable-model-invocation: false
 ---
 
 # Token Economics — Usage Analysis & Optimization

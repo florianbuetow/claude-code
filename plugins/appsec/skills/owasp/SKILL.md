@@ -5,6 +5,7 @@ description: >
   "check OWASP Top 10", "OWASP scan", or invokes /appsec:owasp. Dispatches
   10 category subagents (A01-A10) in parallel for comprehensive OWASP Top 10
   coverage.
+disable-model-invocation: true
 ---
 
 # OWASP Top 10 Dispatcher

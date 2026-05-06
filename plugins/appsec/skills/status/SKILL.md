@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks for "security status",
   "show findings", "security dashboard", "security posture", or invokes
   /appsec:status. Shows current security posture overview.
+disable-model-invocation: true
 ---
 
 # AppSec Status -- Security Dashboard

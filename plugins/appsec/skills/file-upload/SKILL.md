@@ -6,6 +6,7 @@ description: >
   slip", "audit file upload handling", or mentions "file upload", "upload
   validation", "content-type check", "magic bytes", "zip slip", or "path
   traversal in upload" in a security context.
+disable-model-invocation: true
 ---
 
 # File Upload Security (UPLD)

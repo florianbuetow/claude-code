@@ -10,6 +10,7 @@ description: >
   about writing specifications before code, deriving tests from specs, or
   verifying implementation against specifications. Supports a full workflow
   walkthrough or focusing on individual phases.
+disable-model-invocation: false
 ---
 
 # Specification-Driven Development

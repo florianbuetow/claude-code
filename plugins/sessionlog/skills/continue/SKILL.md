@@ -5,6 +5,7 @@ description: >
   "resume session", "pick up where I left off", "sessionlog continue",
   "continue from compact", "load session context", or wants to restore
   context from a previously compacted session file.
+disable-model-invocation: false
 ---
 
 # Session Continue

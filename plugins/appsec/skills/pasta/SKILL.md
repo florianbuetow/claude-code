@@ -5,6 +5,7 @@ description: >
   "PASTA threat model", "risk-centric threat analysis", or invokes
   /appsec:pasta. Dispatches 7 stages SEQUENTIALLY -- each stage's output
   feeds the next. This is the ONLY framework that runs sequentially.
+disable-model-invocation: true
 ---
 
 # PASTA Threat Model Dispatcher (Sequential)

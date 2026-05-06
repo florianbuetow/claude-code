@@ -6,6 +6,7 @@ description: >
   "API usage", "usage summary", "sessionlog tokenusage", "tokenusage",
   or wants to extract and report input/output token counts from
   Claude Code session logs.
+disable-model-invocation: false
 ---
 
 # Session Token Usage

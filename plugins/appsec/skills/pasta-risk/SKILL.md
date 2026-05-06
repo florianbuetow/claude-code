@@ -7,6 +7,7 @@ description: >
   risk-weighted findings, compliance gap analysis, or executive security summary
   in a threat modeling context. Part of the PASTA threat modeling methodology
   (Stage 7 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 7: Risk & Impact Analysis

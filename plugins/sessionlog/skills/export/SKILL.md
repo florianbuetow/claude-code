@@ -6,6 +6,7 @@ description: >
   "sessionlog export", "export this session", or wants to export the
   current Claude Code session as a standard LLM conversation JSON file
   and human-readable TXT transcript.
+disable-model-invocation: false
 ---
 
 # Session Log Export

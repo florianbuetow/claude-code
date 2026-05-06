@@ -6,6 +6,7 @@ description: >
   vulnerabilities", "check for check-then-act patterns", "find shared state
   bugs", or mentions "race condition", "TOCTOU", "double-spend", "concurrency",
   "atomicity", or "thread safety" in a security context.
+disable-model-invocation: true
 ---
 
 # Race Conditions (RACE)

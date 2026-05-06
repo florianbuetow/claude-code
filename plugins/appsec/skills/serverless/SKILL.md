@@ -6,6 +6,7 @@ description: >
   policies", "find serverless vulnerabilities", or mentions "serverless",
   "Lambda", "Cloud Functions", "Azure Functions", "IAM policy", "event
   injection", "overprivileged", or "/tmp reuse" in a security context.
+disable-model-invocation: true
 ---
 
 # Serverless Security (SRVLS)

@@ -1,6 +1,7 @@
 ---
 name: onboarding
 description: This skill should be used when starting a new session, resuming work, or when the user asks to "onboard", "get oriented", "catch me up", "what's the state of the project", "what should I work on", or "where did we leave off". Gathers project context by reading instructions, checking git state, reviewing open issues, and identifying next steps.
+disable-model-invocation: false
 ---
 
 # Project Onboarding

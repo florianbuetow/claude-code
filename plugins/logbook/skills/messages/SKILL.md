@@ -1,6 +1,7 @@
 ---
 name: logbook:messages
 description: Analyze messages exchanged per project across all Claude Code sessions. Generates monthly and yearly markdown reports with per-project/branch breakdowns. Use when the user asks about "message count", "messages per project", "how many messages", "message report", "logbook messages", or wants usage statistics.
+disable-model-invocation: false
 ---
 
 # Logbook — Messages Report

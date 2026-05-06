@@ -6,6 +6,7 @@ description: >
   model", "check business logic security", "find missing security controls",
   or mentions "insecure design" in a security context. Maps to OWASP Top 10
   2021 A04:2021 - Insecure Design.
+disable-model-invocation: true
 ---
 
 # Insecure Design Analysis (OWASP A04:2021)

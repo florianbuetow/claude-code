@@ -5,6 +5,7 @@ description: >
   "export all session logs", "batch export sessions", "sessionlog export-all",
   "convert all sessions", or wants to export every Claude Code session
   for the current project as standard LLM conversation JSON and TXT files.
+disable-model-invocation: false
 ---
 
 # Session Log Export All

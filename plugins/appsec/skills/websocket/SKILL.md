@@ -6,6 +6,7 @@ description: >
   "audit WebSocket handlers", "check for CSWSH", or mentions "WebSocket",
   "ws://", "wss://", "socket.io", "CSWSH", "WebSocket origin check",
   "WebSocket rate limit", or "WebSocket authentication" in a security context.
+disable-model-invocation: true
 ---
 
 # WebSocket Security (WS)

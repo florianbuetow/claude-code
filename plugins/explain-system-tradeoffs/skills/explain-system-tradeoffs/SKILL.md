@@ -10,6 +10,7 @@ description: >
   "latency vs throughput", "CAP theorem", "PACELC", "sharding tradeoffs",
   "resilience patterns", "data distribution strategy"). Supports analyzing
   all six axes at once or focusing on a single axis.
+disable-model-invocation: false
 ---
 
 # Explain System Tradeoffs

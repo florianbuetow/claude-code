@@ -6,6 +6,7 @@ description: >
   related to accountability", "check for forced identity linking", or mentions
   "non-repudiation" in a privacy context. Maps to LINDDUN category N. This is
   the INVERSE of STRIDE repudiation -- here too much proof is the threat.
+disable-model-invocation: true
 ---
 
 # Non-Repudiation Privacy Analysis (LINDDUN N)

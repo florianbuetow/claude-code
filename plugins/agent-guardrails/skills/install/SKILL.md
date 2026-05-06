@@ -1,6 +1,7 @@
 ---
 name: agent-guardrails-install
 description: Install agent behavioral guardrail rules into a project's .claude/ directory. Generates a Stop hook bash script and configures settings.local.json. Includes six battle-tested rules (no-guessing, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing). Use when user asks to "install guardrails", "set up agent guardrails", "add behavioral hooks", "agent-guardrails install", or wants to enforce assistant discipline.
+disable-model-invocation: false
 ---
 
 # Agent Guardrails Install

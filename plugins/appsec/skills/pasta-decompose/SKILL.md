@@ -7,6 +7,7 @@ description: >
   access control mapping, data classification, or service-to-service trust in a
   threat modeling context. Part of the PASTA threat modeling methodology
   (Stage 3 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 3: Application Decomposition

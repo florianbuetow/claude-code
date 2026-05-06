@@ -6,6 +6,7 @@ description: >
   "audit monitoring configuration", or mentions "logging", "audit trail",
   "log injection", "monitoring", or "alerting" in a security context.
   Maps to OWASP Top 10 2021 A09: Security Logging and Monitoring Failures.
+disable-model-invocation: true
 ---
 
 # Security Logging and Monitoring Failures (A09:2021)

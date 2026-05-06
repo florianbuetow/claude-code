@@ -7,6 +7,7 @@ description: >
   "what does INJ-003 mean", "compare stride vs pasta", or asks any question
   about security terminology, frameworks, vulnerability categories, or specific
   findings. Works at framework, category, finding, and comparison levels.
+disable-model-invocation: true
 ---
 
 # Security Explainer

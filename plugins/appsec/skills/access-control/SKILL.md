@@ -6,6 +6,7 @@ description: >
   "check for privilege escalation", or mentions "access control", "authorization",
   "IDOR", "CORS", "JWT tampering", or "directory traversal" in a security context.
   Maps to OWASP Top 10 2021 A01: Broken Access Control.
+disable-model-invocation: true
 ---
 
 # Broken Access Control (A01:2021)

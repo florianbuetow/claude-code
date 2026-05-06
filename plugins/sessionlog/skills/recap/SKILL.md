@@ -6,6 +6,7 @@ description: >
   "catch me up on recent sessions", "sessionlog recap", "session recap",
   "recent session summary", "tldr sessions", or wants a quick summary
   of what was worked on in recent sessions for this project.
+disable-model-invocation: false
 ---
 
 # Session Recap
