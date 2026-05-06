@@ -5,6 +5,7 @@ description: >
   "analyze GDPR compliance", "find CCPA violations", "check HIPAA compliance",
   "audit regulatory requirements", or mentions "non-compliance" in a privacy
   context. Maps to LINDDUN category N2. No STRIDE equivalent exists.
+disable-model-invocation: true
 ---
 
 # Non-Compliance Analysis (LINDDUN N2)

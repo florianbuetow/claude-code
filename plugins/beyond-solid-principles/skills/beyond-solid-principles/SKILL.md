@@ -8,6 +8,7 @@ description: >
   name (e.g., "check separation of concerns", "is this violating DRY?", "Law of
   Demeter", "KISS", "YAGNI", "resilience", "evolvability", "loose coupling"). Supports
   checking all ten principles at once or focusing on a single principle.
+disable-model-invocation: false
 ---
 
 # Beyond SOLID — System-Level Architecture Principles

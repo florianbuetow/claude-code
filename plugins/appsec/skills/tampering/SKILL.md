@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for tampering",
   "analyze data integrity risks", "find injection vulnerabilities", or
   mentions "tampering" in a security context. Maps to STRIDE category T.
+disable-model-invocation: true
 ---
 
 # Tampering with Data Analysis

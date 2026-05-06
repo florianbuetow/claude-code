@@ -5,6 +5,7 @@ description: >
   "show attack techniques", "MITRE mapping", or wants to understand
   how findings relate to real-world attacker behavior. Maps security
   findings to MITRE ATT&CK tactics, techniques, and procedures.
+disable-model-invocation: true
 ---
 
 # MITRE ATT&CK Mapping Skill

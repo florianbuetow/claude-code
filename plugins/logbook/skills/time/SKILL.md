@@ -1,6 +1,7 @@
 ---
 name: logbook:time
 description: Analyze time spent per project across all Claude Code sessions. Generates monthly and yearly markdown reports with per-project/branch breakdowns. Use when the user asks about "time spent", "hours per project", "session time", "time report", "logbook time", or wants to know how long they spent coding.
+disable-model-invocation: false
 ---
 
 # Logbook — Time Report

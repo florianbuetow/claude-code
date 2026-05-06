@@ -6,6 +6,7 @@ description: >
   "check data protection", or invokes /appsec:linddun. Dispatches 7
   category subagents in parallel for comprehensive LINDDUN privacy
   threat coverage.
+disable-model-invocation: true
 ---
 
 # LINDDUN Privacy Threat Dispatcher

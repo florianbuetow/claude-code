@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for repudiation",
   "analyze audit logging", "find logging gaps", or mentions "repudiation"
   or "non-repudiation" in a security context. Maps to STRIDE category R.
+disable-model-invocation: true
 ---
 
 # Repudiation Analysis

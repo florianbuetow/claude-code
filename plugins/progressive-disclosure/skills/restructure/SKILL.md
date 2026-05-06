@@ -1,6 +1,7 @@
 ---
 name: progressive-disclosure:restructure
 description: This skill should be used when the user asks to "restructure CLAUDE.md", "restructure AGENTS.md", "create a documentation index", "add a table of contents to CLAUDE.md", "organize project docs", "refactor soul file", "build a doc index", or wants to restructure how a repository's root configuration file references its documentation. Generates a thematic, book-style index in the highest-precedence soul file.
+disable-model-invocation: false
 ---
 
 # Restructure Progressive Disclosure

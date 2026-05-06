@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for privilege escalation",
   "analyze authorization risks", "find access control vulnerabilities", or mentions
   "elevation of privilege" in a security context. Maps to STRIDE category E.
+disable-model-invocation: true
 ---
 
 # Elevation of Privilege Analysis

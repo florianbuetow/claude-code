@@ -6,6 +6,7 @@ description: >
   PASTA stage 1. Also triggers when the user asks about compliance requirements,
   acceptable risk thresholds, or business impact analysis in a threat modeling
   context. Part of the PASTA threat modeling methodology (Stage 1 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 1: Define Business Objectives

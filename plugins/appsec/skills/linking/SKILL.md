@@ -5,6 +5,7 @@ description: >
   "analyze cross-service tracking", "find privacy issues related to user
   correlation", "check for cross-domain tracking", or mentions "linkability"
   in a privacy context. Maps to LINDDUN category L.
+disable-model-invocation: true
 ---
 
 # Linkability Analysis (LINDDUN L)

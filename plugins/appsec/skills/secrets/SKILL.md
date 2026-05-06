@@ -7,6 +7,7 @@ description: >
   private keys", or mentions "secrets", "credentials", "API keys", or
   "leaked tokens" in a security context. Also triggers for git history
   secret scanning and high-entropy string detection.
+disable-model-invocation: true
 ---
 
 # Secrets Detection (SEC)

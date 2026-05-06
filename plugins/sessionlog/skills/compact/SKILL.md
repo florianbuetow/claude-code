@@ -6,6 +6,7 @@ description: >
   "compact this session", "prepare for clear", or wants to create a
   compressed summary of the current session that can be continued
   after clearing context.
+disable-model-invocation: false
 ---
 
 # Session Compact

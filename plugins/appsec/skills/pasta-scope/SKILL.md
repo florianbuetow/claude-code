@@ -7,6 +7,7 @@ description: >
   network boundaries, external dependencies, or deployment topology in a
   threat modeling context. Part of the PASTA threat modeling methodology
   (Stage 2 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 2: Define Technical Scope

@@ -7,6 +7,7 @@ description: >
   no old bugs returned". Also triggers when the user wants to confirm
   that previously fixed vulnerabilities have not been reintroduced by
   recent code changes.
+disable-model-invocation: true
 ---
 
 # Security Regression Detection

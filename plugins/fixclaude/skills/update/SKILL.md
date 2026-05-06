@@ -6,6 +6,7 @@ description: >
   directives without destroying existing project-specific instructions. Use when
   the user says "fixclaude update", "update claude md", "add claude fixes", or
   "augment claude md".
+disable-model-invocation: false
 ---
 
 # Fix Claude -- Update

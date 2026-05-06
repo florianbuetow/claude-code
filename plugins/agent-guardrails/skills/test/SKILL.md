@@ -1,6 +1,7 @@
 ---
 name: agent-guardrails-test
 description: Test installed agent guardrail hooks by sending trigger phrases through the stop hook script. Checks hook installation first, then runs two test phrases per rule. Use when user asks to "test guardrails", "verify hooks", "check guardrail patterns", "agent-guardrails test", or wants to confirm hooks are working.
+disable-model-invocation: false
 ---
 
 # Agent Guardrails Test

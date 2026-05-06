@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks "what is IDOR",
   "define CSRF", "security glossary", or wants quick security term
   definitions. Quick reference for security terms, acronyms, and categories.
+disable-model-invocation: true
 ---
 
 # AppSec Glossary -- Security Term Reference

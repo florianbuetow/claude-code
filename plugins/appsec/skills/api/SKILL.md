@@ -7,6 +7,7 @@ description: >
   "API security", "BOLA", "IDOR", "mass assignment", "rate limiting",
   "broken function-level authorization", "excessive data exposure", or
   "OWASP API Top 10" in a security context.
+disable-model-invocation: true
 ---
 
 # API Security (API)

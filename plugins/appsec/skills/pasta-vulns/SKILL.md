@@ -6,6 +6,7 @@ description: >
   running PASTA stage 5. Also triggers when the user asks about SAST, DAST,
   dependency scanning, or CWE mapping in a threat modeling context. Part of the
   PASTA threat modeling methodology (Stage 5 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 5: Vulnerability Analysis

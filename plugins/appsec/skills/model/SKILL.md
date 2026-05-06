@@ -7,6 +7,7 @@ description: >
   "attack tree analysis". Also triggers when the user wants a systematic
   identification of threats against the application architecture, trust
   boundaries, data flows, or component interactions.
+disable-model-invocation: true
 ---
 
 # Threat Modeling

@@ -5,6 +5,7 @@ description: >
   "scan for vulnerabilities", "security check", "check security", or
   invokes /appsec:run. Smart orchestrator that detects the tech stack,
   selects relevant security tools, and runs them in parallel.
+disable-model-invocation: true
 ---
 
 # AppSec Run -- Smart Orchestrator

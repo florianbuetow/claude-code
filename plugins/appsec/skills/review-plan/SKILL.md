@@ -8,6 +8,7 @@ description: >
   implementation plan, architecture proposal, or design document before
   code has been written. This is the FLAGSHIP pre-code security skill --
   no other tool reviews plans at design time.
+disable-model-invocation: true
 ---
 
 # Security Plan Review

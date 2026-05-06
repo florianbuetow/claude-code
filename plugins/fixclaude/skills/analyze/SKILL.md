@@ -6,6 +6,7 @@ description: >
   partially addressed, or completely unaddressed. Use when the user says
   "fixclaude analyze", "analyze claude md", "check claude md coverage",
   "audit claude directives", or "what's missing from my claude md".
+disable-model-invocation: false
 ---
 
 # Fix Claude -- Analyze

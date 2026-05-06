@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for information disclosure",
   "analyze data leakage risks", "find data exposure vulnerabilities", or mentions
   "information disclosure" in a security context. Maps to STRIDE category I.
+disable-model-invocation: true
 ---
 
 # Information Disclosure Analysis

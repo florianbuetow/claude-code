@@ -7,6 +7,7 @@ description: >
   improvements". Also triggers when the user asks about CSP, CORS
   hardening, rate limiting, input validation improvements, security
   logging, or defense-in-depth measures.
+disable-model-invocation: true
 ---
 
 # Security Hardening

@@ -5,6 +5,7 @@ description: >
   "teach me OWASP", "security tutorial", "learn threat modeling", or
   invokes /appsec:learn. Interactive guided walkthrough using your
   codebase as teaching material.
+disable-model-invocation: true
 ---
 
 # AppSec Learn -- Interactive Security Walkthrough

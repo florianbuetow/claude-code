@@ -1,6 +1,7 @@
 ---
 name: progressive-disclosure:analyze
 description: This skill should be used when the user asks to "analyze documentation structure", "audit progressive disclosure", "map documentation references", "find orphaned docs", "check context rot risk", "audit CLAUDE.md", "audit AGENTS.md", or wants to understand how a repository's documentation is structured for AI agent consumption. Produces a disclosure map, orphan report, and anti-pattern findings.
+disable-model-invocation: false
 ---
 
 # Analyze Progressive Disclosure

@@ -7,6 +7,7 @@ description: >
   has applied a security fix and wants confirmation that the vulnerability
   is actually resolved, or when referencing a finding ID and asking if it
   is still present.
+disable-model-invocation: true
 ---
 
 # Fix Verification

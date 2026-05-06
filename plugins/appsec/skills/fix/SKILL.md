@@ -7,6 +7,7 @@ description: >
   triggers when the user references a finding ID (e.g., INJ-001) and asks
   for a fix, or points to a file:line and asks to fix the security issue
   there.
+disable-model-invocation: true
 ---
 
 # Security Fix Generation

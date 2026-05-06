@@ -5,6 +5,7 @@ description: >
   "run SANS analysis", "check for common weaknesses", or mentions
   "CWE" or "SANS Top 25" in a security context. Checks code against
   the SANS/CWE Top 25 Most Dangerous Software Weaknesses.
+disable-model-invocation: true
 ---
 
 # SANS/CWE Top 25 Dispatcher

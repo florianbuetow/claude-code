@@ -1,6 +1,7 @@
 ---
 name: agent-guardrails-update
 description: Re-analyze Claude Code session logs against existing agent guardrail rules to measure effectiveness, catch false positives, identify missed anti-patterns, and refine regex patterns. Use when user asks to "update guardrails", "refine guardrail rules", "check guardrail effectiveness", "agent-guardrails update", "tune guardrails", or wants to improve existing behavioral rules based on real usage data.
+disable-model-invocation: false
 ---
 
 # Agent Guardrails Update

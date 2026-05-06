@@ -5,6 +5,7 @@ description: >
   "check STRIDE", "threat model with STRIDE", or invokes /appsec:stride.
   Dispatches 6 category subagents (S-T-R-I-D-E) in parallel for comprehensive
   STRIDE threat modeling coverage.
+disable-model-invocation: true
 ---
 
 # STRIDE Threat Model Dispatcher

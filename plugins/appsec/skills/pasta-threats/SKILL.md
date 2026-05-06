@@ -6,6 +6,7 @@ description: >
   or is running PASTA stage 4. Also triggers when the user asks about adversary
   tactics, supply chain threats, or threat intelligence in a threat modeling
   context. Part of the PASTA threat modeling methodology (Stage 4 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 4: Threat Analysis

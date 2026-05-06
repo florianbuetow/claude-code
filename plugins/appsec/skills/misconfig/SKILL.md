@@ -5,6 +5,7 @@ description: >
   "analyze security headers", "find misconfigured settings", "check CORS policy",
   "find debug mode", "audit server configuration", or mentions "misconfiguration"
   in a security context. Maps to OWASP Top 10 2021 A05: Security Misconfiguration.
+disable-model-invocation: true
 ---
 
 # Security Misconfiguration Analysis

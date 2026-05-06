@@ -7,6 +7,7 @@ description: >
   Also triggers when the user wants a formatted overview of all security
   findings, remediation progress, scanner coverage, or needs to share
   security status with stakeholders.
+disable-model-invocation: true
 ---
 
 # Security Report Generation

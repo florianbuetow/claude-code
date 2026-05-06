@@ -6,6 +6,7 @@ description: >
   leakage", "check for unauthorized data sharing", or mentions "disclosure"
   in a privacy context. Maps to LINDDUN category D2. Focuses specifically
   on PERSONAL data disclosure, complementing STRIDE information disclosure.
+disable-model-invocation: true
 ---
 
 # Disclosure of Information Analysis (LINDDUN D2)

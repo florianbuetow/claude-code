@@ -5,6 +5,7 @@ description: >
   "analyze re-identification risks", "find privacy issues related to anonymization",
   "check for PII exposure", or mentions "identifiability" in a privacy context.
   Maps to LINDDUN category I.
+disable-model-invocation: true
 ---
 
 # Identifiability Analysis (LINDDUN I)

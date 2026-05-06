@@ -5,6 +5,7 @@ description: >
   override Claude Code's built-in limitations. Only use when no CLAUDE.md
   exists in the project. Use when the user says "fixclaude init", "create
   claude md", or "initialize claude directives".
+disable-model-invocation: false
 ---
 
 # Fix Claude -- Init

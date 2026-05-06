@@ -1,6 +1,7 @@
 ---
 name: agent-guardrails-analyze
 description: Scan Claude Code chat session logs for recurring agent anti-patterns (hedging, stalling, skipping, false completions, preference-asking, dismissing) and produce a ranked report with frequency counts, example excerpts, and suggested guardrail rules. Use when user asks to "analyze sessions for anti-patterns", "find bad patterns in logs", "what anti-patterns am I seeing", "agent-guardrails analyze", or wants data-driven guardrail recommendations.
+disable-model-invocation: false
 ---
 
 # Agent Guardrails Analyze

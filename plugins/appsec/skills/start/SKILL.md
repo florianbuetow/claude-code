@@ -7,6 +7,7 @@ description: >
   Assesses the project's tech stack, data sensitivity, architecture, and
   installed scanners, then recommends which /appsec:* tools to run in
   priority order with rationale.
+disable-model-invocation: true
 ---
 
 # AppSec Start -- Project Assessment

@@ -6,6 +6,7 @@ description: >
   command injection", "find NoSQL injection", "check for LDAP injection",
   or mentions "injection" in a security context. Maps to OWASP Top 10
   2021 A03:2021 - Injection.
+disable-model-invocation: true
 ---
 
 # Injection Analysis (OWASP A03:2021)

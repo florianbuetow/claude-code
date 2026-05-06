@@ -5,6 +5,7 @@ description: >
   "analyze timing side channels", "find privacy issues related to traffic
   analysis", "check for metadata leakage", or mentions "detectability" in a
   privacy context. Maps to LINDDUN category D1.
+disable-model-invocation: true
 ---
 
 # Detectability Analysis (LINDDUN D1)

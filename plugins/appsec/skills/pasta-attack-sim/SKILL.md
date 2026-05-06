@@ -6,6 +6,7 @@ description: >
   running PASTA stage 6. Also triggers when the user asks about attack scenarios,
   red team simulation, DREAD scoring, or detection gap analysis in a threat
   modeling context. Part of the PASTA threat modeling methodology (Stage 6 of 7).
+disable-model-invocation: true
 ---
 
 # PASTA Stage 6: Attack Simulation

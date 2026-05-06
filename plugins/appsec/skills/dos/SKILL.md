@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for denial of service",
   "analyze availability risks", "find DoS vulnerabilities", or mentions
   "denial of service" or "DoS" in a security context. Maps to STRIDE category D.
+disable-model-invocation: true
 ---
 
 # Denial of Service Analysis

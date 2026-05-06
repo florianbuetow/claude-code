@@ -11,6 +11,7 @@ description: >
   created independently or as part of a full walkthrough. The skill drives the conversation through
   clarifying questions, provides expert suggestions based on project context, and outputs polished
   markdown documents.
+disable-model-invocation: false
 ---
 
 # Software Specification Writer

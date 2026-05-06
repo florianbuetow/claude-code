@@ -9,6 +9,7 @@ description: >
   "god component", "hub-like dependency", "dependency structure matrix", "DSM",
   "instability metric", "LCOM", "CBO", "Big Ball of Mud", "cargo cult", "golden hammer").
   Supports a full architecture assessment or focused analysis of individual dimensions.
+disable-model-invocation: false
 ---
 
 # Archibald — Software Architecture Quality Assessment

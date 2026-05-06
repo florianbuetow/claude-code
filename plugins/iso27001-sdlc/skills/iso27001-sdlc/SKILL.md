@@ -11,6 +11,7 @@ description: >
   audit preparation for software development, security control gaps, or compliance posture
   of a repository — even if they don't mention ISO 27001 by name but describe wanting to verify
   security practices against a standard.
+disable-model-invocation: true
 ---
 
 # ISO 27001:2022 Software Development Compliance Scanner

@@ -6,6 +6,7 @@ description: >
   or update (augment existing). Handles symlinks transparently. Use when the
   user says "fixclaude", "fix claude", "install fixclaude", or "install claude
   fixes".
+disable-model-invocation: false
 ---
 
 # Fix Claude -- Install

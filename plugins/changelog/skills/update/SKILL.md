@@ -1,6 +1,7 @@
 ---
 name: changelog:update
 description: This skill should be used when the user asks to "update the changelog", "add to the changelog", "changelog for new release", "update CHANGELOG.md", or when the main changelog skill detects an existing CHANGELOG.md file. Appends new version entries by analyzing commits since the last documented version.
+disable-model-invocation: false
 ---
 
 # Update Changelog

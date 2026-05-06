@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "check for spoofing",
   "analyze identity spoofing risks", "find authentication vulnerabilities",
   or mentions "spoofing" in a security context. Maps to STRIDE category S.
+disable-model-invocation: true
 ---
 
 # Spoofing Identity Analysis

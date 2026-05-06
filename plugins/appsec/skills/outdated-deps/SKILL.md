@@ -6,6 +6,7 @@ description: >
   typosquatting", or mentions "vulnerable components", "outdated dependencies", or
   "supply chain" in a security context. Maps to OWASP Top 10 2021 A06: Vulnerable
   and Outdated Components.
+disable-model-invocation: true
 ---
 
 # Vulnerable and Outdated Components Analysis

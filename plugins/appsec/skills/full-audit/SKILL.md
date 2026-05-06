@@ -5,6 +5,7 @@ description: >
   "exhaustive audit", "comprehensive security review", or invokes
   /appsec:full-audit. Launches every framework, every tool, and every
   red team agent, producing a dated report file.
+disable-model-invocation: true
 ---
 
 # AppSec Full Audit -- Exhaustive Security Review

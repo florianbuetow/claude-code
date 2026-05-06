@@ -8,6 +8,7 @@ description: >
   the user asks about data transformation pipelines, where sensitive
   data is processed, or how user input reaches databases or external
   services.
+disable-model-invocation: true
 ---
 
 # Data Flow Mapping

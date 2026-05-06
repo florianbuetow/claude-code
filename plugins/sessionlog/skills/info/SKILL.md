@@ -5,6 +5,7 @@ description: >
   "find session log", "where are session logs", "current session id",
   "session path", "sessionlog info", or wants to identify the current
   Claude Code session and its log file location on disk.
+disable-model-invocation: false
 ---
 
 # Session Log Info

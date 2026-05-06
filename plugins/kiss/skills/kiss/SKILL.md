@@ -9,6 +9,7 @@ description: >
   redundant code, tight coupling, interface bloat, or asks about simplification
   opportunities. Supports checking all five dimensions at once or focusing on
   a single dimension.
+disable-model-invocation: false
 ---
 
 # KISS — Simplification Opportunity Detection

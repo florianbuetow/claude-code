@@ -6,6 +6,7 @@ description: >
   "check for internal network access", or mentions "SSRF", "URL fetching",
   "cloud metadata", "169.254.169.254", or "request forgery" in a security context.
   Maps to OWASP Top 10 2021 A10: Server-Side Request Forgery.
+disable-model-invocation: true
 ---
 
 # Server-Side Request Forgery (A10:2021)

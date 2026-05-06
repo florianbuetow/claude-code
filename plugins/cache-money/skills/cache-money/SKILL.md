@@ -1,6 +1,7 @@
 ---
 name: cache-money
 description: This skill should be used when the user asks to "keep cache warm", "warm the cache", "save tokens", "reduce token usage", "cache-money", "start cache ping", "optimize peak hours", "prevent cache expiry", or mentions Anthropic prompt caching, cache TTL, peak hour throttling, token cost optimization, or keeping the context cache alive in Claude Code sessions.
+disable-model-invocation: true
 ---
 
 # Cache Money

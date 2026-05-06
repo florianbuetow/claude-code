@@ -4,6 +4,7 @@ description: >
   This skill should be used when the user asks to "configure security",
   "appsec settings", "security preferences", or invokes /appsec:config.
   Manages security tool preferences and thresholds.
+disable-model-invocation: true
 ---
 
 # AppSec Config -- Preferences Management

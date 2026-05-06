@@ -7,6 +7,7 @@ description: >
   "GraphQL", "introspection", "query depth limit", "query complexity",
   "GraphQL batching", "alias abuse", or "per-field authorization" in a
   security context.
+disable-model-invocation: true
 ---
 
 # GraphQL Security (GQL)
