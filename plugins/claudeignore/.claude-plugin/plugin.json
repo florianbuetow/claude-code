@@ -1,0 +1,16 @@
+{
+  "name": "claudeignore",
+  "version": "0.1.0",
+  "description": "Generate and maintain .claudeignore files for Claude Code projects. Analyzes repository structure to identify directories that waste context tokens (caches, build artifacts, large non-source directories) and produces a categorized .claudeignore file.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claudeignore",
+    "context",
+    "optimization",
+    "tokens",
+    "configuration"
+  ]
+}
