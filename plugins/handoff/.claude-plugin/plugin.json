@@ -1,0 +1,16 @@
+{
+  "name": "handoff",
+  "version": "0.1.0",
+  "description": "Session handoff and continuation for Claude Code. Compact conversations into structured handoff documents for task continuity, then find and resume prior handoffs with full context recovery.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "handoff",
+    "session",
+    "context",
+    "continuation",
+    "workflow"
+  ]
+}
