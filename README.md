@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `20 plugins` and `98 skills` for Claude Code.
+A collection of `21 plugins` and `101 skills` for Claude Code.
 
 ## Quickstart
 
@@ -20,6 +20,7 @@ claude plugin install changelog
 claude plugin install context-research
 claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
+claude plugin install handoff
 claude plugin install iso27001-sdlc
 claude plugin install kiss
 claude plugin install logbook
@@ -51,6 +52,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
+| [handoff](#handoff) | Session handoff and continuation - compact sessions into structured handoff documents for task continuity |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner - Annex A controls 8.4, 8.25–8.33 |
 | [K.I.S.S.](#kiss) | Code and architecture simplicity analysis - complexity, abstraction, redundancy, architecture |
 | [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
@@ -93,7 +95,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
 
 ### Updating
 
@@ -713,6 +715,26 @@ Session: f6c53fff-d3a3-460f-8347-11e2b7c757f8
 ```
 
 **Trigger** — Ask Claude to "show session info", "export session log", "export all sessions", "compact session", "continue session", "token usage", "recap sessions", or mention session log export.
+
+---
+
+## handoff
+
+Session handoff and continuation for Claude Code.
+
+`3 skills` · `Structured handoff documents` · `Cross-session continuity`
+
+Context is lost at session boundaries — compaction, new windows, switching agents, or picking up work after a break. The common workaround (paste a summary) is lossy and manual. This plugin compacts the current session into a structured handoff document saved to `docs/handoffs/`, then helps a fresh agent load and continue that work with full intent, stance, and tier-sorted file references.
+
+Handoff documents follow a fixed schema: next action, goal, intent (what to optimize for and what to skip), stance and behavioral rules, status, tier-organized file references, decisions, dead-ends, and open questions. The `create` skill verifies the inferred intent with you before saving. The `continue` skill reads the document, follows prior-handoff chains, and summarizes back before acting.
+
+| Command | What it does |
+|---------|-------------|
+| `handoff` | Auto-route: create a new handoff or continue from an existing one |
+| `handoff:create` | Compact the current session into a structured handoff document |
+| `handoff:continue` | Find and resume work from a previous handoff |
+
+**Trigger** - Ask Claude to "hand off", "create a handoff", "wrap up for the next session", "pass this to another agent", "continue from a handoff", "pick up where I left off", or mention session continuity, handoff documents, or task continuation.
 
 ---
 
