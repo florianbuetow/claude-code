@@ -239,6 +239,17 @@
       },
       "source": "./plugins/progressive-disclosure",
       "category": "development"
+    },
+    {
+      "name": "handoff",
+      "description": "Session handoff and continuation for Claude Code. Compact conversations into structured handoff documents for task continuity, then find and resume prior handoffs with full context recovery.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/handoff",
+      "category": "productivity"
     }
   ]
 }
