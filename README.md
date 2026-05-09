@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `19 plugins` and `95 skills` for Claude Code.
+A collection of `20 plugins` and `98 skills` for Claude Code.
 
 ## Quickstart
 
@@ -24,6 +24,7 @@ claude plugin install iso27001-sdlc
 claude plugin install kiss
 claude plugin install logbook
 claude plugin install onboarding
+claude plugin install progressive-disclosure
 claude plugin install retrospective
 claude plugin install solid-principles
 claude plugin install spec-dd
@@ -54,6 +55,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [K.I.S.S.](#kiss) | Code and architecture simplicity analysis - complexity, abstraction, redundancy, architecture |
 | [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
+| [progressive-disclosure](#progressive-disclosure) | Documentation structure analysis - maps soul files, detects orphaned docs, generates thematic indexes |
 | [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
 | [sessionlog](#sessionlog) | Export session logs as standard LLM conversation JSON and TXT transcripts |
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
@@ -91,7 +93,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
 
 ### Updating
 
@@ -576,6 +578,26 @@ Each finding is backed by evidence classified into three tiers:
 The report distinguishes **deliberate choices** (asymmetric config, tuned values, documented rationale) from **accidental defaults** (framework defaults, copy-pasted settings, uniform config). Deliberate asymmetry - different compaction strategies per table, different TTLs per cache key, different timeout budgets per downstream call - is the hallmark of genuine tradeoff-making.
 
 **Systems:** Any distributed system - microservices, modular monoliths, event-driven, serverless. Many indicators (caching, thread pools, GC tuning, storage engines, schema evolution) also apply to non-distributed systems with performance or reliability requirements.
+
+---
+
+## progressive-disclosure
+
+Analyze and restructure how a repository progressively discloses its documentation through soul files.
+
+`3 skills` · `Documentation structure analysis` · `Context rot prevention`
+
+Soul files (CLAUDE.md, AGENTS.md, GEMINI.md, COPILOT.md) are the primary way repositories communicate context to AI agents. As projects grow, these files accumulate inline content that should live elsewhere, dangling references to documents that were moved or deleted, and orphaned files that no agent ever loads. Progressive disclosure breaks down: agents either miss critical context or are overwhelmed with everything at once.
+
+This plugin maps how a repository's documentation is structured for AI agent consumption, detects orphaned documents and context rot risks, and restructures root configuration files into thematic, book-style indexes with clear reference hierarchies.
+
+| Command | What it does |
+|---------|-------------|
+| `progressive-disclosure` | Auto-route: analyze or restructure based on context |
+| `progressive-disclosure:analyze` | Map documentation references, find orphaned docs, report anti-patterns |
+| `progressive-disclosure:restructure` | Restructure soul file into a thematic, book-style index |
+
+**Trigger** - Ask Claude to "analyze documentation structure", "audit progressive disclosure", "find orphaned docs", "restructure CLAUDE.md", "create a documentation index", or mention soul file organization, context rot prevention, or documentation hierarchy.
 
 ---
 
