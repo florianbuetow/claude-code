@@ -250,6 +250,17 @@
       },
       "source": "./plugins/handoff",
       "category": "productivity"
+    },
+    {
+      "name": "claudeignore",
+      "description": "Generate and maintain .claudeignore files for Claude Code projects. Analyzes repository structure to identify directories that waste context tokens (caches, build artifacts, secrets, large non-source directories) and produces a categorized .claudeignore file.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/claudeignore",
+      "category": "productivity"
     }
   ]
 }
