@@ -9,7 +9,7 @@ description: >
   "dependency inversion"), or asks about coupling, cohesion, or class
   responsibilities. Supports checking all five principles at once or
   focusing on a single principle.
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # SOLID Principles
