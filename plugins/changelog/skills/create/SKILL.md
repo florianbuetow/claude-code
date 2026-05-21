@@ -1,7 +1,7 @@
 ---
 name: changelog:create
 description: This skill should be used when the user asks to "create a changelog", "initialize CHANGELOG.md", "start a changelog", or when the main changelog skill detects no existing CHANGELOG.md file. Creates a new CHANGELOG.md from scratch by analyzing the full git commit history and organizing changes by date-based version sections.
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # Create Changelog
