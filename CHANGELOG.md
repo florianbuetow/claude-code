@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added handoff plugin (v0.1.0) with create, continue, and router skills for session handoffs.
+- Added claudeignore plugin (v0.1.1) with create, update, and router skills for `.claudeignore` file management.
+- Added handoff plugin (v0.1.1) with create, continue, and router skills for session handoffs.
 - Added progressive-disclosure plugin for analyzing and restructuring layered documentation.
 - Added pi-lmstudio script for running Claude with local models — lightweight alternative to claudex with direct model loading.
 - Added claudex script for running Claude Code with local LM Studio models — interactive model picker with auto-load/unload.
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated progressive-disclosure plugin to v1.1.0 — added user-specified file targeting and replaced soul-file terminology with root configuration files.
 - All skill files now include `disable-model-invocation` frontmatter to prevent unintended model calls during skill execution.
 - Improved plugin management: added `uninstall` command and refined `install`/`update` logic.
 - Updated changelog plugin with improved skill descriptions and formatting guide for better UX.
@@ -128,4 +130,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/bb00b41...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/40bde0e...HEAD
