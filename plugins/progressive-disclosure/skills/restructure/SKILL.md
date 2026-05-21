@@ -1,25 +1,34 @@
 ---
 name: progressive-disclosure:restructure
-description: This skill should be used when the user asks to "restructure CLAUDE.md", "restructure AGENTS.md", "create a documentation index", "add a table of contents to CLAUDE.md", "organize project docs", "refactor soul file", "build a doc index", or wants to restructure how a repository's root configuration file references its documentation. Generates a thematic, book-style index in the highest-precedence soul file.
+description: This skill should be used when the user asks to "restructure CLAUDE.md", "restructure AGENTS.md", "create a documentation index", "add a table of contents to CLAUDE.md", "organize project docs", "refactor root configuration file", "build a doc index", or wants to restructure how a repository's root configuration file references its documentation. Generates a thematic, book-style index in the highest-precedence root configuration file.
 disable-model-invocation: false
 ---
 
 # Restructure Progressive Disclosure
 
-Refactor the repository's highest-precedence soul file to contain a thematic, book-style index of all documentation. Organizes references like a table of contents — grouped by theme, ordered for progressive discovery.
+Refactor the repository's highest-precedence root configuration file to contain a thematic, book-style index of all documentation. Organizes references like a table of contents — grouped by theme, ordered for progressive discovery.
 
 ## Principles
 
-- **Preserve existing content**: The soul file's existing rules and instructions are kept intact. The index is inserted as a clearly delimited section.
+- **Preserve existing content**: The root configuration file's existing rules and instructions are kept intact. The index is inserted as a clearly delimited section.
 - **Idempotent**: Re-running produces the same result. HTML comment markers delineate the generated section so subsequent runs replace rather than duplicate.
 - **Thematic ordering**: Documents are grouped by theme following the taxonomy in `references/themes.md`, not by directory structure. The ordering mimics a book's table of contents.
 - **Conversational links**: Each reference uses a natural-language description that tells the agent *when* to load the document, not just *what* it contains. Example: "For TypeScript conventions, see `docs/typescript.md`" rather than a bare link.
 
 ## Workflow
 
-### Step 1: Select Target Soul File
+### Step 0: Resolve Target File
 
-Apply precedence rules to find the highest-precedence existing soul file:
+Check whether the user explicitly named a target file in their prompt (e.g. "restructure `docs/CONTRIBUTING.md`", "update `README.md`").
+
+- **If a file was named**: use it as the target. Verify it exists before proceeding; if it does not, halt and report the missing path.
+- **If no file was named**: fall through to Step 1.
+
+### Step 1: Select Target Root Configuration File
+
+*Skip this step if Step 0 resolved a target.*
+
+Apply precedence rules to find the highest-precedence existing root configuration file:
 
 1. `AGENTS.md`
 2. `CLAUDE.md`
@@ -38,7 +47,7 @@ Run the discovery script to enumerate all `.md` files:
 "${CLAUDE_PLUGIN_ROOT}/skills/analyze/scripts/discover.sh" "$(pwd)"
 ```
 
-Exclude soul files themselves from the index (they are the *container*, not indexed content). Include `README.md` as an indexed document.
+Exclude root configuration files themselves from the index (they are the *container*, not indexed content). Include `README.md` as an indexed document.
 
 ### Step 3: Classify Documents by Theme
 
@@ -100,7 +109,7 @@ After writing the index:
 ### Presentation
 
 After restructuring, display:
-- Which soul file was modified
+- Which root configuration file was modified
 - How many documents were indexed across how many themes
 - Coverage percentage
 - Any documents that were skipped and why

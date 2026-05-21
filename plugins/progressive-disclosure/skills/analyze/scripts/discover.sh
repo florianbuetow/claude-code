@@ -4,8 +4,10 @@ set -uo pipefail
 REPO_ROOT="${1:-.}"
 cd "$REPO_ROOT"
 
-echo "=== SOUL FILES ==="
-for f in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md STYLE.md; do
+CONFIG_FILES="README.md AGENTS.md CLAUDE.md GEMINI.md USER.md TOOLS.md BOOTSTRAP.md DESIGN.md NOTICE.md"
+
+echo "=== ROOT CONFIGURATION FILES ==="
+for f in $CONFIG_FILES; do
   if [ -f "$f" ]; then
     lines=$(wc -l < "$f" | tr -d ' ')
     words=$(wc -w < "$f" | tr -d ' ')
@@ -25,10 +27,10 @@ done
 
 echo ""
 echo "=== REFERENCE GRAPH ==="
-for soul in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md; do
-  [ -f "$soul" ] || continue
-  echo "FROM: $soul"
-  grep -oE '\[([^]]*)\]\(([^)]+\.md[^)]*)\)' "$soul" 2>/dev/null | grep -v '://' | while read -r match; do
+for cfg in $CONFIG_FILES; do
+  [ -f "$cfg" ] || continue
+  echo "FROM: $cfg"
+  grep -oE '\[([^]]*)\]\(([^)]+\.md[^)]*)\)' "$cfg" 2>/dev/null | grep -v '://' | while read -r match; do
     target=$(echo "$match" | sed 's/.*](//' | sed 's/)//')
     label=$(echo "$match" | sed 's/\[//' | sed 's/\].*//')
     if [ -f "$target" ]; then
@@ -37,14 +39,14 @@ for soul in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md; do
       echo "  -> $target ($label) [MISSING]"
     fi
   done || true
-  grep -oE '`[A-Za-z0-9_./-]+\.md`' "$soul" 2>/dev/null | tr -d '`' | sort -u | while read -r target; do
+  grep -oE '`[A-Za-z0-9_./-]+\.md`' "$cfg" 2>/dev/null | tr -d '`' | sort -u | while read -r target; do
     if [ -f "$target" ]; then
       echo "  ~> $target (backtick ref) [EXISTS]"
     else
       echo "  ~> $target (backtick ref) [MISSING]"
     fi
   done || true
-  grep -oE '@[A-Za-z0-9_./-]+\.md' "$soul" 2>/dev/null | sed 's/^@//' | sort -u | while read -r target; do
+  grep -oE '@[A-Za-z0-9_./-]+\.md' "$cfg" 2>/dev/null | sed 's/^@//' | sort -u | while read -r target; do
     if [ -f "$target" ]; then
       echo "  @> $target (import) [EXISTS]"
     else
@@ -56,13 +58,13 @@ done
 echo ""
 echo "=== ORPHAN DETECTION ==="
 refs_file=$(mktemp)
-for soul in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md; do
-  [ -f "$soul" ] || continue
-  grep -oE '\[([^]]*)\]\(([^)]+\.md[^)]*)\)' "$soul" 2>/dev/null | grep -v '://' | sed 's/.*](//' | sed 's/)//' >> "$refs_file" || true
-  grep -oE '`[A-Za-z0-9_./-]+\.md`' "$soul" 2>/dev/null | tr -d '`' >> "$refs_file" || true
-  grep -oE '@[A-Za-z0-9_./-]+\.md' "$soul" 2>/dev/null | sed 's/^@//' >> "$refs_file" || true
+for cfg in $CONFIG_FILES; do
+  [ -f "$cfg" ] || continue
+  grep -oE '\[([^]]*)\]\(([^)]+\.md[^)]*)\)' "$cfg" 2>/dev/null | grep -v '://' | sed 's/.*](//' | sed 's/)//' >> "$refs_file" || true
+  grep -oE '`[A-Za-z0-9_./-]+\.md`' "$cfg" 2>/dev/null | tr -d '`' >> "$refs_file" || true
+  grep -oE '@[A-Za-z0-9_./-]+\.md' "$cfg" 2>/dev/null | sed 's/^@//' >> "$refs_file" || true
 done
-for f in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md STYLE.md README.md; do
+for f in $CONFIG_FILES; do
   echo "$f" >> "$refs_file"
 done
 sort -u "$refs_file" -o "$refs_file"
@@ -78,12 +80,12 @@ rm -f "$refs_file"
 echo ""
 echo "=== METRICS ==="
 total_docs=$(find . -name '*.md' -not -path './.git/*' -not -path './node_modules/*' -not -path './.claude/*' -not -path './vendor/*' -not -path './.venv/*' | wc -l | tr -d ' ')
-soul_count=0
-for f in AGENTS.md CLAUDE.md GEMINI.md COPILOT.md SOUL.md; do
-  [ -f "$f" ] && soul_count=$((soul_count + 1))
+config_count=0
+for f in $CONFIG_FILES; do
+  [ -f "$f" ] && config_count=$((config_count + 1))
 done
 echo "Total documentation files: $total_docs"
-echo "Soul files present: $soul_count"
+echo "Root configuration files present: $config_count"
 if [ -f AGENTS.md ]; then
   words=$(wc -w < AGENTS.md | tr -d ' ')
   echo "AGENTS.md word count: $words (recommended: <1500)"

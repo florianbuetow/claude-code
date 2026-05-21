@@ -1,6 +1,6 @@
 {
   "name": "explain-system-tradeoffs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts. Analyzes six axes: Consistency & Availability, Latency & Throughput, Data Distribution, Transaction Boundaries, Resilience & Failure Isolation, and Observability, Security & Cost.",
   "author": {
     "name": "Florian Buetow",

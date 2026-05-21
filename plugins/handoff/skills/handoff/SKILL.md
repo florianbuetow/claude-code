@@ -1,7 +1,7 @@
 ---
 name: handoff
 description: This skill should be used when the user wants to "hand off", "create a handoff", "wrap up for the next session", "pass this to another agent", "continue from a handoff", "pick up where I left off", "resume a previous session", "load a handoff", or mentions handoff documents, session continuity, or task continuation.
-disable-model-invocation: false
+disable-model-invocation: true
 ---
 
 # Handoff

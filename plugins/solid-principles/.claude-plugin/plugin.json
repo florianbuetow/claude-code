@@ -1,6 +1,6 @@
 {
   "name": "solid-principles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Analyze code for violations of the SOLID principles of object-oriented design (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)",
   "author": {
     "name": "Florian Buetow",

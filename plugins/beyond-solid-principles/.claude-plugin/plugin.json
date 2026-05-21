@@ -1,6 +1,6 @@
 {
   "name": "beyond-solid-principles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Analyze code and architecture for violations of ten system-level software design principles: Separation of Concerns, Single Responsibility (system-level), DRY, Law of Demeter, Loose Coupling / High Cohesion, Evolvability, Resilience, KISS, Principle of Least Surprise, and YAGNI",
   "author": {
     "name": "Florian Buetow",
