@@ -7,6 +7,7 @@
 ---
 name: context-research
 description: An autonomous research pipeline that identifies, analyzes, and synthesizes SOTA AI research via Hugging Face and ArXiv. Designed for engineering-grade deep dives into AI topics (e.g., "KV-cache optimization," "model merging").
+disable-model-invocation: false
 ---
 
 # PART 1: Research Pipeline Logic

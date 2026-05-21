@@ -1,7 +1,7 @@
 ---
 name: changelog
 description: This skill should be used when the user asks to "update the changelog", "generate a changelog", "create CHANGELOG.md", "write release notes", "update CHANGELOG", "add changelog entry", "changelog from commits", or mentions changelog generation, release documentation, or keeping a changelog up to date. Auto-detects whether to create or update based on file existence. Follows Keep a Changelog format with Semantic Versioning.
-disable-model-invocation: false
+disable-model-invocation: true
 ---
 
 # Changelog

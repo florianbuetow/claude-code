@@ -1,6 +1,6 @@
 {
   "name": "spec-writer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An expert-guided skill for creating layered software specification documents for greenfield projects. Produces Vision, Business Requirements, Software Requirements, Architecture & Design, and Behavioral Spec & Test Verification documents.",
   "author": {
     "name": "Florian Buetow",

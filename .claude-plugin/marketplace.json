@@ -12,7 +12,7 @@
     {
       "name": "solid-principles",
       "description": "Analyze code for violations of the SOLID principles of object-oriented design (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -23,7 +23,7 @@
     {
       "name": "beyond-solid-principles",
       "description": "Analyze code and architecture for violations of ten system-level software design principles: Separation of Concerns, Single Responsibility (system-level), DRY, Law of Demeter, Loose Coupling / High Cohesion, Evolvability, Resilience, KISS, Principle of Least Surprise, and YAGNI",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -34,7 +34,7 @@
     {
       "name": "archibald",
       "description": "Software architecture quality assessment through structural smell detection, quantitative metrics analysis, antipattern identification, dependency structure evaluation, risk/trade-off analysis, and technical debt measurement.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -45,7 +45,7 @@
     {
       "name": "spec-writer",
       "description": "An expert-guided skill for creating layered software specification documents for greenfield projects. Produces Vision, Business Requirements, Software Requirements, Architecture & Design, and Behavioral Spec & Test Verification documents.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -56,7 +56,7 @@
     {
       "name": "spec-dd",
       "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline with advisory quality gates: behavioral specification, test specification, implementation specification, and alignment review.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -67,7 +67,7 @@
     {
       "name": "explain-system-tradeoffs",
       "description": "Reverse-engineer distributed system tradeoffs from code, configuration, and architecture artifacts. Analyzes six axes: Consistency & Availability, Latency & Throughput, Data Distribution, Transaction Boundaries, Resilience & Failure Isolation, and Observability, Security & Cost.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -78,7 +78,7 @@
     {
       "name": "kiss",
       "description": "Analyze code and architecture for unnecessary complexity, over-abstraction, and redundancy. Reports findings with severity ratings and concrete simplification suggestions.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -89,7 +89,7 @@
     {
       "name": "appsec",
       "description": "Comprehensive application security toolbox for Claude Code. 62 skills across 8 frameworks (OWASP Top 10, OWASP API Top 10, STRIDE, PASTA, LINDDUN, MITRE ATT&CK, SANS/CWE Top 25, DREAD), red team simulation with 6 attacker personas plus consolidator, and interactive security education.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -100,7 +100,7 @@
     {
       "name": "retrospective",
       "description": "Analyze Claude Code session logs to identify what went well, what didn't, and how to improve developer-AI collaboration. Suggests new skills, subagents, slash commands, hooks, and workflow optimizations based on actual usage patterns.",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -111,7 +111,7 @@
     {
       "name": "onboarding",
       "description": "Project onboarding skill that orients AI agents by gathering context from project instructions, git state, issue trackers, and build systems to produce a concise status briefing with suggested next steps.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -122,7 +122,7 @@
     {
       "name": "iso27001-sdlc",
       "description": "Scan a software repository for ISO 27001:2022 compliance of its software development controls (Annex A 8.4, 8.25–8.33). Produces a per-control compliance gap report covering source code access, secure SDLC, application security requirements, secure architecture, secure coding, security testing, outsourced development, environment separation, change management, and test data.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -133,7 +133,7 @@
     {
       "name": "cache-money",
       "description": "Keep the Anthropic prompt cache warm during Claude Code sessions by scheduling lightweight pings at regular intervals, reducing token costs by up to 90% on cached context.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -144,7 +144,7 @@
     {
       "name": "logbook",
       "description": "Analyze Claude Code session logs to generate per-project time and message reports. Breaks down usage by project and branch, groups worktree branches under their parent project, and produces monthly and yearly markdown reports with inline top-10 previews.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -155,7 +155,7 @@
     {
       "name": "changelog",
       "description": "Generate and maintain CHANGELOG.md files from git commit history using Keep a Changelog format with Semantic Versioning. Auto-detects create vs update. Classifies commits into six categories, filters internal changes, and surfaces breaking changes with migration guidance.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -166,7 +166,7 @@
     {
       "name": "agent-guardrails",
       "description": "Behavioral guardrails for Claude Code agents. Six battle-tested rules (no-guessing, no-stalling, no-preference-asking, no-false-completion, no-skipping, no-dismissing) enforced via a Stop hook bash script. Includes analyze, install, test, and update skills for data-driven tuning.",
-      "version": "3.3.0",
+      "version": "3.3.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -177,7 +177,7 @@
     {
       "name": "fixclaude",
       "description": "Reverse the built-in Claude Code limitations discovered in the source code leak. Installs production-grade agent directives that override verification gates, context decay, brevity mandates, and silent truncation. Includes gap analysis against 7 documented findings.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -188,7 +188,7 @@
     {
       "name": "sessionlog",
       "description": "Export Claude Code session logs as standard LLM conversation JSON and human-readable TXT transcripts. Compact sessions into resumable context files. Recap recent sessions for quick context recovery. Identify current session, export individual sessions, batch-export all project sessions, or report token usage statistics.",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -199,7 +199,7 @@
     {
       "name": "context-research",
       "description": "Autonomous AI research pipeline that identifies, analyzes, and synthesizes SOTA AI research via Hugging Face and ArXiv. Discovers and ranks papers by relevance/recency/impact, extracts benchmarks from full-text markdown, and produces thematic synthesis reports.",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -210,7 +210,7 @@
     {
       "name": "tokeneconomics",
       "description": "Analyze Claude Code session token usage to flag waste risks and cost optimization opportunities. Reviews per-message token data including cache efficiency, conversation sprawl, model selection, and estimated costs across projects.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -221,7 +221,7 @@
     {
       "name": "orchestrator",
       "description": "Produces evidence-based model routing plans: maps each task unit to the best-suited AI model (Claude, GPT, Gemini, open-weight) using a 30-category task taxonomy, decision rules, and per-unit rationale, context briefing, and failure-mode warnings.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -231,8 +231,8 @@
     },
     {
       "name": "progressive-disclosure",
-      "description": "Analyze and restructure how a repository progressively discloses its documentation through soul files (CLAUDE.md, AGENTS.md, GEMINI.md, COPILOT.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes to prevent context rot.",
-      "version": "1.0.0",
+      "description": "Analyze and restructure how a repository progressively discloses its documentation through root configuration files (README.md, AGENTS.md, CLAUDE.md, GEMINI.md, USER.md, TOOLS.md, BOOTSTRAP.md, DESIGN.md, NOTICE.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes to prevent context rot.",
+      "version": "1.1.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -243,7 +243,7 @@
     {
       "name": "handoff",
       "description": "Session handoff and continuation for Claude Code. Compact conversations into structured handoff documents for task continuity, then find and resume prior handoffs with full context recovery.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
@@ -254,7 +254,7 @@
     {
       "name": "claudeignore",
       "description": "Generate and maintain .claudeignore files for Claude Code projects. Analyzes repository structure to identify directories that waste context tokens (caches, build artifacts, secrets, large non-source directories) and produces a categorized .claudeignore file.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
