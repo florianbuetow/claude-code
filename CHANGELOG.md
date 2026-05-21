@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed plugin auto-discovery to scan directories and install missing plugins during `just update`.
 - Fixed tokeneconomics model scoring threshold and percentage formatting.
 - Synced marketplace manifest versions with actual plugin versions.
+- Fixed incorrect version numbers in CHANGELOG and removed stale COPILOT.md references.
 
 ### Changed
 
@@ -130,4 +131,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/40bde0e...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/f5bb241...HEAD
