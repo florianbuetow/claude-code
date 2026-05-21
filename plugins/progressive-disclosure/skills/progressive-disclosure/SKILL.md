@@ -6,7 +6,7 @@ disable-model-invocation: false
 
 # Progressive Disclosure
 
-Analyze and restructure how a repository progressively discloses its documentation through root configuration files (AGENTS.md, CLAUDE.md, GEMINI.md, COPILOT.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes to prevent context rot.
+Analyze and restructure how a repository progressively discloses its documentation through root configuration files (AGENTS.md, CLAUDE.md, GEMINI.md, USER.md, TOOLS.md, BOOTSTRAP.md, DESIGN.md, NOTICE.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes to prevent context rot.
 
 ## Routing
 

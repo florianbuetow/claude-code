@@ -33,7 +33,11 @@ Apply precedence rules to find the highest-precedence existing root configuratio
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `GEMINI.md`
-4. `COPILOT.md`
+4. `USER.md`
+5. `TOOLS.md`
+6. `BOOTSTRAP.md`
+7. `DESIGN.md`
+8. `NOTICE.md`
 
 If none exist, create `AGENTS.md` as the target.
 
