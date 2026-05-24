@@ -20,7 +20,7 @@ fi
 blocked=()
 
 # no-guessing
-if echo "$message" | grep -qiE '(probably|most likely|possibly|perhaps|presumably|I believe|I think|I'\''m (fairly |not entirely |pretty )?confident|if I recall correctly|as far as I know|from my understanding|it (seems|appears) (like|that|to be)|it looks like|this (looks|seems) (correct|right)|that looks right|I'\''ll? assume|assuming that|this should (work|fix|resolve|handle|do the trick)|should be fine|everything should be working|that should do it|likely caused by|might be happening because|could be (due to|a|caused)|one possible explanation|a common cause|may have (already|been)|may be (a|the|related|caused)|might have|could have been|not sure (if|whether|why|what)|I'\''m not certain)'; then
+if echo "$message" | grep -qiE '(probably|most likely|possibly|perhaps|presumably|I believe|I think|I'\''m (fairly |not entirely |pretty )?confident|if I recall correctly|as far as I know|from my understanding|it (seems|appears) (like|that|to be)|it looks like|this (looks|seems) (correct|right)|that looks right|I'\''ll? assume|assuming that|this should (work|fix|resolve|handle|do the trick)|should be fine|everything should be working|that should do it|likely caused by|might be happening because|could be (due to|a|caused)|one possible explanation|a common cause|may have (already|been)|may be (a|the|related|caused)|might have|could have been|not sure (if|whether|why|what)|I'\''m not certain|(looks|seems) (correct|right|done|complete|implemented|fixed|fine)|likely (correct|right|done|complete|implemented|fixed|fine))'; then
   blocked+=("You made a claim you haven't verified. Investigate to confirm or deny it before proceeding.")
 fi
 
