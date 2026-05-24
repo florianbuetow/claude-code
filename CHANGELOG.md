@@ -136,4 +136,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/87aa17c...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/ef265d3...HEAD
