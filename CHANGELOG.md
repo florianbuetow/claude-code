@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Extended agent-guardrails no-guessing rule to detect bare "looks", "seems", and "likely" phrases (v3.3.2).
+- Re-enabled model invocation for changelog and solid-principles skills.
+
 ### Added
 
 - Added claudeignore plugin (v0.1.1) with create, update, and router skills for `.claudeignore` file management.
@@ -131,4 +136,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/f5bb241...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/87aa17c...HEAD
