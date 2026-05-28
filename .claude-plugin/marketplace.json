@@ -261,6 +261,17 @@
       },
       "source": "./plugins/claudeignore",
       "category": "productivity"
+    },
+    {
+      "name": "guard",
+      "description": "Helper skill for the `guard` CLI (github.com/florianbuetow/guard) that protects files from accidental modification by AI agents. Composes guard commands for five intents — init, create-collection, remove-collection, clear-all, info — running registry operations directly and printing `sudo guard` commands for operations that need root.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/guard",
+      "category": "development"
     }
   ]
 }
