@@ -1,6 +1,6 @@
 {
   "name": "progressive-disclosure",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Analyze and restructure how a repository progressively discloses its documentation through root configuration files (README.md, AGENTS.md, CLAUDE.md, GEMINI.md, USER.md, TOOLS.md, BOOTSTRAP.md, DESIGN.md, NOTICE.md). Maps reference graphs, detects orphaned documents, and generates thematic book-style indexes.",
   "author": {
     "name": "Florian Buetow"
