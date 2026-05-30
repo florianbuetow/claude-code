@@ -18,6 +18,20 @@ Progressive disclosure for AI agents operates on three layers:
 
 Root configuration files are the Layer 1 entry points. Their quality determines whether the rest of the repository is discoverable.
 
+## Git Visibility
+
+When the target is inside a git repository, only **git-tracked** files are part of the repository. Untracked files and gitignored files are treated as **invisible** — they do not appear in the documentation pool, the orphan report, or the metrics, because an agent cloning the repo will never see them. Git never ignores an already-tracked file, so a single "is it tracked?" test enforces both conditions (tracked *and* not ignored).
+
+The one exception is root configuration **entry points** themselves (AGENTS.md, CLAUDE.md, GEMINI.md, …): these are detected by existence, since they are often audited *before* being committed. In its indexed-documentation role, `README.md` follows the visibility rule like any other doc.
+
+If a root configuration file *references* an invisible file, that is a **phantom reference** — the link points at content no one else can load. Flag it and recommend either removing the reference or adding the file to git.
+
+When the target is **not** a git repository, every matching file is included (filesystem walk with standard excludes).
+
+## Symbolic Links
+
+Two paths can be the same underlying file via a symbolic link — most commonly `CLAUDE.md` symlinked to `AGENTS.md`. The discovery script reports these as `SYMLINK:` lines and `SAME-CONTENT:` groups. Files in a `SAME-CONTENT` group are one file under several names; **never** report them as duplicate content.
+
 ## Default File List
 
 When no target is explicitly specified, scan for the following files (in order):
@@ -49,7 +63,16 @@ Execute the discovery script to gather raw data:
 "${CLAUDE_PLUGIN_ROOT}/skills/analyze/scripts/discover.sh" "$(pwd)"
 ```
 
-The `CLAUDE_PLUGIN_ROOT` variable resolves to the plugin's installed location. The script produces five sections: root configuration files found, documentation files, reference graph, orphan detection, and metrics.
+The `CLAUDE_PLUGIN_ROOT` variable resolves to the plugin's installed location. The script produces these sections:
+
+- **Git tracking** — whether the target is inside a git work tree (determines visibility, above)
+- **Root configuration files** — entry points found
+- **Documentation files** — visible `.md` files (tracked-only inside a git repo)
+- **Symlinks** — `SYMLINK:` lines and `SAME-CONTENT:` groups (do not treat grouped files as duplicates)
+- **Untracked references** — `UNTRACKED-REF:` phantom references from config files to invisible files
+- **Reference graph** — each reference marked `[EXISTS]`, `[UNTRACKED]`, or `[MISSING]`
+- **Orphan detection** — visible docs not reachable from any config file
+- **Metrics** — counts and budget figures
 
 ### Step 2: Classify Disclosure Layers
 
@@ -72,8 +95,9 @@ Check for these documented failure modes:
 | **Generic instructions** | Phrases like "write clean code", "follow best practices", "think step by step" | Medium |
 | **Style rules in root configuration file** | Formatting/linting rules that belong in tool config (eslint, prettier) | Medium |
 | **Orphaned documentation** | .md files not referenced from any root configuration file | Medium |
-| **Broken references** | Links in root configuration files pointing to non-existent files | Critical |
-| **Duplicate content** | Same instructions in multiple root configuration files | Medium |
+| **Broken references** | Links in root configuration files pointing to non-existent files (`[MISSING]`) | Critical |
+| **Phantom references** | Links to files that exist on disk but are untracked or gitignored (`UNTRACKED-REF:` / `[UNTRACKED]`) | Critical |
+| **Duplicate content** | Same instructions in multiple root configuration files — but first exclude `SAME-CONTENT:` symlink groups, which are one file, not duplicates | Medium |
 | **No root configuration files at all** | Repository has zero root configuration files | Critical |
 
 ### Step 4: Estimate Instruction Budget Impact
@@ -95,7 +119,7 @@ Visual tree showing root configuration files → referenced docs → their sub-r
 Per-file assessment: word count, line count, instruction estimate, layer violations found.
 
 #### 3. Reference Graph
-What links to what. Highlight broken links and circular references.
+What links to what. Highlight broken links (`[MISSING]`), phantom links to untracked/gitignored files (`[UNTRACKED]`), and circular references. For each phantom reference, recommend removing the reference or adding the target to git.
 
 #### 4. Orphan Report
 Documentation files not reachable from any root configuration file. Group by directory.

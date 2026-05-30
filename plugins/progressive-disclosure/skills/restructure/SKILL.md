@@ -53,6 +53,10 @@ Run the discovery script to enumerate all `.md` files:
 
 Exclude root configuration files themselves from the index (they are the *container*, not indexed content). Include `README.md` as an indexed document.
 
+Index only **visible** files. Inside a git repository the discovery script already restricts the documentation pool to git-tracked files — never add an untracked or gitignored file to the index, since other agents cannot load it. If the existing file already links to such a file, drop that link and note it.
+
+When the script reports a `SAME-CONTENT:` symlink group (e.g. `CLAUDE.md` symlinked to `AGENTS.md`), index the underlying file **once** — do not list both the symlink and its target as separate entries.
+
 ### Step 3: Classify Documents by Theme
 
 For each discovered document, classify it into a theme using the taxonomy in `references/themes.md`. Apply signals in order:
@@ -105,7 +109,7 @@ Check for an existing section heading like `## Documentation`, `## Index`, `## T
 
 After writing the index:
 
-1. Confirm all linked files actually exist (no broken references)
+1. Confirm all linked files actually exist and are git-tracked (no broken or phantom references)
 2. Confirm the marker pair is present exactly once
 3. Count documents indexed vs total documents found — report coverage percentage
 4. If coverage is below 100%, list unindexed documents and their paths
