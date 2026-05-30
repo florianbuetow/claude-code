@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated progressive-disclosure to v1.2.0 — git-tracking visibility and symlink-aware duplicate detection.
 - Extended agent-guardrails no-guessing rule to detect bare "looks", "seems", and "likely" phrases (v3.3.2).
 - Re-enabled model invocation for changelog and solid-principles skills.
 
 ### Added
 
+- Added guard plugin (v0.1.0) — helper skill for the guard file-permission CLI.
 - Added claudeignore plugin (v0.1.1) with create, update, and router skills for `.claudeignore` file management.
 - Added handoff plugin (v0.1.1) with create, continue, and router skills for session handoffs.
 - Added progressive-disclosure plugin for analyzing and restructuring layered documentation.
