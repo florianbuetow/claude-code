@@ -19,8 +19,9 @@ The hook fires when the agent's final message **contains** the configured phrase
 configurable). Contains-match is used deliberately: models often prepend text like "I'll provide
 the requested output," which would defeat a whole-message exact match.
 
-Install and update skills reject obvious phrases. Use a phrase with a random component, not normal
-completion words like `done`, `finished`, `single kill`, or `double kill`.
+Choose a memorable, rare phrase — a movie quote or a sentence unlikely to appear in normal output.
+The install and update skills warn you if you pick something too common; single common words like
+`done`, `finished`, or `stop` will cause sessions to terminate at seemingly random moments.
 
 ## How termination works
 
