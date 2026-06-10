@@ -1,6 +1,6 @@
 {
   "name": "terminator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Stop hooks that terminate a Claude Code session when the agent's final message contains a kill phrase. Two scripts: single-kill (ends Claude) and double-kill (ends Claude plus the terminal shell that launched it), each bound to its own phrase. Installs at local (project) or global (user) scope; scripts require LOCAL or GLOBAL arg and exit 1 if missing. Contains-match (robust to model preambles), case-sensitivity configurable, and a kill path that walks the process tree to the owning claude (and, for double-kill, the top-most shell ancestor) and never signals pid <= 2. Install, remove, update, info, and whendone skills via a router; composes safely with existing Stop hooks.",
   "author": {
     "name": "Florian Buetow",
