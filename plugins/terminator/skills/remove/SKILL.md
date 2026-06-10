@@ -8,7 +8,7 @@ disable-model-invocation: false
 
 Uninstall the terminator hooks, leaving any other Stop hooks intact.
 
-## Step 1 — Detect installed scope(s)
+## Step 1 — Detect installed scope(s) and ask
 
 ```bash
 local_config=".claude/terminator.json"
@@ -18,8 +18,9 @@ global_config="$HOME/.claude/terminator.json"
 ```
 
 - If **neither** is installed: report "not installed" and stop.
-- If **only one** is installed: use that scope automatically.
-- If **both** are installed: ask the user which scope to remove (or both).
+- Otherwise: **always ask** the user which scope to remove — even if only one is installed.
+  Show what is and isn't installed so the user can make an informed choice.
+  Offer: **local**, **global**, or **both** (only show options that are actually installed).
 
 ## Step 2 — Strip terminator entries from settings file
 
