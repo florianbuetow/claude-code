@@ -33,14 +33,16 @@ ancestor), and never signals pid ≤ 2.
 | "remove", "uninstall", "disable", "delete the hook" | `terminator:remove` |
 | "update", "change the phrase", "new phrase", "rename phrase", "toggle case" | `terminator:update` |
 | "when done", "whendone", "terminate when finished", "self-terminate when complete" | `terminator:whendone` |
+| "info", "show phrase", "what is my kill phrase", "show config", "terminator status" | `terminator:info` |
 
 If ambiguous, ask:
 
 > What would you like to do with terminator?
-> - **install** — set up single-kill and/or double-kill hooks in this project
+> - **install** — set up single-kill and/or double-kill hooks (local or global scope)
 > - **remove** — uninstall the hooks
 > - **update** — change a kill phrase or case sensitivity
 > - **whendone** — have me end this session by uttering the kill phrase once work is finished
+> - **info** — show configured kill phrases for local and global scope
 
 ## Dispatching
 

@@ -4,6 +4,9 @@
 # Claude session. The terminal is left open.
 set -uo pipefail
 
+scope="${1:-}"
+case "$scope" in LOCAL|GLOBAL) ;; *) echo "Usage: $(basename "$0") LOCAL|GLOBAL" >&2; exit 1 ;; esac
+
 emit_noop() { echo '{}'; exit 0; }
 
 input="$(cat)"

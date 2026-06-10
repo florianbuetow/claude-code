@@ -4,6 +4,9 @@
 # Claude session AND the terminal shell that launched it. NEVER signals pid <= 2.
 set -uo pipefail
 
+scope="${1:-}"
+case "$scope" in LOCAL|GLOBAL) ;; *) echo "Usage: $(basename "$0") LOCAL|GLOBAL" >&2; exit 1 ;; esac
+
 emit_noop() { echo '{}'; exit 0; }
 
 input="$(cat)"
