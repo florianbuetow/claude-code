@@ -1,13 +1,13 @@
 ---
 name: terminator:install
-description: Install the terminator kill hooks into the current project. Installs single-kill.sh and/or double-kill.sh as Stop hooks, each bound to a non-obvious phrase, merging into .claude/settings.local.json without clobbering existing hooks. Use when the user asks to "install terminator", "set up the kill hooks", "add single kill", "add double kill", or "enable session termination".
+description: Install the terminator kill hooks at project (local) or user (global) scope. Installs single-kill.sh and/or double-kill.sh as Stop hooks, each bound to a phrase, merging into the appropriate settings file without clobbering existing hooks. Use when the user asks to "install terminator", "set up the kill hooks", "add single kill", "add double kill", or "enable session termination".
 disable-model-invocation: false
 ---
 
 # Terminator: Install
 
-Install one or both kill hooks into the **current project**. There are two independent scripts;
-which behaviour you get is determined by **which script is installed**, not by a flag:
+Install one or both kill hooks at **local** (this project) or **global** (all projects) scope.
+Which behaviour you get is determined by **which script is installed**, not by a flag:
 
 - `single-kill.sh` — phrase fires → terminate Claude. Terminal stays open.
 - `double-kill.sh` — phrase fires → terminate Claude **and** the terminal shell that launched it.
@@ -15,14 +15,27 @@ which behaviour you get is determined by **which script is installed**, not by a
 Matching is **contains** (the message need only contain the phrase; robust to model preambles),
 case-sensitivity configurable. The only hard safety rule in the kill path is: never signal pid ≤ 2.
 
-> Scope: install into the project's `.claude/`. Do not touch global `~/.claude/settings.json`
-> unless the user explicitly asks.
+## Step 1 — Scope
 
-## Step 1 — Which hooks?
+Ask the user (or read from `$ARGUMENTS`): **local** or **global**.
+
+- **local** — installs into this project's `.claude/`. Only fires in this project.
+- **global** — installs into `~/.claude/`. Fires in every Claude Code session on this machine.
+
+Set paths accordingly:
+
+| | Local | Global |
+|---|---|---|
+| Hooks dir | `.claude/hooks/` | `~/.claude/hooks/` |
+| Config file | `.claude/terminator.json` | `~/.claude/terminator.json` |
+| Settings file | `.claude/settings.local.json` | `~/.claude/settings.json` |
+| Script arg | `LOCAL` | `GLOBAL` |
+
+## Step 2 — Which hooks?
 
 Ask the user (or read from `$ARGUMENTS`): **single**, **double**, or **both**.
 
-## Step 2 — Phrases + case sensitivity
+## Step 3 — Phrases + case sensitivity
 
 - Single-kill phrase (recommend a memorable, rare phrase — a movie quote, a line of poetry, a
   sentence unlikely to appear in normal output, e.g. `I'll be back, but not this session`).
@@ -59,41 +72,45 @@ Only proceed if the user explicitly confirms they are absolutely sure.
 
 If the phrase passes without concern, or after the user confirms, proceed to install.
 
-## Step 3 — Confirm (destructive)
+## Step 4 — Confirm (destructive)
 
 ```
-About to install in this project:
+About to install at <LOCAL|GLOBAL> scope:
   single-kill.sh  phrase="<single phrase>"   -> ends Claude
   double-kill.sh  phrase="<double phrase>"   -> ends Claude + terminal
   case sensitive  : <true|false>
+  hooks dir       : <HOOKS_DIR>
+  config          : <CONFIG_FILE>
+  settings        : <SETTINGS_FILE>
 ```
 
-## Step 4 — Copy the chosen script(s)
+## Step 5 — Copy the chosen script(s)
 
 ```bash
-mkdir -p .claude/hooks
-# copy ${CLAUDE_PLUGIN_ROOT}/templates/single-kill.sh  -> .claude/hooks/single-kill.sh   (if single/both)
-# copy ${CLAUDE_PLUGIN_ROOT}/templates/double-kill.sh  -> .claude/hooks/double-kill.sh   (if double/both)
-chmod +x .claude/hooks/*-kill.sh
+mkdir -p <HOOKS_DIR>
+# copy ${CLAUDE_PLUGIN_ROOT}/templates/single-kill.sh  -> <HOOKS_DIR>/single-kill.sh   (if single/both)
+# copy ${CLAUDE_PLUGIN_ROOT}/templates/double-kill.sh  -> <HOOKS_DIR>/double-kill.sh   (if double/both)
+chmod +x <HOOKS_DIR>/*-kill.sh
 ```
 
-## Step 5 — Write config
+## Step 6 — Write config
 
 ```bash
 jq -n --arg s "<single phrase>" --arg d "<double phrase>" --argjson cs <true|false> \
-  '{single_killphrase:$s, double_killphrase:$d, case_sensitive:$cs}' > .claude/terminator.json
+  '{single_killphrase:$s, double_killphrase:$d, case_sensitive:$cs}' > <CONFIG_FILE>
 ```
 
 (Omit the key for a script you are not installing; each script only reads its own key.)
 
-## Step 6 — Merge the Stop hook(s) — never clobber existing hooks
+## Step 7 — Merge the Stop hook(s) — never clobber existing hooks
 
-For each script being installed, merge its entry in idempotently:
+The hook command must pass `LOCAL` or `GLOBAL` as `$1`; the scripts exit 1 if the arg is missing.
 
+For LOCAL scope:
 ```bash
 [ -f .claude/settings.local.json ] || echo '{}' > .claude/settings.local.json
 for s in single-kill.sh double-kill.sh; do   # restrict to the ones you installed
-  cmd="\"\$CLAUDE_PROJECT_DIR\"/.claude/hooks/$s"
+  cmd="\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/$s LOCAL"
   tmp="$(mktemp)"
   jq --arg cmd "$cmd" --arg s "$s" '
     .hooks.Stop = ((.hooks.Stop // [])
@@ -104,19 +121,35 @@ for s in single-kill.sh double-kill.sh; do   # restrict to the ones you installe
 done
 ```
 
-## Step 7 — Verify & report
+For GLOBAL scope:
+```bash
+[ -f ~/.claude/settings.json ] || echo '{}' > ~/.claude/settings.json
+for s in single-kill.sh double-kill.sh; do   # restrict to the ones you installed
+  cmd="$HOME/.claude/hooks/$s GLOBAL"
+  tmp="$(mktemp)"
+  jq --arg cmd "$cmd" --arg s "$s" '
+    .hooks.Stop = ((.hooks.Stop // [])
+      | if any(.hooks[]?.command? // "" | contains($s)) then .
+        else . + [{matcher:"", hooks:[{type:"command", command:$cmd, timeout:10000}]}]
+        end)
+  ' ~/.claude/settings.json > "$tmp" && mv "$tmp" ~/.claude/settings.json
+done
+```
+
+## Step 8 — Verify & report
 
 ```bash
-ls -la .claude/hooks/*-kill.sh
-cat .claude/terminator.json
-jq '.hooks.Stop' .claude/settings.local.json
+ls -la <HOOKS_DIR>/*-kill.sh
+cat <CONFIG_FILE>
+jq '.hooks.Stop' <SETTINGS_FILE>
 ```
 
 ```
-## Terminator installed
+## Terminator installed (<LOCAL|GLOBAL> scope)
   single-kill.sh : phrase "<s>"   (Claude only)            [if installed]
   double-kill.sh : phrase "<d>"   (Claude + terminal)      [if installed]
   case sensitive : <true|false>
+  config         : <CONFIG_FILE>
   Other Stop hooks: preserved
 
 Takes effect after a session restart (/exit and start a new Claude session).

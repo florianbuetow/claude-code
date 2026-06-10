@@ -1,29 +1,42 @@
 ---
 name: terminator:update
-description: Update the terminator kill phrases or case sensitivity for the current project. Rewrites only the changed fields in .claude/terminator.json; new phrases must be non-obvious; no restart needed since the hooks read config live. Use when the user asks to "update the kill phrase", "change the single/double kill phrase", or "toggle case sensitivity".
+description: Update the terminator kill phrases or case sensitivity at local or global scope. Prints the current phrase before asking for a new one. Rewrites only the changed fields; hooks read config live so changes take effect immediately. Use when the user asks to "update the kill phrase", "change the single/double kill phrase", or "toggle case sensitivity".
 disable-model-invocation: false
 ---
 
 # Terminator: Update
 
-Change the single-kill phrase, double-kill phrase, and/or case sensitivity for the **current
-project**. The hooks read `.claude/terminator.json` live on every stop, so changes take effect
-immediately — no restart.
+Change the single-kill phrase, double-kill phrase, and/or case sensitivity. The hooks read their
+config file live on every stop, so changes take effect immediately — no restart needed.
 
-## Step 1 — Check installed
+## Step 1 — Detect installed scope(s)
 
 ```bash
-test -f .claude/terminator.json && cat .claude/terminator.json || echo "NOT INSTALLED"
+local_config=".claude/terminator.json"
+global_config="$HOME/.claude/terminator.json"
+[ -f "$local_config"  ] && echo "LOCAL:  $local_config"  || echo "LOCAL:  not installed"
+[ -f "$global_config" ] && echo "GLOBAL: $global_config" || echo "GLOBAL: not installed"
 ```
 
-If `NOT INSTALLED`, offer `/terminator:install` and stop.
+- If **neither** is installed: offer `/terminator:install` and stop.
+- If **only one** is installed: use that scope automatically.
+- If **both** are installed: ask the user which scope to update.
 
-## Step 2 — Get the new value(s)
+## Step 2 — Show current config
+
+Print the full current config for the chosen scope so the user can see what's active:
+
+```bash
+echo "=== Current config (<LOCAL|GLOBAL>: <CONFIG_FILE>) ==="
+cat <CONFIG_FILE>
+```
+
+## Step 3 — Get the new value(s)
 
 Ask which to change: `single_killphrase`, `double_killphrase`, and/or `case_sensitive`. Keep any
 the user does not change.
 
-## Step 3 — Phrase Safety Check
+## Step 4 — Phrase Safety Check
 
 Terminator uses a **contains-match** against the final assistant message. Any phrase that appears
 in normal assistant output will cause sessions to terminate **apparently at random**.
@@ -54,7 +67,7 @@ Only proceed if the user explicitly confirms they are absolutely sure.
 If both `single_killphrase` and `double_killphrase` are configured, they must be distinct and
 neither may contain the other.
 
-## Step 4 — Write (read-modify-write — preserve other fields)
+## Step 5 — Write (read-modify-write — preserve other fields)
 
 Update only the fields the user changed; never rebuild the file from scratch.
 
@@ -62,15 +75,15 @@ Update only the fields the user changed; never rebuild the file from scratch.
 tmp="$(mktemp)"
 # example: change both phrases, keep case_sensitive as-is
 jq --arg s "<new single>" --arg d "<new double>" \
-  '.single_killphrase=$s | .double_killphrase=$d' .claude/terminator.json > "$tmp" \
-  && mv "$tmp" .claude/terminator.json
-cat .claude/terminator.json
+  '.single_killphrase=$s | .double_killphrase=$d' <CONFIG_FILE> > "$tmp" \
+  && mv "$tmp" <CONFIG_FILE>
+cat <CONFIG_FILE>
 ```
 
-## Step 5 — Report
+## Step 6 — Report
 
 ```
-## Terminator updated
+## Terminator updated (<LOCAL|GLOBAL> scope)
   single_killphrase : <s>
   double_killphrase : <d>
   case sensitive    : <true|false>
