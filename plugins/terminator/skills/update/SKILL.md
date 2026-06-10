@@ -23,28 +23,36 @@ If `NOT INSTALLED`, offer `/terminator:install` and stop.
 Ask which to change: `single_killphrase`, `double_killphrase`, and/or `case_sensitive`. Keep any
 the user does not change.
 
-## Step 3 — Validate phrase strength
+## Step 3 — Phrase Safety Check
 
-Terminator uses a contains-match against the final assistant message, so obvious phrases are unsafe:
-normal conversation or quoted user text could trigger the hook. Do not write `.claude/terminator.json`
-until the final configured phrase set passes this gate.
+Terminator uses a **contains-match** against the final assistant message. Any phrase that appears
+in normal assistant output will cause sessions to terminate **apparently at random**.
 
-A phrase is acceptable only if all of these are true:
+Recommend a memorable, rare phrase — a movie quote, a line of poetry, or a sentence unlikely to
+appear in normal output (e.g. `I'll be back, but not this session`).
 
-- It is at least 18 characters after trimming whitespace.
-- It includes an uncommon random component, such as 16+ lowercase hex characters, 12+ base64url
-  characters, or four unrelated random words.
-- It is not a normal completion word or short instruction, including `done`, `finish`, `finished`,
-  `complete`, `completed`, `exit`, `quit`, `stop`, `kill`, `terminate`, `single kill`,
-  `double kill`, `all done`, `goodbye`, or close variants.
-- It is not a phrase the assistant is likely to say in a normal final answer.
-- If `case_sensitive` is false, the lowercased phrase still passes the same gate.
-- If both `single_killphrase` and `double_killphrase` are configured, they are distinct and neither
-  phrase contains the other.
+**⚠️ WARNING — short or common phrase:**
+If the new phrase is a short clause or sentence that could plausibly appear in a typical assistant
+response, warn the user:
 
-If a requested phrase fails, do not update the config with it. Explain the failing condition briefly
-and ask for a stronger phrase or offer a generated one, such as
-`term-single-<16 random lowercase hex chars>` or `term-double-<16 random lowercase hex chars>`.
+> ⚠️ **Warning:** This phrase is short and may appear in ordinary responses, causing your session
+> to terminate unexpectedly. A longer, more distinctive phrase is strongly recommended.
+> Do you want to use it anyway?
+
+Only proceed if the user confirms.
+
+**🚨 STRONG WARNING — single common English word:**
+If the phrase is a single word or a very common short term (e.g. `done`, `stop`, `finish`,
+`complete`, `exit`, `quit`, `kill`, `terminate`, `goodbye`), issue a strong warning:
+
+> 🚨 **Strong Warning:** Single common words **will** appear in normal assistant output and **will**
+> cause your session to terminate at seemingly random moments. This is almost certainly not what
+> you want. Are you absolutely sure you want to use this as your kill phrase?
+
+Only proceed if the user explicitly confirms they are absolutely sure.
+
+If both `single_killphrase` and `double_killphrase` are configured, they must be distinct and
+neither may contain the other.
 
 ## Step 4 — Write (read-modify-write — preserve other fields)
 
