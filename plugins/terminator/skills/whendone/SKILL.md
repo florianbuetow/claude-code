@@ -21,8 +21,6 @@ Choose the phrase by intent: the **single_killphrase** ends only Claude; the **d
 ends Claude and the terminal. Default to `single_killphrase` unless the user wants the terminal
 closed too. Call the chosen phrase `<PHRASE>`.
 
-Also confirm the hook is loaded this session (if installed during this session, it needs a restart).
-
 ## Step 2 — Adopt the standing instruction
 
 State to the user that you will now operate under this rule, then follow it:
