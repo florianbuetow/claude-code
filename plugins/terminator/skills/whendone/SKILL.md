@@ -9,17 +9,39 @@ disable-model-invocation: false
 Arm the **current session** to self-terminate: keep working until everything is finished, then
 emit the configured kill phrase so the terminator Stop hook ends the session.
 
-## Step 1 — Read the phrase
+## Step 1 — Read the phrase (check both scopes)
+
+Terminator can be installed at **local** (`.claude/terminator.json`) or **global**
+(`~/.claude/terminator.json`) scope — and a globally installed hook arms *every* session, including
+this one. Check both scopes, not just the local project:
 
 ```bash
-test -f .claude/terminator.json && jq -r '{single_killphrase, double_killphrase}' .claude/terminator.json || echo "NOT INSTALLED"
+local_config=".claude/terminator.json"
+global_config="$HOME/.claude/terminator.json"
+found=""
+
+if [ -f "$local_config" ]; then
+  echo "=== LOCAL ($local_config) ==="
+  jq -r '{single_killphrase, double_killphrase, case_sensitive}' "$local_config"
+  found=1
+fi
+
+if [ -f "$global_config" ]; then
+  echo "=== GLOBAL ($global_config) ==="
+  jq -r '{single_killphrase, double_killphrase, case_sensitive}' "$global_config"
+  found=1
+fi
+
+[ -n "$found" ] || echo "NOT INSTALLED"
 ```
 
-If `NOT INSTALLED`, tell the user to run `/terminator:install` first and stop.
+Only if `NOT INSTALLED` (neither scope present) tell the user to run `/terminator:install` first
+and stop. If either scope has a config, terminator is armed — proceed.
 
 Choose the phrase by intent: the **single_killphrase** ends only Claude; the **double_killphrase**
 ends Claude and the terminal. Default to `single_killphrase` unless the user wants the terminal
-closed too. Call the chosen phrase `<PHRASE>`.
+closed too. Read it from whichever scope defines it; if both scopes define the chosen phrase, prefer
+the local (project) one. Call the chosen phrase `<PHRASE>`.
 
 ## Step 2 — Adopt the standing instruction
 
