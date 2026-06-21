@@ -132,9 +132,14 @@ push:
     echo ""
     just update
     echo ""
-    just status
+    status_output=$(just status 2>&1)
+    echo "$status_output"
+    if echo "$status_output" | grep -q "✗"; then
+        printf "\033[31m✗ Push failed: plugin versions do not match\033[0m\n"
+        exit 1
+    fi
     echo ""
-    printf "\033[32m✓ Push completed successfully\033[0m\n"
+    printf "\033[32m✓ Push completed successfully — all plugins up to date\033[0m\n"
     echo ""
 
 # Show installed vs repo plugin versions (green = match, red = mismatch)
