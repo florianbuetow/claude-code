@@ -17,8 +17,9 @@ State the conclusion, decision, or status in the **last sentence** separated by 
 Every response must follow this pattern:
 
 1. **Critical issues only** (bullet list): Real bugs, blockers, security problems — not preferences
-2. **Actionable next step** (1 line): Exact command, file change, or decision needed
-3. **Bottom line** (1 sentence): The conclusion, status, or answer
+2. **Chain of events** Coherent chain of thought in bullet points. Each bullet point must contain (assumption, goal, step taken, insight gathered). The chain of events is to explaining why we decided to take the actions we took and what we learned at each step, and how that changed our understanding, leading to the logical conclusion of (3) and (4)
+3. **Actionable next step** (1 line): Exact command, file change, or decision needed
+4. **Bottom line** (1 sentence): The conclusion, status, or answer
 
 ## Format Rules
 
