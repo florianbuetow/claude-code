@@ -294,6 +294,17 @@
       },
       "source": "./plugins/diagrams",
       "category": "productivity"
+    },
+    {
+      "name": "communicator",
+      "description": "Communication-style toolkit for Claude Code. The tldr skill switches Claude into a military-style BLUF mode: extreme brevity, bullets over prose, ruthless cutting of filler, preambles, and hand-holding, ending with a one-line bottom-line conclusion. Fires on \"tldr\", \"short mode\", or \"be brief\".",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/communicator",
+      "category": "productivity"
     }
   ]
 }
