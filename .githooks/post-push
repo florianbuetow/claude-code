@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# post-push git hook — triggers the justfile publishing targets on `git push`.
-# Runs `just update` then `just status`. Nothing else.
-cd "$(git rev-parse --show-toplevel)"
-just update
-just status
-exit 0

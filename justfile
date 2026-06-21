@@ -50,6 +50,7 @@ help:
     @printf "  %-38s %s\n" "install" "Add marketplace and install all plugins"
     @printf "  %-38s %s\n" "uninstall <plugin>" "Uninstall a plugin by name"
     @printf "  %-38s %s\n" "update" "Update marketplace and all installed plugins"
+    @printf "  %-38s %s\n" "push" "Push to remote, update plugins, and verify versions"
     @printf "  %-38s %s\n" "help" "Show this help information"
     @echo ""
     @printf "\033[0;33mInfo & Diagnostics:\033[0m\n"
@@ -117,6 +118,23 @@ update:
     done
     echo ""
     printf "\033[32m✓ Update completed — restart Claude Code to pick up changes\033[0m\n"
+    echo ""
+
+# Push to remote, update plugins, and verify versions match
+push:
+    #!/usr/bin/env bash
+    set -e
+    echo ""
+    printf "\033[0;34m=== Publishing Changes ===\033[0m\n"
+    echo ""
+    printf "Pushing to remote...\n"
+    git push 2>&1
+    echo ""
+    just update
+    echo ""
+    just status
+    echo ""
+    printf "\033[32m✓ Push completed successfully\033[0m\n"
     echo ""
 
 # Show installed vs repo plugin versions (green = match, red = mismatch)
