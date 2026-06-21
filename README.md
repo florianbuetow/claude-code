@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `21 plugins` and `101 skills` for Claude Code.
+A collection of `22 plugins` and `102 skills` for Claude Code.
 
 ## Quickstart
 
@@ -17,6 +17,7 @@ claude plugin install archibald
 claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
+claude plugin install communicator
 claude plugin install context-research
 claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
@@ -49,6 +50,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
+| [communicator](#communicator) | Communication-style toolkit — tldr skill switches Claude into military-style BLUF mode: extreme brevity, conclusion last, bullets over prose |
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
@@ -95,7 +97,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `communicator`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
 
 ### Updating
 
@@ -866,6 +868,33 @@ The update skill uses a 3-strategy boundary detection (tag match, date match, co
 
 ---
 
+## communicator
+
+Communication-style toolkit for Claude Code.
+
+`1 skill`
+
+Every word in a response competes for attention. Most AI responses pad, recap, and hand-hold. This plugin installs a communication discipline that cuts all of that — leaving only signal.
+
+| Skill | What it does |
+|-------|-------------|
+| `communicator:tldr` | Switch Claude into military-style BLUF (Bottom Line Up Front) mode — extreme brevity, conclusion last, bullets over prose, no filler |
+
+### tldr
+
+The `tldr` skill enforces terse, instantly-parseable output structured around four elements:
+
+1. **Critical issues only** — real bugs, blockers, security problems as a bullet list
+2. **Chain of events** — coherent reasoning in bullets: assumption → goal → step → insight
+3. **Actionable next step** — exact command, file change, or decision needed
+4. **Bottom line** — one-sentence conclusion on its own line at the end
+
+Format rules: bullets over paragraphs, active voice, no filler phrases ("Additionally", "Furthermore", "Great question!"), no meta-commentary, no preambles, no recaps. Assumes competence.
+
+**Trigger** — Type `tldr`, `/tldr`, `short mode`, `be brief`, or `concise mode`. Once active, shapes all responses until you ask for normal output.
+
+---
+
 ## agent-guardrails
 
 Data-driven agent behavioral guardrails for Claude Code sessions.
@@ -1105,6 +1134,13 @@ plugins/
   │       │   └── SKILL.md            # Create new CHANGELOG.md from full history
   │       └── update/
   │           └── SKILL.md            # Update existing CHANGELOG.md with new entries
+  ├── communicator/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── tldr/
+  │           └── SKILL.md            # Military-style BLUF communication mode
   ├── agent-guardrails/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
