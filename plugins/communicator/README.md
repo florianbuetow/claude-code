@@ -27,5 +27,3 @@ The skill fires when you type any of:
 - `concise mode`
 
 …or otherwise ask for terse, no-fluff output. Once active, it shapes the response style until you ask for normal output.
-
-Firing is **deterministic**, not best-match: a bundled `UserPromptSubmit` hook (`hooks/tldr-trigger.sh`) pattern-matches your prompt and injects the skill directive whenever a trigger token is present, so `tldr` always takes effect.
