@@ -1,7 +1,7 @@
 {
   "name": "communicator",
-  "version": "0.1.0",
-  "description": "Communication-style toolkit for Claude Code. The tldr skill switches Claude into a military-style BLUF (Bottom Line Up Front) mode: extreme brevity, conclusion first, bullets over prose, runnable commands in code blocks, and ruthless cutting of filler, preambles, and hand-holding. Fires on \"tldr\", \"short mode\", or \"be brief\".",
+  "version": "0.1.1",
+  "description": "Communication-style toolkit for Claude Code. The tldr skill switches Claude into a military-style BLUF mode: extreme brevity, bullets over prose, ruthless cutting of filler, preambles, and hand-holding, ending with a one-line bottom-line conclusion. A UserPromptSubmit hook fires it deterministically on \"tldr\", \"short mode\", or \"be brief\".",
   "author": {
     "name": "Florian Buetow",
     "email": "2320560+florianbuetow@users.noreply.github.com"

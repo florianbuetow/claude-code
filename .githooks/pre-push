@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# pre-push hook for the claude-code plugin marketplace.
+#
+# Fires on every `git push` (once `git config core.hooksPath .githooks` is set).
+# Enforces the CRITICAL version-bump rule from CLAUDE.md: each plugin's
+# plugin.json version MUST equal its marketplace.json entry, or `just update`
+# silently no-ops. Also checks JSON validity and runs `just validate` if present.
+# Exits non-zero to BLOCK the push when something is wrong.
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+echo "[pre-push] validating plugin manifests + version sync…"
+
+fail=0
+mp=".claude-plugin/marketplace.json"
+
+if command -v jq >/dev/null 2>&1; then
+  if ! jq empty "$mp" 2>/dev/null; then
+    echo "  ✗ $mp is not valid JSON"
+    fail=1
+  fi
+
+  for pj in plugins/*/.claude-plugin/plugin.json; do
+    [ -e "$pj" ] || continue
+    if ! jq empty "$pj" 2>/dev/null; then
+      echo "  ✗ $pj is not valid JSON"
+      fail=1
+      continue
+    fi
+    name="$(jq -r '.name' "$pj")"
+    pv="$(jq -r '.version' "$pj")"
+    mv="$(jq -r --arg n "$name" '.plugins[] | select(.name==$n) | .version' "$mp")"
+    if [ -z "$mv" ]; then
+      echo "  ✗ $name: missing from $mp"
+      fail=1
+    elif [ "$pv" != "$mv" ]; then
+      echo "  ✗ $name: plugin.json=$pv != marketplace.json=$mv"
+      fail=1
+    fi
+  done
+else
+  echo "  ! jq not found — skipping JSON/version checks"
+fi
+
+if command -v just >/dev/null 2>&1; then
+  just validate || fail=1
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo "[pre-push] BLOCKED — fix the issues above (see CLAUDE.md 'Version Bump Rule')."
+  exit 1
+fi
+
+echo "[pre-push] OK"
+exit 0
