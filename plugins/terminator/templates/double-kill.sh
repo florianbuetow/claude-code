@@ -54,7 +54,7 @@ nohup bash -c '
     case "$p" in (""|*[!0-9]*) return 0 ;; esac
     [ "$p" -gt 2 ] || return 0
     kill -TERM "$p" 2>/dev/null
-    for n in $(seq 1 12); do kill -0 "$p" 2>/dev/null || return 0; sleep 0.5; done
+    for n in $(seq 1 6); do kill -0 "$p" 2>/dev/null || return 0; sleep 0.5; done
     kill -KILL "$p" 2>/dev/null
   }
   kill_one "$c"
