@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `22 plugins` and `102 skills` for Claude Code.
+A collection of `27 plugins` and `117 skills` for Claude Code.
 
 ## Quickstart
 
@@ -17,21 +17,26 @@ claude plugin install archibald
 claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
+claude plugin install claudeignore
 claude plugin install communicator
 claude plugin install context-research
+claude plugin install diagrams
 claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
+claude plugin install guard
 claude plugin install handoff
 claude plugin install iso27001-sdlc
 claude plugin install kiss
 claude plugin install logbook
 claude plugin install onboarding
+claude plugin install orchestrator
 claude plugin install progressive-disclosure
 claude plugin install retrospective
 claude plugin install solid-principles
 claude plugin install spec-dd
 claude plugin install sessionlog
 claude plugin install spec-writer
+claude plugin install terminator
 claude plugin install tokeneconomics
 
 # 3. Restart Claude Code
@@ -50,21 +55,26 @@ claude plugin marketplace update florianbuetow-plugins
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
+| [claudeignore](#claudeignore) | Generate and maintain .claudeignore files - analyzes repo structure to exclude caches and build artifacts from context |
 | [communicator](#communicator) | Communication-style toolkit — tldr skill switches Claude into military-style BLUF mode: extreme brevity, conclusion last, bullets over prose |
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
+| [diagrams](#diagrams) | Diagramming toolkit — routes to ascii-art (CP437 box-drawing), mermaid (flowcharts, sequence, ER), or wardley (WTG2 DSL for SVG rendering) |
 | [explain-system-tradeoffs](#explain-system-tradeoffs) | Distributed system tradeoff analysis |
 | [fixclaude](#fixclaude) | Production-grade CLAUDE.md directives that override Claude Code's built-in limitations |
+| [guard](#guard) | Helper for the guard CLI - protects files from accidental AI edits via immutable flags and root ownership |
 | [handoff](#handoff) | Session handoff and continuation - compact sessions into structured handoff documents for task continuity |
 | [iso27001-sdlc](#iso27001-sdlc) | ISO 27001:2022 software development compliance scanner - Annex A controls 8.4, 8.25–8.33 |
 | [K.I.S.S.](#kiss) | Code and architecture simplicity analysis - complexity, abstraction, redundancy, architecture |
 | [logbook](#logbook) | Session log analytics - time spent and messages exchanged per project/branch, with monthly + yearly reports |
 | [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
+| [orchestrator](#orchestrator) | Evidence-based model routing — maps engineering tasks to the best-suited AI model using a 30-category taxonomy |
 | [progressive-disclosure](#progressive-disclosure) | Documentation structure analysis - maps soul files, detects orphaned docs, generates thematic indexes |
 | [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
 | [sessionlog](#sessionlog) | Export session logs as standard LLM conversation JSON and TXT transcripts |
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
 | [spec-dd](#spec-dd) | Specification-driven development workflow |
 | [spec-writer](#spec-writer) | Expert-guided software specification documents |
+| [terminator](#terminator) | Stop hooks that end a Claude Code session (and optionally its terminal) when a kill phrase appears in the agent's final message |
 | [tokeneconomics](#tokeneconomics) | Session token usage analysis - cache efficiency, conversation sprawl, model selection, cost optimization |
 
 ---
@@ -97,7 +107,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `communicator`, `context-research`, `explain-system-tradeoffs`, `fixclaude`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
 
 ### Updating
 
@@ -868,6 +878,24 @@ The update skill uses a 3-strategy boundary detection (tag match, date match, co
 
 ---
 
+## claudeignore
+
+Generate and maintain `.claudeignore` files for Claude Code projects.
+
+`3 skills`
+
+Context tokens are finite. Build artifacts, caches, vendored dependencies, and large non-source directories consume them without adding value. This plugin analyzes your repository structure and produces a categorized `.claudeignore` file that excludes the noise — so Claude sees only the code that matters.
+
+| Command | What it does |
+|---------|-------------|
+| `claudeignore` | Auto-detect: create a new `.claudeignore` or update the existing one |
+| `claudeignore:create` | Create a `.claudeignore` from scratch by scanning the repo |
+| `claudeignore:update` | Add, remove, or revise entries in an existing `.claudeignore` |
+
+**Trigger** - Ask Claude to "create a claudeignore", "update claudeignore", "optimize context", "ignore folders", "reduce token usage", "set up .claudeignore", or mention context window optimization.
+
+---
+
 ## communicator
 
 Communication-style toolkit for Claude Code.
@@ -892,6 +920,27 @@ The `tldr` skill enforces terse, instantly-parseable output structured around fo
 Format rules: bullets over paragraphs, active voice, no filler phrases ("Additionally", "Furthermore", "Great question!"), no meta-commentary, no preambles, no recaps. Assumes competence.
 
 **Trigger** — Type `tldr`, `/tldr`, `short mode`, `be brief`, or `concise mode`. Once active, shapes all responses until you ask for normal output.
+
+---
+
+## diagrams
+
+Diagramming toolkit for Claude Code.
+
+`4 skills`
+
+Diagrams live in multiple formats depending on context — ASCII art for inline terminal output, Mermaid for Markdown and docs, Wardley maps for strategic planning. This plugin routes your diagram request to the right format-specific skill automatically.
+
+| Command | What it does |
+|---------|-------------|
+| `diagrams` | Auto-route to the right format based on the request |
+| `diagrams:ascii-art` | Draw diagrams using CP437 box-drawing characters (┌─┐, ╔═╗, ░▒▓█) — never + - \| /, max 80 chars wide |
+| `diagrams:mermaid` | Generate Mermaid diagrams — flowcharts, sequence, class, state, ER, gantt |
+| `diagrams:wardley` | Generate Wardley maps in the WTG2/wardleyToGo DSL (`.wtg2` files for SVG rendering via wtg2svg) |
+
+Default format when unspecified: `diagrams:ascii-art` (renders inline everywhere). Extensible — add a new skill per format and a row to the router table.
+
+**Trigger** - Ask Claude to "draw a diagram", "diagram this", "make a chart", "visualize this as a diagram", "ascii diagram", "mermaid diagram", "flowchart", or "wardley map".
 
 ---
 
@@ -937,6 +986,28 @@ Reverse the built-in Claude Code limitations discovered in the source code leak.
 
 ---
 
+## guard
+
+Helper skill for the `guard` CLI — protect files from accidental AI modification.
+
+`1 skill`
+
+AI agents can edit any file they can read. `guard` sets the immutable flag and root ownership on files you want to protect, making accidental overwrites impossible at the OS level. This plugin composes the right `guard` CLI commands for five intents: init, create-collection, remove-collection, clear-all, and info.
+
+| Intent | What it does |
+|--------|-------------|
+| `guard init` | Set up guard and create a `.guardfile` in the project |
+| `guard:create-collection` | Build a protected collection from a file list or description |
+| `guard:remove-collection` | Remove a collection (unguard its files) |
+| `guard:clear-all` | Restore everything to unguarded state and wipe the registry |
+| `guard:info` | Show all collections and loose guarded files |
+
+**Sudo rule:** The agent runs without root. Operations that change a file's guard state (enable, disable, toggle) require `sudo` — the skill prints the exact `sudo guard …` command for you to run rather than executing it directly.
+
+**Trigger** - Ask Claude to "init guard", "guard my test files", "create a guard collection", "remove guard collection", "clear all guard", "guard status", or "what's guarded".
+
+---
+
 ## context-research
 
 Autonomous AI research pipeline that identifies, analyzes, and synthesizes SOTA research via Hugging Face and ArXiv.
@@ -954,6 +1025,39 @@ Designed for engineering-grade deep dives into AI topics. Searches Hugging Face 
 
 ---
 
+## orchestrator
+
+Evidence-based model routing for engineering tasks.
+
+`1 skill` · `30-category taxonomy` · `15 decision rules` · `Multi-model workflow patterns`
+
+Not all AI models are equally good at all tasks. Routing architecture planning to Haiku wastes quality; routing boilerplate to Opus wastes money. This plugin produces evidence-backed routing plans that map each work unit to the best-suited model — Claude, GPT, Gemini, or open-weight — with rationale, context briefings, and failure-mode warnings.
+
+| Command | What it does |
+|---------|-------------|
+| `orchestrator:maptasks` | Produce a routing plan for a task or task list — checks decomposition sufficiency, categorizes each unit, assigns models, emits briefings |
+
+### How It Works
+
+1. **Breakdown check** — Verifies each task unit is scoped to a single category, model tier, artifact, and context budget before routing.
+2. **Category lookup** — Maps each leaf unit to one of 30 task categories (architecture, boilerplate, frontend, debug, security audit, structured output, etc.).
+3. **Model selection** — Applies 15 decision rules grounded in April 2026 practitioner benchmarks.
+4. **Output** — A routing plan with model assignments, rationale citing category + rule numbers, per-unit context briefings, and a cost summary.
+
+### Three-Tier Strategy
+
+Every routing plan distributes work across tiers:
+
+| Tier | Share | Models |
+|------|-------|--------|
+| **Flagship** | 5–10% | Opus 4.6, GPT-5.4 Pro, Gemini 3.1 Pro |
+| **Mid-tier** | 40–50% | Sonnet 4.6, GPT-5.4, Codex, Gemini 2.5 Pro |
+| **Fast** | 30–40% | Haiku 4.5, GPT-5.4 mini/nano, Gemini 3 Flash |
+
+**Trigger** - Ask Claude to "route these tasks", "which model should handle this", "map tasks to models", "build a routing plan", or "maptasks".
+
+---
+
 ## tokeneconomics
 
 Analyze Claude Code session token usage to flag waste and optimization opportunities.
@@ -963,6 +1067,33 @@ Analyze Claude Code session token usage to flag waste and optimization opportuni
 Reviews per-message token data from Claude Code sessions, analyzing cache efficiency, conversation sprawl, model selection, and estimated costs. Produces a scored report with actionable recommendations for reducing token spend.
 
 **Trigger** - Ask to "analyze token usage", "check token efficiency", "audit token spend", or "reduce token costs".
+
+---
+
+## terminator
+
+Stop hooks that end a Claude Code session when a kill phrase appears in the agent's final message.
+
+`6 skills` · `2 termination scripts` · `Local and global scope`
+
+Claude Code sessions don't end themselves. Terminator installs a Stop hook that watches for a configured kill phrase in the agent's last message — when found, it ends Claude (single-kill) or ends Claude and the terminal that launched it (double-kill). Useful for autonomous sessions, CI pipelines, and any workflow where human presence isn't guaranteed.
+
+| Command | What it does |
+|---------|-------------|
+| `terminator` | Router — auto-detect intent and dispatch to the right subcommand |
+| `terminator:install` | Install single-kill and/or double-kill hooks at local or global scope |
+| `terminator:remove` | Uninstall the hooks |
+| `terminator:update` | Change the kill phrase or toggle case sensitivity |
+| `terminator:info` | Show configured kill phrases for local and global scope |
+| `terminator:whendone` | Have Claude end the session by uttering the kill phrase once work is complete |
+
+**Two scripts:**
+- **single-kill** — ends Claude; terminal stays open
+- **double-kill** — ends Claude, then walks the process tree to terminate the top-most shell ancestor
+
+Both scripts never signal pid ≤ 2 and compose safely with existing Stop hooks.
+
+**Trigger** - Ask Claude to "install the kill hook", "set up a kill phrase", "single kill", "double kill", "remove the terminator hook", "change the kill phrase", "terminate when done", or "terminator".
 
 ---
 
@@ -1134,6 +1265,16 @@ plugins/
   │       │   └── SKILL.md            # Create new CHANGELOG.md from full history
   │       └── update/
   │           └── SKILL.md            # Update existing CHANGELOG.md with new entries
+  ├── claudeignore/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       ├── claudeignore/
+  │       │   └── SKILL.md            # Router: create vs update
+  │       ├── create/
+  │       │   └── SKILL.md            # Create .claudeignore from repo scan
+  │       └── update/
+  │           └── SKILL.md            # Update existing .claudeignore
   ├── communicator/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -1141,6 +1282,19 @@ plugins/
   │   └── skills/
   │       └── tldr/
   │           └── SKILL.md            # Military-style BLUF communication mode
+  ├── diagrams/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       ├── diagrams/
+  │       │   └── SKILL.md            # Router: detect format and dispatch
+  │       ├── ascii-art/
+  │       │   └── SKILL.md            # CP437 box-drawing diagrams
+  │       ├── mermaid/
+  │       │   └── SKILL.md            # Mermaid flowcharts, sequence, ER, gantt
+  │       └── wardley/
+  │           └── SKILL.md            # Wardley maps in WTG2 DSL
   ├── agent-guardrails/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -1186,6 +1340,39 @@ plugins/
               ├── SKILL.md            # Gap analysis
               └── references/
                   └── source-leak-findings.md  # 7 documented findings
+  ├── guard/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── guard/
+  │           └── SKILL.md            # Guard CLI helper (init, collections, clear, info)
+  ├── orchestrator/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   └── skills/
+  │       └── maptasks/
+  │           └── SKILL.md            # Evidence-based model routing plan generator
+  └── terminator/
+      ├── .claude-plugin/
+      │   └── plugin.json             # Plugin manifest
+      ├── LICENSE
+      ├── templates/
+      │   ├── single-kill.sh          # Hook: end Claude session
+      │   └── double-kill.sh          # Hook: end Claude + terminal
+      └── skills/
+          ├── terminator/
+          │   └── SKILL.md            # Router: dispatch to install/remove/update/info/whendone
+          ├── install/
+          │   └── SKILL.md            # Install kill hooks at local or global scope
+          ├── remove/
+          │   └── SKILL.md            # Uninstall hooks
+          ├── update/
+          │   └── SKILL.md            # Change kill phrase or case sensitivity
+          ├── info/
+          │   └── SKILL.md            # Show configured kill phrases
+          └── whendone/
+              └── SKILL.md            # Self-terminate once work is complete
 ```
 
 ---
