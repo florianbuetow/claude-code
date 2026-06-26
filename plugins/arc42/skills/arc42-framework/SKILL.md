@@ -50,21 +50,30 @@ These tiers are recorded per section in `references/sections/NN-*.md` under `## 
 
 ---
 
-## Dependency-ordered waves
+## Generation waves (code-derivable first)
 
-Sections are generated in waves so every section's inputs already exist. The ordering is the
-topological sort of the `Depends on` edges declared in each `references/sections/NN-*.md`.
+Sections are generated in three waves by the `generate` command. The wave order is
+**code-derivable structural sections first → dependent sections → synthesis**, not a strict
+topological sort of the `Depends on` edges declared in `references/sections/NN-*.md`.
+
+Cross-section consistency is enforced **post-hoc** by the consistency-checker (Phase C) —
+particularly the §3↔§5 interface symmetry (`interfaces-match`). Other `Depends on` edges are
+**best-effort cross-references**: a section may be authored before all of its declared upstream
+sections exist, and that is expected. Do not assume that all inputs pre-exist when a section
+is dispatched.
 
 - **Wave 0 — Evidence base.** Extract fact records from the repo. Precedes all sections.
-- **Wave 1 — §1 Introduction and Goals.** No section dependencies (the foundation others cite).
-- **Wave 2 — §2 Constraints.** Depends on §1.
-- **Wave 3 — §3 Context and Scope.** Depends on §1, §2.
-- **Wave 4 — §4 Solution Strategy.** Depends on §1.2, §2, §3.
-- **Wave 5 — §5 Building Block View.** Depends on §3, §4.
-- **Wave 6 — §6 Runtime, §7 Deployment, §8 Crosscutting, §9 Decisions, §10 Quality.** Each depends
-  only on sections completed in Waves 1–5, so all five can be authored together.
-- **Wave 7 — §11 Risks and Technical Debt.** Depends on §1, §4, §8, §9 (needs Wave 6 output).
-- **Wave 8 — §12 Glossary.** Depends on all other sections; authored last to capture every term.
+- **Wave 1 — §3 Context and Scope, §5 Building Block View, §7 Deployment View, §12 Glossary.**
+  These four sections are code-derivable (structure readable directly from manifests, import
+  graphs, IaC, and route tables). They run first with no prior wave output, in parallel.
+- **Wave 2 — §6 Runtime View, §8 Crosscutting Concepts, §4 Solution Strategy,
+  §9 Architecture Decisions, §2 Constraints.**
+  These five sections receive Wave 1 output as upstream context where available. Because §1 is not
+  yet generated, upstream deps that reference §1 are absent and treated as best-effort. All five
+  run in parallel.
+- **Wave 3 — §1 Introduction and Goals, §10 Quality, §11 Risks and Technical Debt.**
+  These synthesis sections are authored last, after the structural and dependent sections are
+  complete. §10 and §11 receive Wave 2 output. All three run in parallel.
 
 ---
 

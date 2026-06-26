@@ -179,23 +179,9 @@ Write the composed section to **output-path**. Create parent directories if need
 
 Do not create any other file. Do not modify the evidence base or any upstream section file. Do not modify any source file in the target repository.
 
-## Step 7 — Append to _gaps.md
+## Step 7 — Report
 
-After writing the section file, open `<repo-root>/docs/arc42/_gaps.md` (create it if it does not exist) and append one entry per GAP flag emitted in this section:
-
-```markdown
-## <NN-slug> — <sub-section id>
-
-- **Type**: human-input | no-evidence
-- **Question / sought**: <text from the GAP flag>
-- **Section**: <output-path>
-```
-
-If no GAP flags were emitted, do not write to `_gaps.md`.
-
-## Step 8 — Report
-
-After all files are written, output exactly one line:
+After the file is written, output exactly one line:
 
 ```
 DONE: docs/arc42/<NN-slug>.md written (<N> sub-sections; <M> fact refs used; <K> GAP flags emitted)
@@ -218,4 +204,4 @@ Do not write a partial section file on error.
 - **Never omit claim anchors** — every factual claim must cite its backing facts.
 - **Never emit Mermaid** for placeholder-only diagram types (§6 swimlanes, §7 UML stereotypes).
 - **Never modify** existing source files in the target repository.
-- **Never create** any file other than the section file and the `_gaps.md` append.
+- **Never create** any file other than the section file. GAP flags go inline in the section file only; `_gaps.md` is written exclusively by the orchestrator (Phase C).

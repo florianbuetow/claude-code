@@ -2,7 +2,7 @@
 """Validate a generated docs/arc42 tree (spec §10). Stdlib only."""
 import pathlib, re, sys
 
-REQUIRED_FM = ["arc42_section", "source_commit", "generated_at", "arc42_kb_version", "upstream_hash"]
+REQUIRED_FM = ["arc42_section", "title", "source_commit", "generated_at", "arc42_kb_version", "upstream_hash"]
 SECTION_RE = re.compile(r"^\d{2}-.*\.md$")
 
 def front_matter(text):
@@ -33,13 +33,21 @@ def validate(tree):
                     v.append(f"{p.name}: front-matter missing '{k}'")
         if "<!-- arc42-meta " not in text:
             v.append(f"{p.name}: no <!-- arc42-meta … --> block")
-        # never-fabricate: any gap-human subsection must carry a GAP flag
-        for meta in re.findall(r"<!-- arc42-meta ([^>]*)-->", text):
-            if "provenance:gap-human" in meta and "<!-- GAP:human-input" not in text:
-                v.append(f"{p.name}: gap-human provenance without a GAP:human-input flag (possible fabrication)")
-        # mermaid fences balanced
-        if text.count("```mermaid") and text.count("```mermaid") > text.count("```") // 2:
-            v.append(f"{p.name}: unbalanced mermaid fences")
+        # never-fabricate: per-subsection check — gap-human/gap-no-evidence must carry a matching GAP flag
+        chunks = re.split(r"(<!-- arc42-meta [^>]*-->)", text)
+        for i in range(1, len(chunks), 2):
+            meta = chunks[i]
+            content = chunks[i + 1] if i + 1 < len(chunks) else ""
+            sec_id = re.search(r"section:(\S+)", meta)
+            label = sec_id.group(1) if sec_id else "unknown"
+            if "provenance:gap-human" in meta and "<!-- GAP:human-input" not in content:
+                v.append(f"{p.name}: subsection {label} has gap-human provenance but no GAP:human-input flag (possible fabrication)")
+            if "provenance:gap-no-evidence" in meta and "<!-- GAP:no-evidence" not in content:
+                v.append(f"{p.name}: subsection {label} has gap-no-evidence provenance but no GAP:no-evidence flag (possible fabrication)")
+        # fence parity: total number of ``` fence markers must be even (every opened fence is closed)
+        fences = len(re.findall(r"(?m)^```", text))
+        if fences % 2 != 0:
+            v.append(f"{p.name}: odd fence count ({fences}) — unbalanced code or mermaid fence")
     return v
 
 def main():
