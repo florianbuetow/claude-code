@@ -10,6 +10,13 @@
 # forbidden in ascii-art diagrams: they render as two terminal cells and silently
 # break the monospace column alignment the box-drawing glyphs depend on.
 #
+# It does NOT flag the skill's documented idioms:
+#   * an arrowhead embedded in a border line (┌────▼────┐ / ═══▲═══) — the
+#     arrowhead is a pass-through, so the border line on each side is satisfied;
+#   * ASCII - = | + inside label text ("general-purpose", "MAX=3", "a -> b") —
+#     punctuation sitting in a word/label is treated as text, not wiring. A bare
+#     ASCII connector flanked by spaces (the dangling "x = y") is still flagged.
+#
 # The connection rules it enforces are documented in
 # ../references/connector-rules.md.
 #
@@ -164,6 +171,32 @@ cell() {
 
 compat() { [ "$1" = "A" ] || [ "$2" = "A" ] || [ "$1" = "$2" ]; }
 
+# Arrowhead classification. A vertical arrowhead (points up/down, shaft is
+# vertical) may be embedded in a HORIZONTAL border line (┌────▼────┐); a
+# horizontal arrowhead (points left/right) may be embedded in a VERTICAL border.
+# When that happens the arrowhead acts as a pass-through: it satisfies the
+# border line's perpendicular open end without itself requiring continuation.
+is_vert_arrow() { case "$1" in '▲' | '▼' | '↑' | '↓') return 0 ;; *) return 1 ;; esac; }
+is_horiz_arrow() { case "$1" in '▶' | '◀' | '→' | '←') return 0 ;; *) return 1 ;; esac; }
+
+# is_ascii_connector: the ASCII glyphs that double as connectors (- = | +).
+is_ascii_connector() { case "$1" in '-' | '=' | '|' | '+') return 0 ;; *) return 1 ;; esac; }
+
+# is_textish_cell <row> <col>: true when the cell holds label text — in-bounds,
+# not a space, and not a recognised connector/box/arrow/shading glyph (a letter,
+# digit, or stray punctuation such as '>' '.' '('). Used to decide whether an
+# ASCII - = | + sits inside a word/label (e.g. "general-purpose", "MAX=3") rather
+# than acting as wiring. Clobbers CELL/CELLOOB/EOUT (called at controlled points).
+is_textish_cell() {
+  cell "$1" "$2"
+  [ "$CELLOOB" = "1" ] && return 1
+  [ "$CELL" = " " ] && return 1
+  is_allowed_glyph "$CELL" && return 1
+  set_ends "$CELL"
+  [ -n "$EOUT" ] && return 1
+  return 0
+}
+
 # --- scan ----------------------------------------------------------------------
 violations=0
 r=0
@@ -175,6 +208,17 @@ while [ "$r" -lt "$nlines" ]; do
     ch="${line:$c:1}"
     set_ends "$ch"
     ends="$EOUT"
+
+    # ASCII - = | + embedded in a horizontal text run (a neighbour to the left or
+    # right is label text) is part of a word/label, not wiring — skip it. Only in
+    # default mode; --box-only already drops ASCII connectors. A bare ASCII
+    # connector flanked by spaces/connectors (e.g. "x = y", "◀=+=▶") is still
+    # checked, so dangling wiring is caught and ASCII-drawn lines still validate.
+    if [ "$mode" = "all" ] && [ -n "$ends" ] && is_ascii_connector "$ch"; then
+      if is_textish_cell "$r" "$((c - 1))" || is_textish_cell "$r" "$((c + 1))"; then
+        ends=""
+      fi
+    fi
 
     if [ -z "$ends" ]; then
       # not a connector: flag it only if it's a forbidden non-ASCII glyph
@@ -208,6 +252,13 @@ while [ "$r" -lt "$nlines" ]; do
         reason="the edge of the diagram"
       elif [ "$CELL" = " " ]; then
         reason="a space"
+      elif { [ "$d" = "L" ] || [ "$d" = "R" ]; } && is_vert_arrow "$CELL"; then
+        # horizontal border line meeting an arrowhead embedded in it (─▼─ / ═▲═):
+        # the arrowhead passes the line through, so this end is satisfied.
+        ok=1
+      elif { [ "$d" = "U" ] || [ "$d" = "D" ]; } && is_horiz_arrow "$CELL"; then
+        # vertical border line meeting an embedded horizontal arrowhead (│▶│).
+        ok=1
       else
         set_ends "$CELL"
         if [ -z "$EOUT" ]; then

@@ -287,7 +287,7 @@
     {
       "name": "diagrams",
       "description": "Diagramming toolkit for Claude Code. A router skill dispatches diagram requests to format-specific skills: ascii-art (diagrams drawn with extended ASCII box-drawing characters from CP437 — single ┌─┐, double ╔═╗, shading ░▒▓█ — never + - | /, capped at 80 chars with strict row/column alignment), mermaid (flowcharts, sequence, and other Mermaid diagrams), and wardley (Wardley maps in the WTG2 / wardleyToGo DSL, emitted as .wtg2 for rendering to SVG via wtg2svg). Extensible — add a new skill per diagram format and a row to the router table.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
