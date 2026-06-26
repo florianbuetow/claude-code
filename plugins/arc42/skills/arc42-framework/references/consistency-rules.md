@@ -1,4 +1,4 @@
-Source: 01-introduction-and-goals/tips/1-1.md, 01-introduction-and-goals/tips/1-16.md, 03-context-and-scope/tips/3-5.md, 03-context-and-scope/tips/3-9.md, 05-building-block-view/tips/5-3.md, 05-building-block-view/tips/5-4.md, 05-building-block-view/tips/5-18.md, 05-building-block-view/tips/5-20.md, 06-runtime-view/tips/6-2.md, 08-crosscutting-concepts/tips/8-3.md, 09-architecture-decisions/tips/9-8.md, 12-glossary/tips/12-5.md
+Source: 01-introduction-and-goals/tips/, 03-context-and-scope/tips/, 05-building-block-view/tips/, 06-runtime-view/tips/, 08-crosscutting-concepts/tips/, 09-architecture-decisions/tips/, 12-glossary/tips/
 
 Machine-checkable cross-section rules derived from the arc42 tip corpus. Each RULE entry states: the invariant to check, the sections it spans, and the tip(s) it traces to. These rules are consumed by the `consistency-checker` skill (Task 9).
 

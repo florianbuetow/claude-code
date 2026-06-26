@@ -1,4 +1,4 @@
-Source: index.md (root), 01-introduction-and-goals/index.md, 02-constraints/index.md, 03-context-and-scope/index.md, 04-solution-strategy/index.md, 05-building-block-view/index.md, 06-runtime-view/index.md, 07-deployment-view/index.md, 08-crosscutting-concepts/index.md, 09-architecture-decisions/index.md, 10-quality/index.md, 11-risks-and-technical-debt/index.md, 12-glossary/index.md
+Source: index.md, 01-introduction-and-goals/index.md, 02-constraints/index.md, 03-context-and-scope/index.md, 04-solution-strategy/index.md, 05-building-block-view/index.md, 06-runtime-view/index.md, 07-deployment-view/index.md, 08-crosscutting-concepts/index.md, 09-architecture-decisions/index.md, 10-quality/index.md, 11-risks-and-technical-debt/index.md, 12-glossary/index.md
 
 # Expected Topics — arc42 Section Catalog
 
