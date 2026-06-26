@@ -305,6 +305,17 @@
       },
       "source": "./plugins/communicator",
       "category": "productivity"
+    },
+    {
+      "name": "codebasescout",
+      "description": "Scout a codebase to identify high-value work, plan the fixes (point and architectural), and produce a ranked map from codebase to tasks -- each tagged with a recommended model -- without ever implementing the fix. Cheap-model agents sweep and score every file by Impact x Opportunity (1-5); the router then runs meta-level pattern analysis, plans point and architectural fixes, and recommends a model per task. Team: target guard, skip gate, formula, profile, parallel scorers, ranker, pattern-grouper (meta-level analysis + architectural fix planning), task-writer (point-fix planning), model-recommender. Objectives: bugs, security, tech debt, dead code, performance, conversion.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/codebasescout",
+      "category": "development"
     }
   ]
 }
