@@ -316,6 +316,14 @@
       },
       "source": "./plugins/codebasescout",
       "category": "development"
+    },
+    {
+      "name": "arc42",
+      "description": "Generate arc42 architecture documentation from a codebase. Scans the repo into a structured evidence base, then writes the 12 arc42 sections with Mermaid diagrams where the code gives high-confidence structure and explicit GAP flags where human input is needed (never fabricated). Knowledge base derived from arc42 under CC BY-SA 4.0.",
+      "version": "0.1.0",
+      "author": { "name": "Florian Buetow", "email": "2320560+florianbuetow@users.noreply.github.com" },
+      "source": "./plugins/arc42",
+      "category": "development"
     }
   ]
 }
