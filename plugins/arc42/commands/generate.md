@@ -17,12 +17,18 @@ Before dispatching anything, establish these variables. Reference them by name t
 
 2. **`target-path`** — the optional sub-path argument from `$ARGUMENTS`. If `$ARGUMENTS` is empty or whitespace, `target-path` is unset. If set, it must be a path relative to `target-repo-root`.
 
-3. **`arc42-kb-root`** — the absolute path to `skills/arc42-framework/references/` inside the arc42 plugin installation. Locate it with:
+3. **`arc42-kb-root`** — the absolute path to `skills/arc42-framework/references/` inside the arc42 plugin installation. Resolve it from the canonical Claude Code plugin env var:
    ```
-   find ~/.claude/plugins/arc42 ~/.claude/projects "$(dirname "$(which claude)")" -maxdepth 8 \
-     -path "*/arc42/skills/arc42-framework/references" -type d 2>/dev/null | head -1
+   arc42-kb-root="${CLAUDE_PLUGIN_ROOT}/skills/arc42-framework/references"
    ```
-   If not found that way, check the plugin's known install locations. The path ends in `plugins/arc42/skills/arc42-framework/references`.
+   **Fail fast:** if `CLAUDE_PLUGIN_ROOT` is unset or empty, stop immediately and print:
+   ```
+   ERROR: CLAUDE_PLUGIN_ROOT is not set — cannot locate arc42 knowledge base. Ensure the arc42 plugin is installed and CLAUDE_PLUGIN_ROOT is provided by the Claude Code runtime.
+   ```
+   If `arc42-kb-root` does not exist as a directory after resolution, stop immediately and print:
+   ```
+   ERROR: arc42 knowledge base not found at <arc42-kb-root>. Re-install the arc42 plugin.
+   ```
 
 4. **`docs-root`** — `<target-repo-root>/docs/arc42`
 
@@ -53,6 +59,14 @@ After Phase A succeeds, note `<evidence-path>` = `<target-repo-root>/docs/arc42/
 ## Phase B — Section authoring (dependency-ordered waves)
 
 Sections are generated in three waves. **Within a wave, all section-author dispatches run in parallel.** Waves execute sequentially — Wave 2 starts only when Wave 1 is fully settled.
+
+> **Ordering note:** The wave order is code-derivable-first (Wave 1 = §3, §5, §7, §12), not a
+> strict topological sort of the `Depends on` edges in the section specs. Cross-section
+> consistency is enforced **post-hoc** by the consistency-checker in Phase C — in particular
+> the §3↔§5 interface symmetry (`interfaces-match` rule). Other `Depends on` edges are
+> best-effort: a section may be dispatched before all of its declared upstream sections exist,
+> and that is by design. Do not reorder the waves to satisfy declared deps — the post-hoc
+> checker is the correct enforcement point.
 
 ### Idempotency check
 
