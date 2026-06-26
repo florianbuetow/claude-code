@@ -40,6 +40,17 @@ Directions are **left (L)**, **right (R)**, **top (U)**, **bottom (D)**.
 An arrowhead caps the end of a line, so it attaches *back toward* that line: `▶`/`→` attach to a
 connector on their **left**, `◀`/`←` on their **right**, `▲`/`↑` **below** them, `▼`/`↓` **above**.
 
+**Arrowhead embedded in a border (pass-through).** The skill's idiom draws an arrow flowing into a
+box by embedding the arrowhead directly in the box's border line — `┌────▼────┐` (and the double-line
+form `╔════▼════╗`). The `─`/`═` cells on either side of the arrowhead would otherwise dangle, because
+the arrowhead has no left/right open end. So a **vertical** arrowhead (`▲ ▼ ↑ ↓`) sitting in a
+**horizontal** border line *satisfies* that line's left/right open ends (it passes the line through),
+and a **horizontal** arrowhead (`▶ ◀ → ←`) does the same for a **vertical** border's top/bottom ends.
+The arrowhead still attaches its own single open end as usual (the `▼` in `┌────▼────┐` still needs a
+line above it). This makes the bundled checker accept the construction the skill's Examples 1 and 3
+teach. Note an arrowhead at the very top/edge of a diagram whose shaft runs off the grid is still
+flagged — that is a genuine dangling end, not the border idiom.
+
 **ASCII connectors (weight `*` — recognised by default, suppressed with `--box-only`):**
 
 | Glyph | Open ends |
@@ -114,9 +125,13 @@ the skill's rule ("only these glyphs, plus plain ASCII text"). Plain ASCII chara
 
 ## Known limitations
 
-- ASCII `- = | +` also occur **inside text** (`well-formed`, `key=value`, `a|b`, `1+2`). Recognising
-  them as connectors can therefore flag prose. Use `--box-only` for diagrams that draw structure with
-  box-drawing glyphs and use ASCII only for labels.
+- ASCII `- = | +` also occur **inside text** (`general-purpose`, `key=value`, `a|b`, `1+2`). In
+  default mode the checker treats such a glyph as **label text, not wiring**, when it sits inside a
+  horizontal text run — i.e. a non-space, non-connector character (a letter, digit, or stray
+  punctuation such as `>` `.`) is immediately to its left or right. So hyphenated/`=`-bearing labels no
+  longer raise false positives. A bare ASCII connector flanked by spaces or other connectors (the
+  dangling `x = y`, or ASCII-drawn wiring like `◀=+=▶`) is still checked. `--box-only` remains
+  available to ignore ASCII `- = | +` entirely for diagrams that draw all structure with box glyphs.
 - Columns are reported as 1-based **character** positions; this assumes single-width glyphs and
   spaces (not tabs) for indentation.
 - Shading blocks `░ ▒ ▓ █` are treated as non-connectors, so a line ending into a block is flagged.

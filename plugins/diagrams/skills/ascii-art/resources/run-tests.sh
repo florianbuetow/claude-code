@@ -30,10 +30,16 @@ invalid-into-text.txt|default|1|2
 invalid-weight-mismatch.txt|default|1|2
 invalid-wall-attach.txt|default|1|2
 invalid-bare-equals.txt|default|1|2
-label-hyphen.txt|default|1|2
+label-hyphen.txt|default|0|0
 label-hyphen.txt|box-only|0|0
 invalid-emoji.txt|default|1|1
 invalid-emoji.txt|box-only|1|1
+valid-arrow-in-border.txt|default|0|0
+valid-arrow-in-border.txt|box-only|0|0
+valid-arrow-in-double-border.txt|default|0|0
+valid-arrow-in-double-border.txt|box-only|0|0
+valid-label-punct.txt|default|0|0
+valid-label-punct.txt|box-only|0|0
 '
 
 pass=0

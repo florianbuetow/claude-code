@@ -1,0 +1,5 @@
+┌─────────────────┐
+│ general-purpose │
+│ round 1..MAX=3  │
+│ research -> out │
+└─────────────────┘
