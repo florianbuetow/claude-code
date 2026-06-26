@@ -1,4 +1,4 @@
-Source: keywords.md, data/output/01-introduction-and-goals/tips/, data/output/02-constraints/tips/, data/output/03-context-and-scope/tips/, data/output/04-solution-strategy/tips/, data/output/05-building-block-view/tips/, data/output/06-runtime-view/tips/, data/output/07-deployment-view/tips/, data/output/08-crosscutting-concepts/tips/, data/output/09-architecture-decisions/tips/, data/output/10-quality/tips/, data/output/11-risks-and-technical-debt/tips/, data/output/12-glossary/tips/
+Source: keywords.md, 01-introduction-and-goals/tips/, 02-constraints/tips/, 03-context-and-scope/tips/, 04-solution-strategy/tips/, 05-building-block-view/tips/, 06-runtime-view/tips/, 07-deployment-view/tips/, 08-crosscutting-concepts/tips/, 09-architecture-decisions/tips/, 10-quality/tips/, 11-risks-and-technical-debt/tips/, 12-glossary/tips/
 
 - activity-diagram (4): T01-6, T01-9, T06-7, T06-8
 - adr (3): T09-8, T09-9, T09-10
