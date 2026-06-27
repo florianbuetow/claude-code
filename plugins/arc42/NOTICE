@@ -1,0 +1,12 @@
+This plugin ("arc42" for Claude Code) is licensed under CC BY-SA 4.0.
+
+Its knowledge base (skills/arc42-framework/references/) is an ADAPTATION of the
+arc42 architecture documentation template and its practical tips:
+
+  arc42 — Peter Hruschka & Gernot Starke
+  https://arc42.org  ·  https://docs.arc42.org
+  Source: https://github.com/arc42/docs.arc42.org-site
+
+The arc42 template is published under CC BY-SA 4.0. This adaptation re-licenses
+under the same terms (ShareAlike). Documentation that this plugin GENERATES about
+a user's own codebase is the user's work, not a derivative of arc42.
