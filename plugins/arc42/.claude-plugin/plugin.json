@@ -1,0 +1,11 @@
+{
+  "name": "arc42",
+  "version": "0.1.0",
+  "description": "Generate arc42 architecture documentation from a codebase. Reads the repo into a structured evidence base, then writes the 12 arc42 sections (Mermaid diagrams where the code gives high-confidence structure, explicit GAP flags where human input is needed — never fabricated). Knowledge base derived from the arc42 framework under CC BY-SA 4.0.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "CC-BY-SA-4.0",
+  "keywords": ["arc42", "architecture", "documentation", "diagrams", "mermaid"]
+}

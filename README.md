@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `27 plugins` and `117 skills` for Claude Code.
+A collection of `29 plugins` and `117 skills` for Claude Code.
 
 ## Quickstart
 
@@ -13,11 +13,13 @@ claude plugin marketplace add florianbuetow/claude-code
 # 2. Install plugins (pick what you need)
 claude plugin install agent-guardrails
 claude plugin install appsec
+claude plugin install arc42
 claude plugin install archibald
 claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
 claude plugin install claudeignore
+claude plugin install codebasescout
 claude plugin install communicator
 claude plugin install context-research
 claude plugin install diagrams
@@ -51,11 +53,13 @@ claude plugin marketplace update florianbuetow-plugins
 |-------|-------------|
 | [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — 6 rules via Stop hook with intent-aligned feedback |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
+| [arc42](#arc42) | Generate arc42 architecture documentation from a codebase - evidence-grounded, Mermaid diagrams, GAP flags |
 | [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
 | [claudeignore](#claudeignore) | Generate and maintain .claudeignore files - analyzes repo structure to exclude caches and build artifacts from context |
+| [codebasescout](#codebasescout) | Scout a codebase, rank findings by Impact x Opportunity, plan fixes, tag each task with a recommended model |
 | [communicator](#communicator) | Communication-style toolkit — tldr skill switches Claude into military-style BLUF mode: extreme brevity, conclusion last, bullets over prose |
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
 | [diagrams](#diagrams) | Diagramming toolkit — routes to ascii-art (CP437 box-drawing), mermaid (flowcharts, sequence, ER), or wardley (WTG2 DSL for SVG rendering) |
@@ -107,7 +111,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
 
 ### Updating
 
@@ -1097,6 +1101,29 @@ Both scripts never signal pid ≤ 2 and compose safely with existing Stop hooks.
 
 ---
 
+## arc42
+
+Generate arc42 architecture documentation from a codebase.
+
+`12 sections` · `Mermaid diagrams where structure is code-verifiable` · `GAP flags where human input is needed`
+
+Software architecture decisions accumulate in code, configuration, and deployment artifacts. This plugin reads your repository into a structured evidence base, then authors all 12 arc42 sections from that evidence. Where the code gives high-confidence structure, it generates Mermaid diagrams. Where human context is needed (goals, constraints, quality requirements), it emits explicit `<!-- GAP -->` flags rather than fabricating content.
+
+| Command | What it does |
+|---------|-------------|
+| `/arc42:generate` | Full run: scan repo → evidence base → author all 12 sections → `docs/arc42/` |
+| `/arc42:fill-gaps` | Guided walkthrough of all open `<!-- GAP -->` flags — prompts for missing context and fills each section |
+| `/arc42:gap-check` | *(coming)* Report all open GAPs without filling them |
+| `/arc42:drift-check` | *(coming)* Detect drift between the evidence base and output sections |
+
+Diagrams use Mermaid and are generated only where the code provides enough structure to be confident — typically the building block view (§5), runtime view (§6), and deployment view (§7). Sections where structure cannot be inferred from code alone are left as prose with `<!-- GAP -->` flags.
+
+**Trigger** — Ask Claude to "generate arc42 docs", "document the architecture", "run arc42", or "fill in the arc42 gaps".
+
+**License:** CC BY-SA 4.0 (this plugin only; all other plugins are MIT). Knowledge base adapted from arc42 by Peter Hruschka & Gernot Starke — see `plugins/arc42/NOTICE`.
+
+---
+
 ## Project Structure
 
 ```
@@ -1323,23 +1350,23 @@ plugins/
   │       │   └── SKILL.md            # Install curated or custom rules
   │       └── update/
   │           └── SKILL.md            # Refine rules based on usage data
-  └── fixclaude/
-      ├── .claude-plugin/
-      │   └── plugin.json             # Plugin manifest
-      ├── LICENSE
-      ├── references/
-      │   └── claude-md-template.md   # Production-grade CLAUDE.md template
-      └── skills/
-          ├── install/
-          │   └── SKILL.md            # Auto-detect init vs update
-          ├── init/
-          │   └── SKILL.md            # Create new CLAUDE.md
-          ├── update/
-          │   └── SKILL.md            # Merge into existing CLAUDE.md
-          └── analyze/
-              ├── SKILL.md            # Gap analysis
-              └── references/
-                  └── source-leak-findings.md  # 7 documented findings
+  ├── fixclaude/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   ├── references/
+  │   │   └── claude-md-template.md   # Production-grade CLAUDE.md template
+  │   └── skills/
+  │       ├── install/
+  │       │   └── SKILL.md            # Auto-detect init vs update
+  │       ├── init/
+  │       │   └── SKILL.md            # Create new CLAUDE.md
+  │       ├── update/
+  │       │   └── SKILL.md            # Merge into existing CLAUDE.md
+  │       └── analyze/
+  │           ├── SKILL.md            # Gap analysis
+  │           └── references/
+  │               └── source-leak-findings.md  # 7 documented findings
   ├── guard/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
@@ -1353,26 +1380,48 @@ plugins/
   │   └── skills/
   │       └── maptasks/
   │           └── SKILL.md            # Evidence-based model routing plan generator
-  └── terminator/
+  ├── terminator/
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   ├── templates/
+  │   │   ├── single-kill.sh          # Hook: end Claude session
+  │   │   └── double-kill.sh          # Hook: end Claude + terminal
+  │   └── skills/
+  │       ├── terminator/
+  │       │   └── SKILL.md            # Router: dispatch to install/remove/update/info/whendone
+  │       ├── install/
+  │       │   └── SKILL.md            # Install kill hooks at local or global scope
+  │       ├── remove/
+  │       │   └── SKILL.md            # Uninstall hooks
+  │       ├── update/
+  │       │   └── SKILL.md            # Change kill phrase or case sensitivity
+  │       ├── info/
+  │       │   └── SKILL.md            # Show configured kill phrases
+  │       └── whendone/
+  │           └── SKILL.md            # Self-terminate once work is complete
+  └── arc42/
       ├── .claude-plugin/
-      │   └── plugin.json             # Plugin manifest
-      ├── LICENSE
-      ├── templates/
-      │   ├── single-kill.sh          # Hook: end Claude session
-      │   └── double-kill.sh          # Hook: end Claude + terminal
-      └── skills/
-          ├── terminator/
-          │   └── SKILL.md            # Router: dispatch to install/remove/update/info/whendone
-          ├── install/
-          │   └── SKILL.md            # Install kill hooks at local or global scope
-          ├── remove/
-          │   └── SKILL.md            # Uninstall hooks
-          ├── update/
-          │   └── SKILL.md            # Change kill phrase or case sensitivity
-          ├── info/
-          │   └── SKILL.md            # Show configured kill phrases
-          └── whendone/
-              └── SKILL.md            # Self-terminate once work is complete
+      │   └── plugin.json             # Plugin manifest (CC-BY-SA-4.0)
+      ├── LICENSE                     # CC BY-SA 4.0 license text
+      ├── NOTICE                      # arc42 attribution notice
+      ├── agents/
+      │   ├── evidence-scout.md       # Phase 1: repo scan → evidence base
+      │   ├── section-author.md       # Phase 2: evidence → arc42 sections
+      │   └── consistency-checker.md  # Phase 3: cross-section coherence check
+      ├── commands/
+      │   ├── generate.md             # /arc42:generate — full pipeline
+      │   ├── fill-gaps.md            # /arc42:fill-gaps — guided GAP walkthrough
+      │   ├── gap-check.md            # /arc42:gap-check — report open GAPs (phase 2)
+      │   └── drift-check.md          # /arc42:drift-check — detect stale sections (phase 2)
+      ├── skills/
+      │   └── arc42-framework/
+      │       ├── SKILL.md            # Skill router
+      │       └── references/         # 12 section guides + conventions + COVERAGE
+      └── tests/
+          ├── validate_output.py      # Output validator
+          ├── check_corpus_contract.py # Corpus derivation contract checker
+          └── fixtures/               # Good/bad output fixtures + sample repos
 ```
 
 ---
@@ -1434,7 +1483,7 @@ Behavioral hooks that enforce assistant discipline by blocking common AI anti-pa
 
 ## License
 
-MIT
+MIT — except the `arc42` plugin, which is CC BY-SA 4.0 (its knowledge base is adapted from arc42; see `plugins/arc42/NOTICE`).
 
 ---
 
