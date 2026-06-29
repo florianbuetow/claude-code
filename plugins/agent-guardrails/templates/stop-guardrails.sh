@@ -31,7 +31,7 @@ fi
 
 # no-preference-asking
 if echo "$message" | grep -qiE '(would you prefer|would you like me to|would you rather|do you want me to|want me to\b.*\?|should I\b.*\?|which approach would you|which option would you|what would you prefer|let me know which|let me know how you|there are a few approaches|there are several options|here are some options|which would you like|happy to go either way|shall I|what.*feels right|which level feels right|which.*do you (want|prefer|think))'; then
-  blocked+=("Re-read the requirements, specifications, and instructions you have been given. The answer to your question can be derived from the context. Make the best engineering decision based on what you already know. If after thorough review you genuinely cannot determine the answer, write on a single line: ESCALATING QUESTION: I am requiring an answer to the following — [state your question without a question mark]")
+  blocked+=("Re-read the requirements, specifications, and instructions you have been given. The answer to your question can be derived from the context. Make the best engineering decision based on what you already know. If after thorough review you genuinely cannot determine the answer, write on a single line: ESCALATING QUESTION: I am requiring an answer to the following - [state your question without a question mark]")
 fi
 
 # no-false-completion
@@ -46,7 +46,12 @@ fi
 
 # no-dismissing
 if echo "$message" | grep -qiE '(not a real (bug|issue|error|problem)|can be ignored|just a warning|(is a |just a |only a )pre-existing|the only (failure|error|issue|problem|warning|bug) (is|was|being|comes from)|safe to ignore|not worth (fixing|investigating|worrying)|doesn'\''t matter|not important|harmless|benign|false positive|not a concern|don'\''t worry about|nothing to worry about|expected (error|warning|failure))'; then
-  blocked+=("Do not dismiss issues without investigation. Diagnose the root cause and show evidence for your conclusion — test output, code references, or logs. No evidence means no dismissal.")
+  blocked+=("Do not dismiss issues without investigation. Diagnose the root cause and show evidence for your conclusion - test output, code references, or logs. No evidence means no dismissal.")
+fi
+
+# no-cosmetic
+if echo "$message" | grep -qiE '\bcosmetic(s|ally)?\b'; then
+  blocked+=("Nothing is ever cosmetic. Issues dismissed as cosmetic become technical debt. Investigate whether it can be solved quickly with minimal changes and report back - without using the word cosmetic.")
 fi
 
 if [ ${#blocked[@]} -eq 0 ]; then
@@ -55,7 +60,7 @@ if [ ${#blocked[@]} -eq 0 ]; then
 fi
 
 # Build block response
-reason=$(printf '%s\n' "${blocked[@]}")
+reason=$(printf '%s ' "${blocked[@]}")
 
 jq -n --arg reason "$reason" '{
   "decision": "block",
