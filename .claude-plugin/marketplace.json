@@ -55,8 +55,8 @@
     },
     {
       "name": "spec-dd",
-      "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline with advisory quality gates: behavioral specification, test specification, implementation specification, and alignment review.",
-      "version": "1.1.1",
+      "description": "Specification-driven development workflow skill. Orchestrates a spec-first discipline with advisory quality gates: a one-page Product Spec (problem, falsifiable bet, success criteria, evaluation) that replaces the PRD, behavioral specification, test specification, implementation specification, and alignment review.",
+      "version": "1.2.0",
       "author": {
         "name": "Florian Buetow",
         "email": "2320560+florianbuetow@users.noreply.github.com"
