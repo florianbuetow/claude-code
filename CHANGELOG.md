@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added arc42 plugin for automated architecture documentation generation from codebases (CC BY-SA 4.0).
+- Added codebasescout plugin for ranked task mapping with per-task model recommendations.
+- Added terminator plugin for session-exit automation with tiered warnings and whendone notifications.
+- Added diagrams and communicator plugins for diagram generation and TLDR military-style brevity.
+- Extended spec-dd with product-spec skill and reference examples.
+
+### Changed
+
+- Added `just push` justfile target replacing the post-push git hook.
+
+### Fixed
+
+- Fixed push success check to require all plugin versions match before declaring success.
+
 ### Changed
 
 - Updated progressive-disclosure to v1.2.0 — git-tracking visibility and symlink-aware duplicate detection.
@@ -138,4 +154,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed retrospective plugin enforcing script-only execution for all subagents.
 - Fixed installation instructions to use correct plugin CLI commands.
 
-[Unreleased]: https://github.com/florianbuetow/claude-code/compare/ef265d3...HEAD
+[Unreleased]: https://github.com/florianbuetow/claude-code/compare/b970cb7...HEAD
