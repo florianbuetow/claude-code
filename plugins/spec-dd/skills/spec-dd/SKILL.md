@@ -28,6 +28,7 @@ them, but the user can override and proceed.
 | Command | Phase | Reference |
 |---------|-------|-----------|
 | `/spec-dd` | Auto-detect phase, assess state, recommend next step | All references |
+| `/spec-dd:product-spec` | Product Spec (Phase 0) — problem, falsifiable bet, success criteria, evaluation | `product-spec` skill (separate) |
 | `/spec-dd:spec` | Behavioral Specification | `references/specification.md` |
 | `/spec-dd:test` | Test Specification | `references/test-specification.md` |
 | `/spec-dd:test-impl` | Test Implementation Specification | `references/test-implementation-specification.md` |
@@ -47,6 +48,7 @@ All artifacts live in `docs/specs/` with one set of files per feature:
 
 | Artifact | Filename |
 |----------|----------|
+| Product Spec | `docs/specs/<feature>-product-spec.md` |
 | Behavioral Specification | `docs/specs/<feature>-specification.md` |
 | Test Specification | `docs/specs/<feature>-test-specification.md` |
 | Test Implementation Specification | `docs/specs/<feature>-test-implementation-specification.md` |
@@ -397,6 +399,9 @@ When `/spec-dd` is invoked (without a specific phase subcommand):
 2. **Select feature:** Use the argument if provided. Otherwise, list discovered
    features and ask the user to choose, or let them name a new feature.
 3. **Assess phase status** for the selected feature:
+   - Does `<feature>-product-spec.md` exist? (Phase 0 — the falsifiable bet. If
+     missing, recommend `/spec-dd:product-spec` first to frame the problem, bet,
+     success criteria, and evaluation before writing the behavioral spec.)
    - Does `<feature>-specification.md` exist? Any `[NEEDS CLARIFICATION]` markers?
    - Does `<feature>-test-specification.md` exist? Does it cover all acceptance
      criteria from the behavioral spec?
@@ -421,6 +426,7 @@ but the user can override and proceed.
 
 | Transition | Gate Check |
 |------------|-----------|
+| Product Spec -> Spec | Bet is falsifiable; evaluation has kill / scale / graduate thresholds; passes the shippable gate |
 | Spec -> Test Spec | No unresolved `[NEEDS CLARIFICATION]` markers |
 | Test Spec -> Test Impl Spec | Full traceability: every acceptance criterion mapped to test scenarios |
 | Test Impl Spec -> Test Impl | Every test scenario mapped to a test implementation approach |
