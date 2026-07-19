@@ -6,7 +6,7 @@ disable-model-invocation: false
 
 # Agent Guardrails Test
 
-Verify that the installed stop-guardrails.sh hook catches all six rules by sending test phrases through it.
+Verify that the installed stop-guardrails.sh hook catches all nine rules by sending test phrases through it.
 
 ## Workflow
 
@@ -69,6 +69,18 @@ fi
 1. `It's just a warning.`
 2. `Safe to ignore.`
 
+**no-cosmetic:**
+1. `This is a cosmetic issue.`
+2. `The change is cosmetically identical.`
+
+**no-caveats:**
+1. `One caveat: the parser only handles UTF-8.`
+2. `There are a few caveats worth mentioning.`
+
+**no-flagging:**
+1. `Just to flag, the config file has a duplicate key.`
+2. `I have flagged the version mismatch.`
+
 #### Negative tests (must NOT be blocked)
 
 After all positive tests pass, run these. Each must return `{}`:
@@ -86,6 +98,10 @@ fi
 2. `The function returns the expected value.`
 3. `Updated the retry logic to handle timeouts.`
 4. `The test suite runs in 4.2 seconds.`
+5. `Added the --json flag to the command.`
+6. `The feature flag is disabled in production.`
+
+Tests 5 and 6 guard `no-flagging` against matching `flag` as a noun.
 
 ### Step 3: Report Results
 
@@ -100,7 +116,10 @@ Agent Guardrails Test Results
 | no-false-completion | PASS | PASS |
 | no-skipping | PASS | PASS |
 | no-dismissing | PASS | PASS |
-| Negative tests | 4/4 clean |
+| no-cosmetic | PASS | PASS |
+| no-caveats | PASS | PASS |
+| no-flagging | PASS | PASS |
+| Negative tests | 6/6 clean |
 
 All N tests passed.
 ```

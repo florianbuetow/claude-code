@@ -51,7 +51,7 @@ claude plugin marketplace update florianbuetow-plugins
 
 | Skill | Description |
 |-------|-------------|
-| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — 6 rules via Stop hook with intent-aligned feedback |
+| [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — 9 rules via Stop hook with intent-aligned feedback |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [arc42](#arc42) | Generate arc42 architecture documentation from a codebase - evidence-grounded, Mermaid diagrams, GAP flags |
 | [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
@@ -952,14 +952,14 @@ Default format when unspecified: `diagrams:ascii-art` (renders inline everywhere
 
 Data-driven agent behavioral guardrails for Claude Code sessions.
 
-`4 skills` · `6 rules` · `Stop hook` · `Iterative refinement`
+`4 skills` · `9 rules` · `Stop hook` · `Iterative refinement`
 
-Enforces agent discipline through a Stop hook that detects anti-patterns in assistant output: guessing without verification, stalling instead of acting, asking preferences instead of deciding, claiming completion without evidence, skipping work, and dismissing issues without investigation. Feedback messages guide the model toward the correct behavior without revealing which pattern triggered detection.
+Enforces agent discipline through a Stop hook that detects anti-patterns in assistant output: guessing without verification, stalling instead of acting, asking preferences instead of deciding, claiming completion without evidence, skipping work, dismissing issues without investigation, calling problems cosmetic, reporting caveats instead of acting on them, and flagging issues instead of resolving them. Feedback messages guide the model toward the correct behavior without revealing which pattern triggered detection.
 
 | Command | What it does |
 |---------|-------------|
 | `agent-guardrails:analyze` | Scan session logs for anti-patterns — produces ranked frequency report with excerpts |
-| `agent-guardrails:install` | Install all 6 rules into `.claude/` — works immediately, no restart. Re-run to upgrade after plugin update. |
+| `agent-guardrails:install` | Install all 9 rules into `.claude/` — works immediately, no restart. Re-run to upgrade after plugin update. |
 | `agent-guardrails:test` | Verify installed hook patterns — runs 2 test phrases per rule, stops on first failure |
 | `agent-guardrails:update` | Re-analyze logs against installed rules — finds false positives, missed patterns, suggests refinements |
 

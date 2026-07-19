@@ -54,6 +54,16 @@ if echo "$message" | grep -qiE '\bcosmetic(s|ally)?\b'; then
   blocked+=("Nothing is ever cosmetic. Issues dismissed as cosmetic become technical debt. Investigate whether it can be solved quickly with minimal changes and report back - without using the word cosmetic.")
 fi
 
+# no-caveats
+if echo "$message" | grep -qiE '\bcaveats?\b'; then
+  blocked+=("You just mentioned a caveat, please review it and address it if you can deduce the correction from the intent and tasks I asked you to complete. I understand that you sometimes just mention caveats thinking that it is useful to mention it, but if it is not directly related to the task I've asked you to complete or stands in the way of completing it and aligning the final result with my intent then stop giving me caveat information that is non-actionable.")
+fi
+
+# no-flagging
+if echo "$message" | grep -qiE '(\bto flag\b|\bflagging\b|\bflag(ged)? (this|that|it|these|those)\b|\b(I|we)('\''?ve| have| had)? flagged\b|\bas flagged\b|\bflagged (above|earlier|previously)\b|\b(should|shall|can|could|would|must|will|'\''?ll|let me|let'\''?s) flag\b|\bflag (a|an|one) (issue|concern|problem|risk|thing)\b)'; then
+  blocked+=("You flagged something, does that mean you saw an issue that stands in the way of completing our goal and producing results that align with the intent of what we are doing? If so I expect you to dive into it, find evidence that this is an issue, and then address it in alignment with our goal and intent. I am not interested in knowing about issues if there is nothing you can do about them. Only flag things to me when you are unable to resolve the flagged issues. Giving me more information than necessary to complete or judge the outcome of our task is counterproductive.")
+fi
+
 if [ ${#blocked[@]} -eq 0 ]; then
   echo '{}'
   exit 0
