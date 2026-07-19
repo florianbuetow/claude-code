@@ -151,7 +151,7 @@ status:
     printf "  %-25s %-15s %-15s %s\n" "PLUGIN" "REPO" "INSTALLED" "STATUS"
     printf "  %-25s %-15s %-15s %s\n" "------" "----" "---------" "------"
     installed_list=$(claude plugin list 2>&1)
-    jq -r '.plugins[] | "\(.name) \(.version)"' .claude-plugin/marketplace.json | while read -r name repo_version; do
+    jq -r '.plugins[] | "\(.name) \(.version)"' .claude-plugin/marketplace.json | sort | while read -r name repo_version; do
         install_count=$(echo "$installed_list" \
             | grep -c "❯ ${name}@{{marketplace_name}}" || true)
         installed_version=$(echo "$installed_list" \
