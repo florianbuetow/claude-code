@@ -15,23 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added terminator plugin for session-exit automation with tiered warnings and whendone notifications.
 - Added diagrams and communicator plugins for diagram generation and TLDR military-style brevity.
 - Extended spec-dd with product-spec skill and reference examples.
-
-### Changed
-
-- Added `just push` justfile target replacing the post-push git hook.
-
-### Fixed
-
-- Fixed push success check to require all plugin versions match before declaring success.
-
-### Changed
-
-- Updated progressive-disclosure to v1.2.0 — git-tracking visibility and symlink-aware duplicate detection.
-- Extended agent-guardrails no-guessing rule to detect bare "looks", "seems", and "likely" phrases (v3.3.2).
-- Re-enabled model invocation for changelog and solid-principles skills.
-
-### Added
-
 - Added guard plugin (v0.1.0) — helper skill for the guard file-permission CLI.
 - Added claudeignore plugin (v0.1.1) with create, update, and router skills for `.claudeignore` file management.
 - Added handoff plugin (v0.1.1) with create, continue, and router skills for session handoffs.
@@ -40,33 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added claudex script for running Claude Code with local LM Studio models — interactive model picker with auto-load/unload.
 - Added orchestrator plugin with maptasks skill for intelligent task categorization and mapping across domain models.
 - Added claude-context-status script to visualize context window usage with colored progress bars.
-
-### Changed
-
-- Updated progressive-disclosure plugin to v1.1.0 — added user-specified file targeting and replaced soul-file terminology with root configuration files.
-- All skill files now include `disable-model-invocation` frontmatter to prevent unintended model calls during skill execution.
-- Improved plugin management: added `uninstall` command and refined `install`/`update` logic.
-- Updated changelog plugin with improved skill descriptions and formatting guide for better UX.
-
-### Changed
-
-- Updated README documentation to use `<img>` tags for natural image sizing instead of Markdown.
-- Synced agent-guardrails section in README with v3.3.0 changes and updated marketplace skill count to 95.
-- Renamed agent-guardrails rule `no-speculative-language` to `no-guessing` across all files — the rule detects unverified claims, not language style (v3.3.0).
-- Rewrote all six agent-guardrails feedback messages to remove rule names, markdown formatting, and detection signal leaks — the model now receives only behavioral corrections without knowing which pattern triggered detection (v3.3.0).
-- Redesigned agent-guardrails feedback prompts to align with operational intent: keep working (no-stalling, no-skipping), re-read requirements before escalating (no-preference-asking with ESCALATING QUESTION format), verify with tests and Playwright before claiming done (no-false-completion), investigate before asserting (no-guessing), show evidence before dismissing (no-dismissing) (v3.3.0).
-
-### Added
-
 - Added detection patterns for `have not verified/confirmed/checked/validated/tested` and `haven't verified/...` to agent-guardrails no-skipping rule — catches agents disclosing they skipped verification instead of actually verifying (v3.2.2).
 - Added detection patterns for dismissive `pre-existing` usage and `the only failure/error/...` to agent-guardrails no-dismissing rule — catches agents minimizing real failures as pre-existing or singular (v3.3.0).
-
-### Changed
-
-- context-research: bumped to v0.0.3 — added Phase 5 "Document Completeness" rule. The saved report must contain everything the user will learn, including execution recaps and process meta-commentary. Defines two canonical summary locations (Key Takeaways at top, Appendix: Execution Notes at bottom) and requires composing the chat reply by quoting the saved file.
-
-### Added
-
 - Added context-research plugin (v0.0.1) — autonomous AI research pipeline that discovers, ranks, and synthesizes SOTA papers via Hugging Face and ArXiv APIs. Three-phase workflow: intelligent discovery with weighted ranking, parallel deep extraction with shallow-content fallback, and thematic synthesis reporting. Derived from huggingface/skills (Apache 2.0).
 - Added tokeneconomics plugin (v0.1.0) — analyzes Claude Code session token usage across 6 dimensions (cache efficiency, conversation sprawl, model selection, cost estimation) to flag waste and optimization opportunities.
 - Added sessionlog:recap skill for quick TLDR summaries of recent sessions.
@@ -76,37 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `/agent-guardrails:test` skill for verifying installed hook patterns — checks hook installation, runs 2 test phrases per rule (12 positive + 4 negative), stops on first failure (v3.2.1).
 - Added Quickstart section to README with one-command installation for all plugins.
 - Added fixclaude plugin (v0.1.0) with 4 skills for overriding Claude Code's built-in limitations discovered in the source code leak: install (auto-detect router), init (create new CLAUDE.md), update (augment existing), and analyze (gap analysis against 7 findings). Based on fakeguru's claude-md (MIT).
-
-### Fixed
-
-- Fixed plugin auto-discovery to scan directories and install missing plugins during `just update`.
-- Fixed tokeneconomics model scoring threshold and percentage formatting.
-- Synced marketplace manifest versions with actual plugin versions.
-- Fixed incorrect version numbers in CHANGELOG and removed stale COPILOT.md references.
-
-### Changed
-
-- Reverted agent-guardrails to stable v2.1.5 rule set under version 3.2.0 — the v3.0.0–v3.1.2 series introduced overbroad patterns (wh-word catch-all in no-preference-asking blocked legitimate questions, expanded no-false-completion caught factual status reports) and scope creep (PreToolUse/PostToolUse hooks). Restored to 6 battle-tested Stop hook rules.
-
-### Fixed
-
-- Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration requires a session restart (v3.2.1).
-- Made onboarding plugin reading of project instruction files (AGENTS.md, CLAUDE.md, GEMINI.md, COPILOT.md) mandatory and cross-platform (v1.0.1).
-- Registered fixclaude plugin in marketplace manifest.
-- Consolidated README installation docs into Quickstart section with alphabetically sorted plugin list.
-- Condensed README subtitle into single line.
-- Expanded no-preference-asking guardrail with 6 new pattern families: seeking-approval, "let me know", "anything else", "your call/up to you", "what would you like to", and "or do you/should we" alternatives — catching ~350 additional low-legit questions identified from 850-session analysis (v2.1.4).
-- Added `want me to...?` and `should I...?` patterns to no-preference-asking guardrail (v2.1.3).
-- Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
-- Used `$CLAUDE_PROJECT_DIR` variable for hook command path instead of relative `bash` invocation in agent-guardrails install skill (v2.1.2).
-
-### Fixed
-
-- Fixed literal `\n\n` appearing in stop hook output instead of actual newlines in agent-guardrails (v2.1.3).
-- Added infinite loop prevention guard to stop-guardrails hook to avoid re-triggering when `stop_hook_active` is already set (v2.1.2).
-
-### Added
-
 - Added no-dismissing rule to agent-guardrails plugin (v2.1.0).
 - Added plugin.json manifest for agent-guardrails plugin.
 - Added agent-guardrails plugin with five behavioral guardrail rules for blocking AI anti-patterns (speculative language, stalling, preference-asking, false completion, skipping).
@@ -129,6 +56,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Added `just push` justfile target replacing the post-push git hook.
+- Sorted the plugin list alphabetically in `just status` output.
+- Updated progressive-disclosure to v1.2.0 — git-tracking visibility and symlink-aware duplicate detection.
+- Extended agent-guardrails no-guessing rule to detect bare "looks", "seems", and "likely" phrases (v3.3.2).
+- Re-enabled model invocation for changelog and solid-principles skills.
+- Updated progressive-disclosure plugin to v1.1.0 — added user-specified file targeting and replaced soul-file terminology with root configuration files.
+- All skill files now include `disable-model-invocation` frontmatter to prevent unintended model calls during skill execution.
+- Improved plugin management: added `uninstall` command and refined `install`/`update` logic.
+- Updated changelog plugin with improved skill descriptions and formatting guide for better UX.
+- Updated README documentation to use `<img>` tags for natural image sizing instead of Markdown.
+- Synced agent-guardrails section in README with v3.3.0 changes and updated marketplace skill count to 95.
+- Renamed agent-guardrails rule `no-speculative-language` to `no-guessing` across all files — the rule detects unverified claims, not language style (v3.3.0).
+- Rewrote all six agent-guardrails feedback messages to remove rule names, markdown formatting, and detection signal leaks — the model now receives only behavioral corrections without knowing which pattern triggered detection (v3.3.0).
+- Redesigned agent-guardrails feedback prompts to align with operational intent: keep working (no-stalling, no-skipping), re-read requirements before escalating (no-preference-asking with ESCALATING QUESTION format), verify with tests and Playwright before claiming done (no-false-completion), investigate before asserting (no-guessing), show evidence before dismissing (no-dismissing) (v3.3.0).
+- context-research: bumped to v0.0.3 — added Phase 5 "Document Completeness" rule. The saved report must contain everything the user will learn, including execution recaps and process meta-commentary. Defines two canonical summary locations (Key Takeaways at top, Appendix: Execution Notes at bottom) and requires composing the chat reply by quoting the saved file.
+- Reverted agent-guardrails to stable v2.1.5 rule set under version 3.2.0 — the v3.0.0–v3.1.2 series introduced overbroad patterns (wh-word catch-all in no-preference-asking blocked legitimate questions, expanded no-false-completion caught factual status reports) and scope creep (PreToolUse/PostToolUse hooks). Restored to 6 battle-tested Stop hook rules.
 - Replaced hookify dependency with self-contained bash Stop hook in agent-guardrails (v2.0.0).
 - Removed hooks section from README - hooks are an implementation detail of plugins.
 - Replaced unicode em dashes with ASCII hyphens in README.
@@ -145,6 +88,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed push success check to require all plugin versions match before declaring success.
+- Fixed plugin auto-discovery to scan directories and install missing plugins during `just update`.
+- Fixed tokeneconomics model scoring threshold and percentage formatting.
+- Synced marketplace manifest versions with actual plugin versions.
+- Fixed incorrect version numbers in CHANGELOG and removed stale COPILOT.md references.
+- Fixed incorrect "no restart needed" claim in agent-guardrails install skill — hook registration requires a session restart (v3.2.1).
+- Made onboarding plugin reading of project instruction files (AGENTS.md, CLAUDE.md, GEMINI.md, COPILOT.md) mandatory and cross-platform (v1.0.1).
+- Registered fixclaude plugin in marketplace manifest.
+- Consolidated README installation docs into Quickstart section with alphabetically sorted plugin list.
+- Condensed README subtitle into single line.
+- Expanded no-preference-asking guardrail with 6 new pattern families: seeking-approval, "let me know", "anything else", "your call/up to you", "what would you like to", and "or do you/should we" alternatives — catching ~350 additional low-legit questions identified from 850-session analysis (v2.1.4).
+- Added `want me to...?` and `should I...?` patterns to no-preference-asking guardrail (v2.1.3).
+- Improved no-preference-asking guardrail prompt for fewer false positives (v2.1.1).
+- Used `$CLAUDE_PROJECT_DIR` variable for hook command path instead of relative `bash` invocation in agent-guardrails install skill (v2.1.2).
+- Fixed literal `\n\n` appearing in stop hook output instead of actual newlines in agent-guardrails (v2.1.3).
+- Added infinite loop prevention guard to stop-guardrails hook to avoid re-triggering when `stop_hook_active` is already set (v2.1.2).
 - Fixed `tools` frontmatter format in all 7 appsec agent files from comma-separated string to proper YAML array, ensuring tool restrictions are enforced.
 - Fixed 5 plugins (cache-money, changelog, logbook, onboarding, agent-guardrails) claiming MIT license without including a LICENSE file.
 - Fixed "let me first check" false positive in agent-guardrails no-stalling rule pattern.
