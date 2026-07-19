@@ -1,6 +1,6 @@
 ---
 name: agent-guardrails-analyze
-description: Scan Claude Code chat session logs for recurring agent anti-patterns (hedging, stalling, skipping, false completions, preference-asking, dismissing) and produce a ranked report with frequency counts, example excerpts, and suggested guardrail rules. Use when user asks to "analyze sessions for anti-patterns", "find bad patterns in logs", "what anti-patterns am I seeing", "agent-guardrails analyze", or wants data-driven guardrail recommendations.
+description: Scan Claude Code chat session logs for recurring agent anti-patterns (hedging, stalling, skipping, false completions, preference-asking, dismissing, cosmetic, caveats, flagging) and produce a ranked report with frequency counts, example excerpts, and suggested guardrail rules. Use when user asks to "analyze sessions for anti-patterns", "find bad patterns in logs", "what anti-patterns am I seeing", "agent-guardrails analyze", or wants data-driven guardrail recommendations.
 disable-model-invocation: false
 ---
 
@@ -14,7 +14,7 @@ The canonical regex patterns live in the plugin's `rules/` directory — one `.m
 
 **Source of truth:** `${CLAUDE_PLUGIN_ROOT}/rules/no-*.md`
 
-Read each rule file's YAML frontmatter to extract the `name`, `pattern`, and `message` fields. The six categories are:
+Read each rule file's YAML frontmatter to extract the `name`, `pattern`, and `message` fields. The nine categories are:
 
 | # | Category | Rule file |
 |---|----------|-----------|
@@ -24,6 +24,9 @@ Read each rule file's YAML frontmatter to extract the `name`, `pattern`, and `me
 | 4 | False Completion | `no-false-completion.md` |
 | 5 | Skipping | `no-skipping.md` |
 | 6 | Dismissing | `no-dismissing.md` |
+| 7 | Cosmetic | `no-cosmetic.md` |
+| 8 | Caveats | `no-caveats.md` |
+| 9 | Flagging | `no-flagging.md` |
 
 Scan for ALL of them plus any novel patterns discovered during analysis.
 
@@ -45,7 +48,7 @@ Create a Python script at `/tmp/agent-guardrails-analyze.py` that:
 
 1. Reads each JSONL file
 2. Extracts assistant message text from `type: "assistant"` entries where `message.content[].type == "text"`
-3. Tests each message against ALL six anti-pattern regexes loaded from the `rules/` files (see table above)
+3. Tests each message against ALL nine anti-pattern regexes loaded from the `rules/` files (see table above)
 4. For each match, records:
    - Category name
    - The matched phrase

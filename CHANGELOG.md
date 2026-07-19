@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added agent-guardrails no-caveats and no-flagging rules — blocks non-actionable caveats and issues flagged instead of resolved (v3.5.0).
 - Added arc42 plugin for automated architecture documentation generation from codebases (CC BY-SA 4.0).
 - Added codebasescout plugin for ranked task mapping with per-task model recommendations.
 - Added terminator plugin for session-exit automation with tiered warnings and whendone notifications.
