@@ -1333,21 +1333,18 @@ plugins/
   │   │   ├── no-false-completion.md
   │   │   ├── no-skipping.md
   │   │   ├── no-dismissing.md
-  │   │   ├── no-echo-back.md
-  │   │   ├── no-robotic-comments.md
-  │   │   ├── no-over-explaining.md
-  │   │   ├── no-blind-edit.md
-  │   │   └── no-destructive-bash.md
+  │   │   ├── no-cosmetic.md
+  │   │   ├── no-caveats.md
+  │   │   └── no-flagging.md
   │   ├── templates/                   # Hook script templates
-  │   │   ├── stop-guardrails.sh       # Stop hook (9 output rules)
-  │   │   ├── pretooluse-edit-guardrail.sh   # PreToolUse: no-blind-edit
-  │   │   ├── posttooluse-read-tracker.sh    # PostToolUse: read tracking
-  │   │   └── pretooluse-bash-guardrail.sh   # PreToolUse: no-destructive-bash
+  │   │   └── stop-guardrails.sh       # Stop hook (9 output rules)
   │   └── skills/
   │       ├── analyze/
   │       │   └── SKILL.md            # Scan session logs for anti-patterns
   │       ├── install/
   │       │   └── SKILL.md            # Install curated or custom rules
+  │       ├── test/
+  │       │   └── SKILL.md            # Verify installed hook patterns
   │       └── update/
   │           └── SKILL.md            # Refine rules based on usage data
   ├── fixclaude/
