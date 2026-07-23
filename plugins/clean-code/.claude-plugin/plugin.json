@@ -1,0 +1,22 @@
+{
+  "name": "clean-code",
+  "version": "0.1.0",
+  "description": "Analyze source code against Robert C. Martin's Clean Code principles: Meaningful Names, Functions, Comments, Formatting, Objects & Data Structures, Error Handling, Boundaries, Unit Tests (F.I.R.S.T.), and Concurrency, plus the Chapter 17 Smells & Heuristics catalog. Reports structured, actionable findings rated HIGH / MEDIUM / LOW, each with a code location, the violated heuristic ID from the book, and a concrete refactoring step.",
+  "author": {
+    "name": "Florian Buetow",
+    "email": "2320560+florianbuetow@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "clean-code",
+    "uncle-bob",
+    "code-quality",
+    "code-review",
+    "code-smells",
+    "heuristics",
+    "naming",
+    "refactoring",
+    "readability",
+    "maintainability"
+  ]
+}
