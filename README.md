@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `29 plugins` and `117 skills` for Claude Code.
+A collection of `30 plugins` and `117 skills` for Claude Code.
 
 ## Quickstart
 
@@ -19,6 +19,7 @@ claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
 claude plugin install claudeignore
+claude plugin install clean-code
 claude plugin install codebasescout
 claude plugin install communicator
 claude plugin install context-research
@@ -59,6 +60,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
 | [claudeignore](#claudeignore) | Generate and maintain .claudeignore files - analyzes repo structure to exclude caches and build artifacts from context |
+| [clean-code](#clean-code) | Clean Code analysis (Uncle Bob) - names, functions, comments, error handling, tests, and the Ch.17 heuristics catalog |
 | [codebasescout](#codebasescout) | Scout a codebase, rank findings by Impact x Opportunity, plan fixes, tag each task with a recommended model |
 | [communicator](#communicator) | Communication-style toolkit — tldr skill switches Claude into military-style BLUF mode: extreme brevity, conclusion last, bullets over prose |
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
@@ -353,6 +355,71 @@ Check all four categories at once or focus on one:
 Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue description, and a concrete simplification suggestion. Ask Claude to "fix this" or "simplify it" after an audit to get simplified code.
 
 **Languages:** Any language - Python, Java, TypeScript, C#, C++, Kotlin, Go, Rust. The analysis adapts to each language's idioms. Essential complexity (inherent to the problem domain) is not flagged - only accidental complexity introduced by our choices.
+
+---
+
+## clean-code
+
+Code-level cleanliness analysis for Claude Code, based on Robert C. Martin's *Clean Code*.
+
+`10 dimensions` · `9 chapters` · `Ch.17 heuristics catalog`
+
+> **Status: scaffolding.** The plugin manifest and marketplace entry are in place; the skill and its reference files are not written yet. Installing it today gives you nothing to run.
+
+SOLID tells you how to structure classes. This plugin works one level down - the code you actually read every day. Names that lie, functions that do four things, comments that apologise for bad code, error handling that returns null, tests that aren't fast or repeatable. These do not break the build, so nothing forces you to fix them; they just make every future change slower.
+
+The analysis reads the code and reports what to change - it never modifies anything.
+
+| Dimension | Chapter | Focus |
+|-----------|---------|-------|
+| **Meaningful Names** | 2 | Intention-revealing names, disinformation, noise words, searchable and pronounceable names |
+| **Functions** | 3 | Small, one thing, one level of abstraction, argument count, flag arguments, side effects, command-query separation |
+| **Comments** | 4 | Comments that compensate for bad code, redundant, misleading, commented-out code, mandated noise |
+| **Formatting** | 5 | Vertical distance and density, conceptual affinity, horizontal alignment, team consistency |
+| **Objects & Data Structures** | 6 | Data/object anti-symmetry, Law of Demeter, train wrecks, hybrids, data transfer objects |
+| **Error Handling** | 7 | Exceptions over return codes, no null returned or passed, context in exceptions, wrapping third-party APIs |
+| **Boundaries** | 8 | Encapsulating third-party interfaces, learning tests, code at the seams you do not control |
+| **Unit Tests** | 9 | F.I.R.S.T. (Fast, Independent, Repeatable, Self-validating, Timely), one assert per concept, test readability |
+| **Concurrency** | 13 | Shared data, synchronized scope, thread-unsafe libraries, execution models, testing threaded code |
+| **Smells & Heuristics** | 17 | The 66 numbered heuristics - G1-G36 (general), N1-N7 (names), C1-C5 (comments), E1-E2 (environment), F1-F4 (functions), T1-T9 (tests) |
+
+Chapters 10-12 (Classes, Systems, Emergent Design) are deliberately out of scope - they are covered by [solid-principles](#solid-principles), [archibald](#archibald), and [K.I.S.S.](#kiss).
+
+### Output
+
+Every finding is structured and actionable - never a vague "this could be cleaner":
+
+| Field | Content |
+|-------|---------|
+| **Severity** | `HIGH` / `MEDIUM` / `LOW` |
+| **Location** | File, symbol, line range |
+| **Heuristic** | The book's own identifier (e.g. `G30: Functions Should Do One Thing`, `N4: Use Domain Names`) |
+| **Issue** | What is wrong and why it costs you |
+| **Fix** | A concrete refactoring step, not a principle restatement |
+
+Severity reflects the cost of leaving it alone: `HIGH` for things that actively mislead readers or hide bugs (names that lie, swallowed exceptions, returned nulls), `MEDIUM` for friction that compounds (long functions, train wrecks, mixed abstraction levels), `LOW` for polish (formatting, redundant comments).
+
+### How to Use
+
+Audit all ten dimensions at once or focus on one:
+
+| Command | What it checks |
+|---------|---------------|
+| `cleancode` / `cleancode all` | All ten dimensions |
+| `cleancode names` | Meaningful Names only |
+| `cleancode functions` | Functions only |
+| `cleancode comments` | Comments only |
+| `cleancode formatting` | Formatting only |
+| `cleancode objects` | Objects & Data Structures only |
+| `cleancode errors` | Error Handling only |
+| `cleancode boundaries` | Boundaries only |
+| `cleancode tests` | Unit Tests only |
+| `cleancode concurrency` | Concurrency only |
+| `cleancode heuristics` | Ch.17 Smells & Heuristics catalog only |
+
+**Trigger** - Ask Claude to check clean code compliance, review naming, find code smells, audit function length or error handling, or mention a dimension by name ("are these names clear?", "check my error handling", "is this function doing too much?").
+
+**Languages:** Any language - Python, Java, TypeScript, C#, C++, Kotlin, Go, Rust. The heuristics are applied to each language's idioms rather than transliterated from the book's Java examples.
 
 ---
 
@@ -1191,6 +1258,24 @@ plugins/
   │               ├── abstraction.md  # Over-abstraction patterns
   │               ├── redundancy.md   # Redundancy patterns
   │               └── architecture.md # Architecture complexity patterns
+  ├── clean-code/                     # Scaffolding — skill not yet written
+  │   ├── .claude-plugin/
+  │   │   └── plugin.json             # Plugin manifest
+  │   ├── LICENSE
+  │   └── skills/
+  │       └── clean-code/
+  │           ├── SKILL.md            # Skill definition & workflow (planned)
+  │           └── references/         # Planned, one file per dimension:
+  │               ├── naming.md       # Meaningful Names (ch.2)
+  │               ├── functions.md    # Functions (ch.3)
+  │               ├── comments.md     # Comments (ch.4)
+  │               ├── formatting.md   # Formatting (ch.5)
+  │               ├── objects-data.md # Objects & Data Structures (ch.6)
+  │               ├── error-handling.md # Error Handling (ch.7)
+  │               ├── boundaries.md   # Boundaries (ch.8)
+  │               ├── unit-tests.md   # Unit Tests, F.I.R.S.T. (ch.9)
+  │               ├── concurrency.md  # Concurrency (ch.13)
+  │               └── heuristics.md   # Smells & Heuristics catalog (ch.17)
   ├── appsec/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
