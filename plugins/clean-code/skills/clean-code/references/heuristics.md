@@ -81,9 +81,9 @@ A finding's dimension is decided by the smallest edit that resolves it (see
 
 **Frequently applicable, easily confused:**
 
-- **G5 Duplication** — the same knowledge expressed twice. Note that broad
-  system-level DRY analysis belongs to `beyond-solid-principles`; cite G5 here
-  only for local duplication whose fix is a local extraction.
+- **G5 Duplication** — the same knowledge expressed twice. Cite G5 only for
+  local duplication whose fix is a local extraction; broad system-level DRY
+  analysis is outside this skill's scope.
 - **G20 vs N1** — G20 is specifically a function name that does not describe
   what the function does. N1 is the general "choose descriptive names". Prefer
   G20 for functions and methods; it is the more precise citation.

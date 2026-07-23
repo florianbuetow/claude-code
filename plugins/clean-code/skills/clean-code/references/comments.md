@@ -81,8 +81,8 @@ it accumulates forever and misleads every reader about what the module does.
 **Look for:** `////////// SECTION //////////`; `// end of loop`; `} // end if`.
 
 **Fix:** delete. If a file needs section banners to be navigable, the real
-finding is that the file should be split — which is an `archibald` concern, so
-defer it rather than analysing it here.
+problem is module structure — an architecture concern outside this skill's
+scope; note it under Out of scope rather than analysing it here.
 
 **Reference:** `Ch.4: Banner Comments`, `Ch.4: Position Markers`, or
 `G12: Clutter`.

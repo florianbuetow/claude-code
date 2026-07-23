@@ -16,10 +16,6 @@ This is the least mechanical dimension. Whether a wrapper is warranted depends
 on the client, the dependency, and how likely it is to change — so the bar for
 reporting is higher here than anywhere else.
 
-> **Evaluation note:** this dimension has no automated test coverage in the
-> plugin's evaluation corpus (there is no public source of paired boundary
-> examples). Its findings have not been measured. Weight them accordingly.
-
 **Owns this dimension:** findings whose fix *adds or changes a seam* — a
 wrapper, adapter, interface, or learning test around something external. If the
 fix is only renaming the wrapper it is `naming`; if it is only restructuring the
@@ -107,6 +103,7 @@ sounds prudent. It usually is not:
 - **Framework integration points.** Controllers *should* know the web framework;
   repositories *should* know the ORM. That is their job.
 - **Speculative wrapping.** "You might want to swap this out" with no evidence
-  the swap is plausible is `kiss` territory — speculative generality. Defer.
+  the swap is plausible is speculative generality — a system-level concern
+  outside this skill's scope. Note it under Out of scope if it dominates.
 - **Generated clients** from OpenAPI or protobuf, which are already a
   regenerable seam.

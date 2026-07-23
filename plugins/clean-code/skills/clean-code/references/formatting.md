@@ -69,8 +69,10 @@ mix of grouped and ungrouped; unused imports left behind.
 **Fix:** adopt the project's convention; delete unused.
 
 **Reference:** `G24: Follow Standard Conventions`, or `G12: Clutter`.
-**Severity:** LOW. Skip entirely if the project has an import-sorting tool —
-it is that tool's job.
+**Severity:** LOW. Skip only when the project *visibly* has an import-sorting
+tool (a formatter config, lint rule, or consistently machine-sorted imports
+elsewhere) — then it is that tool's job. Absent such evidence, disordered
+imports are a reportable LOW finding, not "left to tooling".
 
 ### 6. Inconsistency with the file's own conventions
 **Look for:** one method braced differently from every other; a single
@@ -98,5 +100,6 @@ Formatting is the easiest dimension to become annoying in. The bar is high:
   significant indentation, Lisp's trailing parens.
 - **Long lines containing a URL, a regex, a hash, or a long string literal** —
   breaking them makes them worse.
-- **File length.** "This file is too long" is an `archibald` concern about module
-  structure. Defer it rather than filing it here.
+- **File length.** "This file is too long" is a module-structure concern
+  outside this skill's scope. Note it under Out of scope rather than filing it
+  here.

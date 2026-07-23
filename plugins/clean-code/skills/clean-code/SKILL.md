@@ -22,18 +22,18 @@ This never modifies code. It reports findings; the user decides what to act on.
 
 ## What this skill is not
 
-SOLID tells you how to structure classes. This works one level down. Three
-concerns are **out of scope** and belong to sibling plugins — defer to them
-explicitly rather than reporting on them:
+SOLID tells you how to structure classes. This works one level down — the
+code inside them. Three concerns are **out of scope**, corresponding to the
+book's chapters 10-12, and are not analyzed here:
 
-| Concern | Defer to |
-|---------|----------|
-| Class responsibility, inheritance, interface design, dependency inversion | `solid-principles` |
-| Package/module architecture, dependency structure, architectural smells | `archibald` |
-| System-level over-engineering, speculative generality, accidental complexity | `kiss` |
+- Class responsibility, inheritance, interface design, dependency inversion
+- Package/module architecture, dependency structure, architectural smells
+- System-level over-engineering and speculative generality
 
-Deferral is a valid, useful outcome. Saying "this is a God Class — run
-`archibald`" is better than staying silent and better than analyzing it here.
+When target code's dominant problem is one of these, say so in one line under
+**Out of scope** in the summary — naming the concern, not analyzing it — and
+report only the code-level findings this skill owns. Noting an out-of-scope
+concern is a valid, useful outcome; analyzing it here is not.
 
 ## The nine dimensions
 
@@ -149,7 +149,10 @@ Before reporting, each candidate must clear all four:
 3. **Can you name the edit?** If you cannot state the specific change, you do
    not understand the problem well enough to report it.
 4. **Does it survive context?** A 30-line script, a test fixture, generated
-   code, and a vendored file are not held to production-module standards.
+   code, and a vendored file are not held to production-module standards. Code
+   elided with placeholder markers (`// ...`, `# ...`, a bare `...`) is a
+   fragment: never report on what the elision hides — a test body of `// ...`
+   is an elided example, not a test without assertions.
 
 Code that is clean enough gets no finding. Reporting "no significant findings"
 is a valid and frequently correct result.
@@ -166,17 +169,30 @@ Issue:     What is wrong and what it costs the reader or the next change.
 Fix:       The specific edit. Not a restatement of the principle.
 ```
 
-**The Reference field is governed by a hard rule.** See
-`references/heuristics.md`:
+**The Reference field is governed by a hard rule.** Every reference is a
+**verbatim quote from `references/heuristics.md`** — that file is the closed
+vocabulary, and there are exactly two legal forms:
 
-- Use a real Chapter 17 code **only if it appears in the registry** — `G30`,
-  `N5`, `C1`, `F3`, `T5`.
-- If the registry has no code for the violation, cite the governing chapter rule
-  in the form `Ch.N: <rule name>` — `Ch.7: Don't Ignore Caught Errors`.
-- **Never invent a code.** `G47` does not exist, and a fabricated code is
-  indistinguishable from a real one to the reader. If you cannot ground the
-  finding in either a registry code or a named chapter rule, that is a signal
-  the finding is not solid — drop it.
+1. A registry code with its rule name, exactly as the registry's tables give
+   them: `G30: Functions Should Do One Thing`, `N5: Use Long Names for Long
+   Scopes`.
+2. A canonical chapter rule, exactly as the registry's fallback list gives it:
+   `Ch.7: Don't Ignore Caught Errors`, `Ch.9: F.I.R.S.T.`.
+
+Copy the entry character-for-character. Do not paraphrase a rule name, do not
+merge two rules, and do not append qualifiers — `Ch.9: F.I.R.S.T.
+(Self-validating)` is **invalid** because the parenthetical is not in the
+registry; the finding's Issue text is the place to say which letter is
+violated.
+
+**Never invent a code or a rule name.** `G47` does not exist, and neither does
+any chapter rule you cannot point to in the registry. A fabricated reference is
+indistinguishable from a real one to the reader, which makes it worse than no
+reference. If no registry entry fits, that is a signal the finding is not
+solid — drop it.
+
+Before emitting a report, re-check every Reference against the registry file.
+One unverifiable reference invalidates trust in all of them.
 
 **Fix quality.** "Consider making this function do one thing" is a restatement,
 not a fix. "Extract lines 12-19 into `isEligibleForShipping(order)` and call it
@@ -202,8 +218,8 @@ After the findings:
 
 - **Count table**: `| Dimension | HIGH | MEDIUM | LOW |`
 - **Top 3**: which to fix first, and why those.
-- **Deferred**: anything belonging to `solid-principles`, `archibald` or `kiss`,
-  named in one line each.
+- **Out of scope**: any class-design, architecture, or system-complexity
+  concern noticed along the way, named in one line each — not analyzed.
 
 On a large target, rank by severity and cap the report at the ~15 findings that
 matter most, stating how many were omitted. An unranked wall of 200 findings is
