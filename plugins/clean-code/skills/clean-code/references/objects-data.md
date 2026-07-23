@@ -85,7 +85,8 @@ about its data implemented in services around it.
 
 **Fix:** pull the behavior in — but check scope first. If the finding is really
 "this class has no reason to exist" or "responsibilities are spread across the
-wrong classes", that is `solid-principles` (SRP) territory; defer it.
+wrong classes", that is class-responsibility design, outside this skill's
+scope; note it under Out of scope instead.
 
 **Reference:** `Ch.6: Data/Object Anti-Symmetry`.
 **Severity:** LOW to MEDIUM.
@@ -104,5 +105,6 @@ wrong classes", that is `solid-principles` (SRP) territory; defer it.
   protect; a public `final` field is fine.
 - **Language idiom.** Python properties, Kotlin data classes, Go's exported
   struct fields, and C# auto-properties are all normal.
-- **Class-responsibility problems.** "This class does too much" is
-  `solid-principles`. Defer, do not analyse.
+- **Class-responsibility problems.** "This class does too much" is class
+  design, outside this skill's scope. Note it under Out of scope, do not
+  analyse.
