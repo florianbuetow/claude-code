@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `30 plugins` and `117 skills` for Claude Code.
+A collection of `30 plugins` and `120 skills` for Claude Code.
 
 ## Quickstart
 
@@ -363,8 +363,6 @@ Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue 
 Code-level cleanliness analysis for Claude Code, based on Robert C. Martin's *Clean Code*.
 
 `9 dimensions` · `9 chapters` · `Ch.17 citation registry`
-
-> **Status: scaffolding.** The plugin manifest and marketplace entry are in place; the skill and its reference files are not written yet. Installing it today gives you nothing to run.
 
 SOLID tells you how to structure classes. This plugin works one level down - the code you actually read every day. Names that lie, functions that do four things, comments that apologise for bad code, error handling that returns null, tests that aren't fast or repeatable. These do not break the build, so nothing forces you to fix them; they just make every future change slower.
 
@@ -1262,14 +1260,14 @@ plugins/
   │               ├── abstraction.md  # Over-abstraction patterns
   │               ├── redundancy.md   # Redundancy patterns
   │               └── architecture.md # Architecture complexity patterns
-  ├── clean-code/                     # Scaffolding — skill not yet written
+  ├── clean-code/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
   │   ├── LICENSE
   │   └── skills/
   │       └── clean-code/
-  │           ├── SKILL.md            # Skill definition & workflow (planned)
-  │           └── references/         # Planned, one file per dimension + registry:
+  │           ├── SKILL.md            # Skill definition, routing rule & workflow
+  │           └── references/         # One file per dimension + citation registry:
   │               ├── naming.md       # Meaningful Names (ch.2)
   │               ├── functions.md    # Functions (ch.3)
   │               ├── comments.md     # Comments (ch.4)
