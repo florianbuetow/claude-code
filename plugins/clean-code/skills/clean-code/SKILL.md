@@ -159,15 +159,21 @@ is a valid and frequently correct result.
 
 ### 4. Report
 
+The report is structured text, never JSON. Two parts: one block per finding,
+then a summary with tables.
+
 Every finding carries exactly five fields:
 
 ```
-**[DIMENSION] — Severity: HIGH | MEDIUM | LOW**
+**[DIMENSION] Violation — Severity: HIGH | MEDIUM | LOW**
 Location:  `path/file.ext`, symbol `name`, lines ~XX-YY
 Reference: G30: Functions Should Do One Thing
 Issue:     What is wrong and what it costs the reader or the next change.
 Fix:       The specific edit. Not a restatement of the principle.
 ```
+
+When there are no findings, write exactly `No significant findings.` followed
+by the summary.
 
 **The Reference field is governed by a hard rule.** Every reference is a
 **verbatim quote from `references/heuristics.md`** — that file is the closed
@@ -214,10 +220,21 @@ information. Re-check against cost of inaction.
 
 ### Summary
 
-After the findings:
+After the findings, in this order:
 
-- **Count table**: `| Dimension | HIGH | MEDIUM | LOW |`
+- **Findings table** — one row per reported finding, so the whole result scans
+  at a glance:
+
+  ```
+  | # | Dimension | Severity | Location | Reference |
+  |---|-----------|----------|----------|-----------|
+  | 1 | functions | HIGH     | `file.ts`, `downloadPage()` | G30: Functions Should Do One Thing |
+  ```
+
+- **Count table**: `| Dimension | HIGH | MEDIUM | LOW |` — only dimensions that
+  were analyzed.
 - **Top 3**: which to fix first, and why those.
+- **Overall assessment**: one paragraph on the code's cleanliness health.
 - **Out of scope**: any class-design, architecture, or system-complexity
   concern noticed along the way, named in one line each — not analyzed.
 
