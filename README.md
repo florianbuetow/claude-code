@@ -60,7 +60,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
 | [claudeignore](#claudeignore) | Generate and maintain .claudeignore files - analyzes repo structure to exclude caches and build artifacts from context |
-| [clean-code](#clean-code) | Clean Code analysis (Uncle Bob) - names, functions, comments, error handling, tests, and the Ch.17 heuristics catalog |
+| [clean-code](#clean-code) | Clean Code analysis (Uncle Bob) - nine dimensions from names to concurrency, findings cited to Ch.17 heuristic codes |
 | [codebasescout](#codebasescout) | Scout a codebase, rank findings by Impact x Opportunity, plan fixes, tag each task with a recommended model |
 | [communicator](#communicator) | Communication-style toolkit — tldr skill switches Claude into military-style BLUF mode: extreme brevity, conclusion last, bullets over prose |
 | [context-research](#context-research) | Autonomous AI research pipeline - discovers, ranks, and synthesizes SOTA papers via Hugging Face & ArXiv |
@@ -362,7 +362,7 @@ Each violation is reported with severity (HIGH / MEDIUM / LOW), location, issue 
 
 Code-level cleanliness analysis for Claude Code, based on Robert C. Martin's *Clean Code*.
 
-`10 dimensions` · `9 chapters` · `Ch.17 heuristics catalog`
+`9 dimensions` · `9 chapters` · `Ch.17 citation registry`
 
 > **Status: scaffolding.** The plugin manifest and marketplace entry are in place; the skill and its reference files are not written yet. Installing it today gives you nothing to run.
 
@@ -381,7 +381,10 @@ The analysis reads the code and reports what to change - it never modifies anyth
 | **Boundaries** | 8 | Encapsulating third-party interfaces, learning tests, code at the seams you do not control |
 | **Unit Tests** | 9 | F.I.R.S.T. (Fast, Independent, Repeatable, Self-validating, Timely), one assert per concept, test readability |
 | **Concurrency** | 13 | Shared data, synchronized scope, thread-unsafe libraries, execution models, testing threaded code |
-| **Smells & Heuristics** | 17 | The 66 numbered heuristics - G1-G36 (general), N1-N7 (names), C1-C5 (comments), E1-E2 (environment), F1-F4 (functions), T1-T9 (tests) |
+
+Chapter 17's 66 numbered heuristics - G1-G36 (general), N1-N7 (names), C1-C5 (comments), E1-E2 (environment), F1-F4 (functions), T1-T9 (tests) - are **not** a tenth dimension. They are a citation registry that annotates findings in any of the nine. A finding's dimension and its heuristic family are different axes: inconsistent capitalization is a `naming` finding citing `G11 Inconsistency`, a *general* heuristic.
+
+Findings route by **the smallest concrete refactoring edit that resolves them**, never by which chapter discusses them. A function whose name misleads is `naming` - the sufficient fix is a rename. A function whose body does three things is `functions`. Two independent edits produce two findings.
 
 Chapters 10-12 (Classes, Systems, Emergent Design) are deliberately out of scope - they are covered by [solid-principles](#solid-principles), [archibald](#archibald), and [K.I.S.S.](#kiss).
 
@@ -393,7 +396,7 @@ Every finding is structured and actionable - never a vague "this could be cleane
 |-------|---------|
 | **Severity** | `HIGH` / `MEDIUM` / `LOW` |
 | **Location** | File, symbol, line range |
-| **Heuristic** | The book's own identifier (e.g. `G30: Functions Should Do One Thing`, `N4: Use Domain Names`) |
+| **Book reference** | A real Ch.17 code where the catalog defines one (`G30: Functions Should Do One Thing`), otherwise the governing chapter rule (`Ch.7: Don't Ignore Caught Errors`). Never a synthesised identifier |
 | **Issue** | What is wrong and why it costs you |
 | **Fix** | A concrete refactoring step, not a principle restatement |
 
@@ -401,11 +404,11 @@ Severity reflects the cost of leaving it alone: `HIGH` for things that actively 
 
 ### How to Use
 
-Audit all ten dimensions at once or focus on one:
+Audit all nine dimensions at once or focus on one:
 
 | Command | What it checks |
 |---------|---------------|
-| `cleancode` / `cleancode all` | All ten dimensions |
+| `cleancode` / `cleancode all` | All nine dimensions |
 | `cleancode names` | Meaningful Names only |
 | `cleancode functions` | Functions only |
 | `cleancode comments` | Comments only |
@@ -415,7 +418,8 @@ Audit all ten dimensions at once or focus on one:
 | `cleancode boundaries` | Boundaries only |
 | `cleancode tests` | Unit Tests only |
 | `cleancode concurrency` | Concurrency only |
-| `cleancode heuristics` | Ch.17 Smells & Heuristics catalog only |
+
+A narrow subcommand is a filter: `cleancode functions` will not report a rename-only naming finding, while `cleancode all` will. Chapter 17 has no subcommand of its own - its codes annotate findings on every route.
 
 **Trigger** - Ask Claude to check clean code compliance, review naming, find code smells, audit function length or error handling, or mention a dimension by name ("are these names clear?", "check my error handling", "is this function doing too much?").
 
@@ -1265,7 +1269,7 @@ plugins/
   │   └── skills/
   │       └── clean-code/
   │           ├── SKILL.md            # Skill definition & workflow (planned)
-  │           └── references/         # Planned, one file per dimension:
+  │           └── references/         # Planned, one file per dimension + registry:
   │               ├── naming.md       # Meaningful Names (ch.2)
   │               ├── functions.md    # Functions (ch.3)
   │               ├── comments.md     # Comments (ch.4)
@@ -1275,7 +1279,7 @@ plugins/
   │               ├── boundaries.md   # Boundaries (ch.8)
   │               ├── unit-tests.md   # Unit Tests, F.I.R.S.T. (ch.9)
   │               ├── concurrency.md  # Concurrency (ch.13)
-  │               └── heuristics.md   # Smells & Heuristics catalog (ch.17)
+  │               └── heuristics.md   # Ch.17 citation registry (shared, not a route)
   ├── appsec/
   │   ├── .claude-plugin/
   │   │   └── plugin.json             # Plugin manifest
