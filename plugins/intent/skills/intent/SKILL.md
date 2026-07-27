@@ -1,6 +1,6 @@
 ---
 name: intent
-version: 0.1.0
+version: 0.2.0
 description: >
   Use whenever you feel stuck, hit ambiguity, need to make a decision, or are
   about to ask the user a clarifying question. Runs an intent-based
@@ -99,6 +99,8 @@ Produce an internal intent statement in this form:
 
 If the evidence supports multiple plausible intents, retain the alternatives and compare them rather than choosing arbitrarily.
 
+If the evidence supports no intent at all - every source above is silent on what the task is for - do not manufacture one. A confident-sounding but unsupported intent statement is worse than admitting the gap; treat it as a trigger for the **Escape Hatch** below.
+
 ---
 
 ## Step 2: Answer Your Own Questions
@@ -189,6 +191,30 @@ When clarification is necessary, ask the smallest question that resolves the dec
 
 ---
 
+## Escape Hatch: When Intent Cannot Be Inferred
+
+Steps 1 and 2 assume the evidence eventually yields either an intent or a safe default. Sometimes it does not. When inference genuinely bottoms out, this procedure must stop - not quietly invent an answer to keep moving.
+
+### When the escape hatch fires
+
+Invoke it when **both** of these hold for a material question:
+
+1. **Intent cannot be recovered.** Every valid source in Step 1 is silent on the point - no prompt guidance, no project goal or spec, no plan, no prior correction, and no precedent in the codebase for a similar problem.
+2. **No safe default can be derived.** The question-resolution tests in Step 2 have no inputs to run on - no established risk profile to weigh the Risk test, no convention or precedent to anchor the Consistency test - so any choice would be arbitrary rather than reasoned.
+
+A single unanswerable-but-immaterial question is not an escape-hatch case: apply the Relevance and Counterfactual tests and move on. The escape hatch is for a question that is material *and* ungrounded.
+
+### What to do when it fires
+
+1. **Stop. Do not fabricate.** Do not present an ungrounded guess as an inference, and do not invent a default to preserve momentum. Distinguish "I inferred X, and here is the evidence" from "I cannot infer this, and here is why."
+2. **Escalate the specific gap, not a vague question.** Tell the user, in order: the decision that is blocked; which sources you checked and why each was silent (no risk profile, no precedent, no plan); the candidate options you can see; and the concrete consequence of each, so the choice is cheap for the user to make.
+3. **Ask the smallest question that unblocks it** - a single decision, not an open-ended request for requirements.
+4. **If you are forced to proceed without an answer** - the user is unavailable and the work cannot wait - choose the most reversible option, mark it explicitly as an unvalidated assumption, keep its blast radius small, and surface it prominently in the result rather than burying it.
+
+The escape hatch is the counterweight to Step 2's bias toward answering your own questions: that bias is correct only while the evidence supports an answer. When it does not, silence is a finding - report it.
+
+---
+
 ## Step 3: Make Intent-Aligned Decisions
 
 Use the inferred intent and resolved questions as the decision policy for completing the task.
@@ -250,4 +276,4 @@ When stuck or tempted to ask the user a question:
 
 > Return to the original evidence, infer the intent explicitly, use that intent to answer all low-risk questions yourself, and make decisions that maximise progress toward the intended outcome while respecting the user's constraints.
 
-Ask the user only when the ambiguity is material, cannot be resolved from context, and would make proceeding unreliable.
+Ask the user only when the ambiguity is material, cannot be resolved from context, and would make proceeding unreliable. And when neither the intent nor a safe default can be inferred at all, invoke the **Escape Hatch**: stop, name the gap, and escalate rather than fabricating an answer.
