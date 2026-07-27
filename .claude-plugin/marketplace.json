@@ -335,6 +335,17 @@
       },
       "source": "./plugins/clean-code",
       "category": "development"
+    },
+    {
+      "name": "intent",
+      "description": "Intent-based task resolution. When stuck, facing ambiguity, or about to ask a clarifying question, first recover the task's underlying intent from available context - the latest prompt, earlier prompts, project goals, plans, and prior corrections - then answer low-risk questions from that intent and make intent-aligned decisions. Escalate to the user only when the ambiguity is material, cannot be resolved from context, and would make proceeding unreliable.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/intent",
+      "category": "development"
     }
   ]
 }
