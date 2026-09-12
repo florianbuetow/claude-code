@@ -48,6 +48,7 @@ help:
     @echo ""
     @printf "\033[0;33mSetup & Lifecycle:\033[0m\n"
     @printf "  %-38s %s\n" "install" "Add marketplace and install all plugins"
+    @printf "  %-38s %s\n" "install <plugin>" "Add marketplace and install one plugin by name"
     @printf "  %-38s %s\n" "uninstall <plugin>" "Uninstall a plugin by name"
     @printf "  %-38s %s\n" "update" "Update marketplace and all installed plugins"
     @printf "  %-38s %s\n" "push" "Push to remote, update plugins, and verify versions"
@@ -58,19 +59,31 @@ help:
     @printf "  %-38s %s\n" "validate" "Validate plugin and marketplace manifests"
     @echo ""
 
-# Add marketplace and install all plugins
-install:
+# Add marketplace and install all plugins, or one plugin by name
+install plugin="":
     #!/usr/bin/env bash
     set -e
     echo ""
     printf "\033[0;34m=== Installing Marketplace & Plugins ===\033[0m\n"
     echo ""
+    if [ -n "{{plugin}}" ]; then
+        if ! jq -e --arg p "{{plugin}}" 'any(.plugins[]; .name == $p)' .claude-plugin/marketplace.json >/dev/null; then
+            printf "\033[31m✗ Install failed: %s is not in the marketplace manifest\033[0m\n" "{{plugin}}"
+            echo ""
+            exit 1
+        fi
+        plugin_names="{{plugin}}"
+        target_label="{{plugin}}"
+    else
+        plugin_names=$(jq -r '.plugins[].name' .claude-plugin/marketplace.json)
+        target_label="all plugins"
+    fi
     printf "Adding marketplace {{marketplace_source}}...\n"
     claude plugin marketplace add {{marketplace_source}} 2>&1
     echo ""
-    printf "Installing plugins...\n"
+    printf "Installing %s...\n" "$target_label"
     installed_list=$(claude plugin list 2>&1)
-    for plugin in $(jq -r '.plugins[].name' .claude-plugin/marketplace.json); do
+    for plugin in $plugin_names; do
         if echo "$installed_list" | grep -q "❯ ${plugin}@{{marketplace_name}}"; then
             printf "  Skipping %s (already installed)\n" "$plugin"
         else
