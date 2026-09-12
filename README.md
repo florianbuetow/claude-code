@@ -26,8 +26,10 @@ claude plugin install context-research
 claude plugin install diagrams
 claude plugin install explain-system-tradeoffs
 claude plugin install fixclaude
+claude plugin install gitignore
 claude plugin install guard
 claude plugin install handoff
+claude plugin install intent
 claude plugin install iso27001-sdlc
 claude plugin install kiss
 claude plugin install logbook
@@ -142,11 +144,11 @@ claude --plugin-dir ./plugins/<plugin-name>
 If you have [just](https://github.com/casey/just) installed, you can manage the marketplace and plugins with:
 
 ```bash
-just install            # Add marketplace and install all plugins
-just install gitignore  # Add marketplace and install one plugin by name
-just update             # Update marketplace and all installed plugins
-just status             # Show installed vs repo plugin versions
-just validate           # Validate plugin and marketplace manifests
+just install                # Add marketplace and install all plugins
+just install <plugin-name>  # Add marketplace and install one plugin by name
+just update                 # Update marketplace and all installed plugins
+just status                 # Show installed vs repo plugin versions
+just validate               # Validate plugin and marketplace manifests
 ```
 
 ### Using with Codex (OpenAI)
