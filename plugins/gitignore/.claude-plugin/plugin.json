@@ -1,0 +1,16 @@
+{
+  "name": "gitignore",
+  "version": "0.1.0",
+  "description": "Create and maintain .gitignore files from a curated, conservative template library. Adds user-specified entries by default, or composes OS-specific (macOS, Windows, Linux) and language-specific (Node.js, Python, Java, Kotlin, C, Go, Elixir) sections without hiding lockfiles, manifests, or other legitimately versioned files.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "gitignore",
+    "git",
+    "templates",
+    "repository",
+    "configuration"
+  ]
+}

@@ -1,0 +1,29 @@
+# JVM bytecode
+*.class
+
+# JVM crash/replay logs
+hs_err_pid*
+replay_pid*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Gradle local state
+.gradle/
+
+# Gradle build output, including multi-module projects
+**/build/
+!**/src/**/build/
+
+# Gradle wrapper must remain versioned. Defensive: nothing above excludes
+# it, so these only bite if a project later adds *.jar in another section.
+!**/gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.properties

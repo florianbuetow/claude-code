@@ -1,0 +1,50 @@
+# Installed dependencies
+node_modules/
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Package-manager caches
+.npm/
+.pnpm-store/
+
+# Yarn Plug'n'Play
+.pnp.*
+
+# Yarn modern project cache/state.
+# Keep repository-managed releases, plugins, patches, SDKs and version metadata.
+.yarn/*
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/sdks/
+!.yarn/versions/
+
+# Tool caches
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.vite/
+
+# Node REPL history
+.node_repl_history
+
+# Package-manager debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Node diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Local environment files
+.env
+.env.*
+!.env.example
+!.env.template

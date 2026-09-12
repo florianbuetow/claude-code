@@ -1,0 +1,27 @@
+# Mix build output
+/_build/
+
+# Downloaded dependencies
+/deps/
+
+# Coverage output
+/cover/
+
+# Generated documentation
+/doc/
+
+# Mix fetch marker
+/.fetch
+
+# Erlang VM crash dump
+erl_crash.dump
+
+# Erlang/Elixir compiled/package artifacts
+*.beam
+*.ez
+
+# Local secret configuration
+/config/*.secret.exs
+
+# ElixirLS generated state
+.elixir_ls/

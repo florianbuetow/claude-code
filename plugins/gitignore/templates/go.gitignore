@@ -1,0 +1,21 @@
+# Platform-specific compiled libraries/binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries produced by `go test -c`
+*.test
+
+# Coverage / profiling artifacts
+*.out
+*.coverprofile
+coverage.*
+profile.cov
+
+# Local environment files
+.env
+.env.*
+!.env.example
+!.env.template

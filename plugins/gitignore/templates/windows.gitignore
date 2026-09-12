@@ -1,0 +1,11 @@
+# Explorer thumbnail caches
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Explorer folder metadata
+[Dd]esktop.ini
+
+# Recycle Bin on drives / file shares
+$RECYCLE.BIN/

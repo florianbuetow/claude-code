@@ -1,0 +1,56 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging output
+/build/
+/dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Test / coverage output
+.pytest_cache/
+.tox/
+.nox/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+*.py.cover
+*.lcov
+
+# Virtual environments
+.venv/
+venv/
+
+# Type-checker / linter caches
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# PDM local interpreter/build state
+.pdm-python
+.pdm-build/
+
+# Pixi environment; preserve project configuration
+.pixi/*
+!.pixi/config.toml
+
+# Cython debug output
+cython_debug/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+!.env.template
