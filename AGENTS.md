@@ -38,6 +38,7 @@ If only `plugin.json` is bumped, `just update` becomes a no-op (marketplace stil
 ## Available Commands
 
 - `just install` — First-time setup: add marketplace and install all plugins
+- `just install <plugin>` — Add marketplace and install a single plugin by name
 - `just update` — Update marketplace and all installed plugins
 - `just status` — Show installed vs repo plugin versions (green = match, red = mismatch)
 - `just validate` — Validate plugin and marketplace manifests

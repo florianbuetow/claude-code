@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added gitignore plugin (v0.1.0) — curated OS and language templates, deduplicated into existing `.gitignore` files.
+- Added intent plugin (v0.2.0) — resolves ambiguity from context before escalating, with uninferable-intent escape hatch.
+- Added clean-code plugin (v0.2.2) — nine-dimension Clean Code audit with structured table reports.
 - Added agent-guardrails no-caveats and no-flagging rules — blocks non-actionable caveats and issues flagged instead of resolved (v3.5.0).
 - Added agent-guardrails no-cosmetic rule and stripped markdown formatting from feedback messages (v3.4.0).
 - Added arc42 plugin for automated architecture documentation generation from codebases (CC BY-SA 4.0).

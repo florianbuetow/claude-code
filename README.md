@@ -142,10 +142,11 @@ claude --plugin-dir ./plugins/<plugin-name>
 If you have [just](https://github.com/casey/just) installed, you can manage the marketplace and plugins with:
 
 ```bash
-just install   # Add marketplace and install all plugins
-just update    # Update marketplace and all installed plugins
-just status    # Show installed vs repo plugin versions
-just validate  # Validate plugin and marketplace manifests
+just install            # Add marketplace and install all plugins
+just install gitignore  # Add marketplace and install one plugin by name
+just update             # Update marketplace and all installed plugins
+just status             # Show installed vs repo plugin versions
+just validate           # Validate plugin and marketplace manifests
 ```
 
 ### Using with Codex (OpenAI)
