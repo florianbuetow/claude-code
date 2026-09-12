@@ -1,0 +1,15 @@
+# Temporary files retained by FUSE after an open file is deleted
+.fuse_hidden*
+
+# KDE Dolphin directory metadata
+.directory
+
+# Trash directories on mounted filesystems
+.Trash/
+.Trash-*/
+
+# NFS temporary files retained while a deleted file remains open
+.nfs*
+
+# Default output from nohup
+nohup.out
