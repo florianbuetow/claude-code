@@ -82,15 +82,15 @@ Everything here is **[T]** unless marked otherwise.
 
 **Three readers, in order.** Fail a gate and the next never happens.
 
-1. **The parser.** Layout that hides text loses the text.
-2. **The recruiter.** If the decision is not easy: "You're a slow maybe. Congratulations. You just got blocked at Step 2."
-3. **The engineering interviewer.** If a claim cannot be probed, the candidate is selling smoke.
+1. **The parser.** "If your layout hides the text, the parser loses it. You don't even get through Gate 1."
+2. **The recruiter.** "If the recruiter can't find the work fast, you're a slow maybe. Congratulations. You just got blocked at Step 2."
+3. **The engineering interviewer.** "If the interview can't probe a claim, you're selling smoke."
 
-**Vendor scorecards and ATS scores.** They "can help you check whether your résumé parses. They can't tell your interview odds at every company." **[J]** So this judge never emits one and never accepts one as evidence.
+**Vendor scorecards and ATS scores.** They "can help you check whether your résumé parses. They can't tell your interview odds at every company." **[J]** So this judge never emits one, and accepts one only as a parse check at Gate 1 — never as evidence of interview odds.
 
-**Skills carry no evidentiary weight.** The skills section is an *index*. The experience bullets are the *proof*. Nobody hiring a contractor asks whether they can use a hammer; they ask whether the last bathroom came in under budget, got the five-star review, and had no problems the following year. Kubernetes, Kafka, platform, React, Python — those are nouns, not accomplishments. If skills are listed at all they go at the bottom, once, and never as a wall repeated under each employer.
+**Skills.** "We don't care about your skills." The skills section is an *index*. The experience bullets are the *proof*. Nobody hiring a contractor asks whether they can use a hammer; they ask whether they have actually installed a bathroom before, whether it came in under budget, got the five-star review, and had no problems the following year. Kubernetes, Kafka, Terraform, React, Python — those are nouns, not accomplishments. "You want to put them on? Put them at the bottom. Take them off that skill wall at every employer. Put in your accomplishments." **[J]** This judge reads that as: skills carry no evidentiary weight, and appear once, at the bottom, if at all.
 
-**The evidence chain.** The transcript states it two ways — four parts for a bullet, five for a claim — and the five-part form is the complete one. A defensible claim names:
+**The evidence chain.** "The fix isn't a perfect template. It's an evidence chain." The transcript states the chain two ways — four parts for a bullet (the system, what you did, the constraint, what changed) and five for a claim (context, action, constraint, result, ownership). **[J]** This judge uses the five-part form, since it contains the four. The glosses in the right column are **[D][J]**:
 
 | Part | Question it answers |
 |---|---|
@@ -102,7 +102,7 @@ Everything here is **[T]** unless marked otherwise.
 
 **The five-minute rule.** If the candidate cannot explain every noun, verb, number, and acronym in five technical minutes, it comes off.
 
-**Résumé theatre**, to be named wherever found: tool logos, skill bars, hidden text, keywords copied from the posting, fake metrics, a skill wall under every employer.
+**Résumé theatre:** tool logos, skill bars, hidden text, keywords copied from the posting, fake metrics. **[J]** The judge names each wherever found. The skill wall under every employer is a separate fault (see Skills), not theatre.
 
 **Metrics.** "Use a real metric only if you can defend it. Otherwise, name the bounded outcome": *removed a manual handoff*, *reduced the failure class*, *made on-call diagnosis possible*, *enabled another team to ship*.
 
@@ -112,9 +112,9 @@ Everything here is **[T]** unless marked otherwise.
 
 **Two tests before applying.** Export to plain text and check it in a parser preview — reading order, name, contact, employers, dates, headings, bullets. Then the *hostile human test*: can you defend every claim?
 
-**Measure the funnel.** Track by version, role family, source, referral state, stage. Keep dated variants in an evidence log. One rejection is noise; a pattern is signal. Change one thing at a time.
+**Measure the funnel.** Track by version, role family, source, referral state, stage. Keep dated variants in an evidence log so you can see what changed. "One rejection is noise. A pattern is something taking a closer look at." "Change one thing at a time. Otherwise, you're guessing, then blaming a PDF for a hiring system nobody can see."
 
-**Scope limit.** A résumé cannot fix a bad market — arbitrary hiring, discrimination, location constraints, a role someone already has. It can only stop failing the handoff for avoidable reasons. And if there is no evidence chain yet, the font is not the problem.
+**Scope limit.** A résumé cannot fix a bad market — arbitrary hiring, discrimination, location constraints, a role someone already has. It can only stop failing the handoff for avoidable reasons. "Make it readable. Make it targeted. Make every claim defensible." **[J]** Readable is Gates 1 and 2; targeted is Step 8; defensible is Step 3. And if there is no evidence chain yet, the font is not the problem.
 
 **[D][J] One reconciliation.** The transcript tells the *candidate* to take unprobeable claims off. This judge's job is one step earlier: ask about them first, then advise the cut. An unverifiable claim is a question before it is a deletion.
 
@@ -132,7 +132,7 @@ Confirm you have:
 
 - **The résumé**, ideally as the original file *or* the candidate's own plain-text export. If you have only extracted text, say so — it changes what Gate 1 can do.
 - **The target role or role family.** If absent, ask for it and **stop**. Do not produce any Phase A output without it; it changes every downstream judgment.
-- **Application history**, if any — versions sent, roles, sources, outcomes. Optional; it only feeds Step 8.
+- **Application history**, if any — versions sent, roles, sources, referral state, stage reached. Optional; it feeds Step 8, the market question in Step 9, and the Track tier in Step 10.
 
 Then write down what evidence *this role* requires, before reading a single line, so you cannot rationalize backwards later. **[J] Never penalize a candidate for lacking evidence the role never required.**
 
@@ -146,17 +146,25 @@ What you can check depends on what you were given:
 
 **Never fabricate a pass/fail you could not observe.**
 
-Either way, inventory the theatre you can see: skill bars, logos, posting keywords, a skill wall per employer.
+If the candidate supplies a vendor scorecard or ATS parse report, use it here as a parse check and nowhere else.
+
+Either way, inventory the theatre you can see: tool logos, skill bars, hidden text, posting keywords, fake metrics — and, separately, a skill wall per employer.
 
 If Gate 1 fails, say so plainly and keep going — the candidate needs the rest of the diagnosis too.
 
-#### Step 2 — Gate 2: the recruiter [T]
+#### Step 2 — Gate 2: the recruiter [T][J]
 
-One question: **does this document make the next decision easy?** Name what, specifically, would make a recruiter file it as a slow maybe rather than a yes or a no.
+The transcript's test: **can the recruiter find the work fast?** If not, the candidate is a slow maybe. **[J]** Check it concretely:
+
+- What does a reader hit first — the work, or a blurb and a skill wall?
+- Can they name the role family and the strongest piece of evidence without hunting?
+- Is the most recent, most relevant experience where the eye lands, or buried below sections that prove nothing?
+
+Then name what, specifically, would make a recruiter file this as a slow maybe.
 
 #### Step 3 — Gate 3: every claim, one at a time [T][F][D][J]
 
-Take each claim-bearing line individually: the summary blurb, every experience bullet, every project entry. Never score the document as a whole in place of this — a single score hides which lines are the problem and is far noisier.
+Take each claim-bearing line individually: the summary blurb, every experience bullet, and **[J]** every project entry. Never score the document as a whole in place of this — a single score hides which lines are the problem and is far noisier.
 
 For each line, fill every slot in the Phase A format. A defensible line gets short entries, not skipped ones. In order:
 
@@ -207,7 +215,7 @@ Write a short, plain, first-person read. It is a prediction under a theory. Say 
 
 Run when answers arrive, or when the user says there will be none.
 
-#### Step 7 — Move the states [T][D]
+#### Step 7 — Move the states [D][J]
 
 For each answered question, the line moves to one of the same three states: *unverifiable → defensible*, *unverifiable → theatre* (the candidate could not stand behind it, or admits it was invented), or *still unverifiable* (the answer did not reach the missing thing). Say which answers changed your mind and which did not. Do not move a state on tone; move it on content.
 
@@ -215,13 +223,15 @@ If no answers came, every unverifiable line stays unverifiable and you say so. T
 
 #### Step 8 — Structure [T][J]
 
-- **Skills.** A wall under every employer? It goes to the bottom, once, as an index — accomplishments take the space. Skills contributed nothing to the read and you say so.
+- **Skills.** A wall under every employer? Take it off; skills go to the bottom, as an index — accomplishments take the space. Say that the skills section contributed nothing to the read.
 - **Role fit.** Does the evidence on the page match what the role from Step 0 needs? **[J]** Only if application history was supplied: was this one of a few coherent versions, or was the document rebuilt for the posting?
-- **Funnel.** Only if application history was supplied: are variants dated, is tracking by version / role family / source / referral state / stage, was one thing changed at a time? If not supplied, write *no history supplied — see Track* and put it in the fix list.
+- **Funnel.** Only if application history was supplied. First the hygiene: are variants dated, is tracking by version / role family / source / referral state / stage, was one thing changed at a time? Then **read the outcomes**: group them by version, role family, and source, and say whether what you see is one rejection (noise) or a pattern (signal) — and if a pattern, at which stage it breaks. If not supplied, write *no history supplied — see Track* and put it in the fix list.
 
-#### Step 9 — Decide [F][D]
+#### Step 9 — Decide [F][D][T]
 
 A recommendation stated as a prediction with its reasoning and its remaining unknowns. Not a verdict on the person's worth. Not a score. Name what would have to be true for the prediction to hold and what would show it wrong.
+
+**[T]** Then the market question, answered plainly: does the pattern in Step 8 — or the absence of one — look like the document, or like a bad market, arbitrary hiring, discrimination, a location constraint, or a role someone already had? The document can only fix the first.
 
 #### Step 10 — Fix the process, not just the document [D — cease dependence on inspection][T][J]
 
@@ -229,7 +239,7 @@ The fix list has four tiers, in this order:
 
 1. **Keep** — what is already defensible and must not be touched in the next rewrite.
 2. **Cut / rewrite** — theatre to remove; unverifiable lines to rewrite with the missing object named; undefendable metrics to replace with bounded outcomes.
-3. **Go find** — the artifacts that would supply the missing evidence: project notes, incident reports, design docs, launch reviews, dashboards. **[J]** And the standing habit: a win log, appended as the work finishes, not reconstructed at job-search time.
+3. **Go find** — the artifacts that would supply the missing evidence: project notes, incident reports, design docs, launch reviews, dashboards. **[T][J]** And the standing habit: a win log, appended as the work finishes, not reconstructed at job-search time.
 4. **Track** — dated variants in an evidence log; tracking by version, role family, source, referral state, stage; one change at a time. **[T]**
 
 Say the closing line only if it is true and only once: *if there is no evidence chain yet, the font is not the problem.*
@@ -282,7 +292,9 @@ GATE 1 — PARSER
   Theatre visible: <inventory, or none>
 
 GATE 2 — RECRUITER
-  Makes the next decision easy: yes | no
+  Can find the work fast: yes | no
+  What the reader hits first: <blurb / skill wall / the work>
+  Strongest evidence without hunting: <the line, or "not without hunting">
   What makes it a slow maybe: <specific, or none>
 
 GATE 3 — LINE BY LINE
@@ -324,10 +336,11 @@ RE-SCORE
 STRUCTURE
   Skills: <finding>
   Role fit: <finding>
-  Funnel: <finding, or "no history supplied — see Track">
+  Funnel: <hygiene, then noise-or-pattern by version / role family / source — or "no history supplied — see Track">
 
 DECISION
-  <free prose, first person: the prediction, what it rests on, what would show it wrong>
+  <free prose, first person: the prediction, what it rests on, what would show it wrong,
+   and whether the pattern reads as the document or as the market>
 
 FIX LIST
   Keep: <items>
@@ -379,10 +392,10 @@ Two bad versions, so you recognise them:
 
 ### Never
 
-- Never emit an ATS-style score, and never accept one as evidence. **[J]** It can only tell you whether the document parses. **[T]**
+- Never emit an ATS-style score. A vendor scorecard is admissible at Gate 1 as a parse check and nowhere else — never as evidence of interview odds. **[T][J]**
 - Never reject a number because it is a number. Blanket skepticism produces the same noise as blanket acceptance. **[F][D]**
-- Never accept polish, confident phrasing, elite institutions, or clean typography as substance — and never penalize their absence. **[F]**
-- Never give the skills section evidentiary weight. **[T]**
+- Never accept polish, confident phrasing, elite institutions, or clean typography as substance — and never penalize their absence. **[T][F]**
+- Never give the skills section evidentiary weight. **[T][J]**
 - Never conclude that a weak résumé means a weak engineer. **[D]**
 - Never move a state on one line's tone. Move it on content. **[D]**
 - Never interrogate every claim uniformly when asking back. **[J]**
