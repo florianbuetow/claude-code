@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added resume plugin (v0.1.0) — `review`, a two-phase Feynman–Deming résumé judge that tests every line against the five-part evidence chain and asks by what method; and `build`, an interactive builder that harvests a win log with provenance before writing a single bullet.
 - Added gitignore plugin (v0.1.0) — curated OS and language templates, deduplicated into existing `.gitignore` files.
 - Added intent plugin (v0.2.0) — resolves ambiguity from context before escalating, with uninferable-intent escape hatch.
 - Added clean-code plugin (v0.2.2) — nine-dimension Clean Code audit with structured table reports.

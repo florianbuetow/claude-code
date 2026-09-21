@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `30 plugins` and `120 skills` for Claude Code.
+A collection of `31 plugins` and `122 skills` for Claude Code.
 
 ## Quickstart
 
@@ -36,6 +36,7 @@ claude plugin install logbook
 claude plugin install onboarding
 claude plugin install orchestrator
 claude plugin install progressive-disclosure
+claude plugin install resume
 claude plugin install retrospective
 claude plugin install solid-principles
 claude plugin install spec-dd
@@ -77,6 +78,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [onboarding](#onboarding) | Project onboarding - status briefing from git, issues, and build system |
 | [orchestrator](#orchestrator) | Evidence-based model routing — maps engineering tasks to the best-suited AI model using a 30-category taxonomy |
 | [progressive-disclosure](#progressive-disclosure) | Documentation structure analysis - maps soul files, detects orphaned docs, generates thematic indexes |
+| [resume](#resume) | Build and review software engineering résumés from an evidence chain — a Feynman–Deming judge that asks by what method, and an interactive builder that harvests a win log first |
 | [retrospective](#retrospective) | Developer-AI workflow analysis - session log retros with feedback loops |
 | [sessionlog](#sessionlog) | Export session logs as standard LLM conversation JSON and TXT transcripts |
 | [solid-principles](#solid-principles) | Automated SOLID principles analysis for OO code |
@@ -115,7 +117,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `resume`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
 
 ### Updating
 
@@ -1193,6 +1195,25 @@ Diagrams use Mermaid and are generated only where the code provides enough struc
 **Trigger** — Ask Claude to "generate arc42 docs", "document the architecture", "run arc42", or "fill in the arc42 gaps".
 
 **License:** CC BY-SA 4.0 (this plugin only; all other plugins are MIT). Knowledge base adapted from arc42 by Peter Hruschka & Gernot Starke — see `plugins/arc42/NOTICE`.
+
+---
+
+## resume
+
+Build and review software engineering résumés from an evidence chain, not a template.
+
+`2 skills` · `Feynman–Deming judge` · `Win log first, document second`
+
+A résumé must survive three readers — the parser, the recruiter, and the engineering interviewer — and it does that only when every claim carries context, action, constraint, result, and ownership, and every number has a baseline, a window, and a method. This plugin applies that standard (from *The Perfect Software Engineer Résumé: What Actually Gets You Interviews*, The Serious CTO) in the manner of Richard Feynman and W. Edwards Deming: ask where the number came from rather than reject it, separate the person's contribution from the system's, name your own bias, and decide anyway with the unknowns stated. The judge in `references/cv-judge.md` tags every rule with its provenance — transcript, Feynman, Deming, or judge design.
+
+| Command | What it does |
+|---------|-------------|
+| `/resume:review` | Two-phase judge: tests every line against the evidence chain, asks up to eight ranked questions, stops; then re-scores on the answers into a prediction (never a score) and a four-tier fix list |
+| `/resume:build` | Interactive build: harvests accomplishments one at a time into `resume-evidence.md` with provenance, writes five-part bullets, assembles one version per role family, runs the parser and hostile-human tests, sets up `resume-tracking.md` |
+
+It never emits or accepts an ATS-style score, never invents a metric, and never treats a weak résumé as a weak engineer.
+
+**Trigger** — Ask Claude to "review my résumé", "judge this CV for a platform role", "is my resume ready to send", "build my résumé", "turn my experience into bullets", or "start a win log".
 
 ---
 

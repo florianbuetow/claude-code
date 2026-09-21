@@ -1,0 +1,19 @@
+{
+  "name": "resume",
+  "version": "0.1.0",
+  "description": "Build and review software engineering résumés from an evidence chain, not a template, in the manner of Richard Feynman and W. Edwards Deming. Applies the three-reader standard (parser, recruiter, engineering interviewer): every claim carries context, action, constraint, result, and ownership; every number is asked by what method; the person's contribution is separated from the system's. review judges a résumé in two phases (up to eight ranked questions, then re-score on the answers into a prediction and a fix list) and never emits an ATS score. build harvests accomplishments one at a time into a win log with provenance, writes five-part bullets, assembles a few coherent versions per role family, runs the two pre-apply tests, and sets up tracking. Subcommands: review, build.",
+  "author": {
+    "name": "Florian Buetow"
+  },
+  "license": "MIT",
+  "keywords": [
+    "resume",
+    "cv",
+    "review",
+    "judge",
+    "hiring",
+    "career",
+    "feynman",
+    "deming"
+  ]
+}
