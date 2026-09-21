@@ -71,7 +71,7 @@ From each evidence entry, write **one bullet** in the shape of the defensible an
 
 Rules while writing:
 
-- Nouns are not accomplishments. *Kubernetes, Kafka, platform, React, Python* appear only inside a sentence that says what was done with them.
+- Nouns are not accomplishments. *Kubernetes, Kafka, Terraform, React, Python* appear only inside a sentence that says what was done with them.
 - No résumé theatre: no logos, skill bars, hidden text, keywords lifted from a posting, or a skill wall under each employer.
 - A bounded outcome beats an undefendable number. Never the reverse.
 - Verbs over nominalisations: *cut*, not *achieved a reduction in*.
@@ -83,7 +83,7 @@ Append the finished bullet to its evidence entry under `- Bullet: …`.
 "Don't rebuild the whole damn thing for every posting. Select the right evidence." Make **one version per role family** the candidate named in Step 1, and no more:
 
 - Select the bullets whose `Role family` matches. Platform versions surface reliability, incidents, infrastructure, data, cloud. Product versions surface user outcomes, APIs, trade-offs, delivery, collaboration.
-- Layout, top to bottom: name and contact in body text; a short blurb that states the role family and the strongest piece of evidence; experience with the selected bullets; **skills once, at the bottom, as an index** — never repeated under employers.
+- Layout, top to bottom: name and contact in body text; a short blurb that states the role family and the strongest piece of evidence; experience with the selected bullets, most recent first, so the recruiter finds the work fast; **skills at the bottom, as an index** — never repeated under employers.
 - Plain structure the parser can read: real headings, real bullets, single column, dates and employers unambiguous, no tables, text boxes, or graphics.
 
 Write each to `resume-<role-family>-v1.md`. The candidate converts to PDF with whatever tool they use; the markdown is the source of truth.
