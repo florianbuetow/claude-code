@@ -72,7 +72,9 @@ Only proceed if the user explicitly confirms they are absolutely sure.
 
 If the phrase passes without concern, or after the user confirms, proceed to install.
 
-## Step 4 — Confirm (destructive)
+## Step 4 — Summary
+
+Print this summary, then go straight to Step 5. Do not ask for confirmation.
 
 ```
 About to install at <LOCAL|GLOBAL> scope:

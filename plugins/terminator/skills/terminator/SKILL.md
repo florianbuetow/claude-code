@@ -35,7 +35,7 @@ ancestor), and never signals pid ≤ 2.
 | "when done", "whendone", "terminate when finished", "self-terminate when complete" | `terminator:whendone` |
 | "info", "show phrase", "what is my kill phrase", "show config", "terminator status" | `terminator:info` |
 
-If ambiguous, ask:
+If exactly one row matches, dispatch to it without asking. Ask only if no row matches:
 
 > What would you like to do with terminator?
 > - **install** — set up single-kill and/or double-kill hooks (local or global scope)
@@ -46,5 +46,6 @@ If ambiguous, ask:
 
 ## Dispatching
 
-1. Announce: `Routing to /terminator:SUBCOMMAND`
-2. Invoke that subcommand skill and follow it exactly.
+1. Print one line: `Routing to /terminator:SUBCOMMAND`
+2. In the same turn, invoke that subcommand skill with the user's request as its arguments and
+   execute it. Do not wait for a reply and do not ask whether to proceed.

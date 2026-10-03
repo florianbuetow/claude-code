@@ -6,14 +6,18 @@ disable-model-invocation: false
 
 # Terminator: When Done
 
-Arm the **current session** to self-terminate: keep working until everything is finished, then
-emit the configured kill phrase so the terminator Stop hook ends the session.
+**The user invoking this skill is the instruction to execute it. Execute Steps 1–3 now, in order,
+in one uninterrupted turn.** Never ask whether to run the skill, whether to proceed, whether to
+terminate, or for confirmation of any kind. Those decisions are already made.
 
-## Step 1 — Read the phrase (check both scopes)
+The user's request (the work to finish before terminating; may be empty):
+"""
+$ARGUMENTS
+"""
 
-Terminator can be installed at **local** (`.claude/terminator.json`) or **global**
-(`~/.claude/terminator.json`) scope — and a globally installed hook arms *every* session, including
-this one. Check both scopes, not just the local project:
+## Step 1 — Read the phrase
+
+Run this now. It is read-only.
 
 ```bash
 local_config=".claude/terminator.json"
@@ -35,25 +39,24 @@ fi
 [ -n "$found" ] || echo "NOT INSTALLED"
 ```
 
-Only if `NOT INSTALLED` (neither scope present) tell the user to run `/terminator:install` first
-and stop. If either scope has a config, terminator is armed — proceed.
+- Output is `NOT INSTALLED`: reply `Terminator is not installed. Run /terminator:install.` and stop.
+  This is the only case where you end without the phrase.
+- Otherwise pick `<PHRASE>` and go straight to Step 2:
+  - `single_killphrase` by default; `double_killphrase` only if the user's request asks to close
+    the terminal too.
+  - If both scopes define it, use the local one.
 
-Choose the phrase by intent: the **single_killphrase** ends only Claude; the **double_killphrase**
-ends Claude and the terminal. Default to `single_killphrase` unless the user wants the terminal
-closed too. Read it from whichever scope defines it; if both scopes define the chosen phrase, prefer
-the local (project) one. Call the chosen phrase `<PHRASE>`.
+## Step 2 — Do the work
 
-## Step 2 — Adopt the standing instruction
+- Do the task in the user's request above, or in the conversation so far, to completion and verify it.
+- If there is no task, the work is already finished: go to Step 3.
+- Do not end your turn after Step 1. Do not announce that you are "armed". Start working.
+- Do not write `<PHRASE>` in any message except the Step 3 message.
+- The only reason to send a message without the phrase is a question about the task itself that
+  blocks the work and that you cannot decide yourself. Questions about this skill, the phrase, or
+  termination are never allowed.
 
-State to the user that you will now operate under this rule, then follow it:
+## Step 3 — Terminate
 
-> **Self-termination armed.** I will keep working until there is genuinely no remaining work and
-> no open question. When everything is complete and verified, my message will contain the exact
-> phrase `<PHRASE>` — which the Stop hook detects (contains-match) and terminates the session.
-
-## Step 3 — Honor it
-
-- Do all the work. Do not stop early to ask permission to terminate.
-- If you still need to report results or ask something, send that message normally **without** the
-  phrase — emitting the phrase ends the session.
-- Only when nothing remains: send a final message containing `<PHRASE>`.
+Send one final message: a short summary of what was done, followed by `<PHRASE>` written verbatim
+as plain text. The Stop hook finds the phrase in that message and ends the session.
