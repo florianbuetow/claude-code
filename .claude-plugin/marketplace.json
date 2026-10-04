@@ -371,6 +371,17 @@
       },
       "source": "./plugins/resume",
       "category": "productivity"
+    },
+    {
+      "name": "betterskills",
+      "description": "Critique, improve, and create Claude Code skills against one standard: a skill is a correction you got tired of making. Target the step that fails, use leading words that recruit training priors instead of coined terms, keep skills small and user-invoked, grow them only from observed corrections, and delete every instruction that does no work. critique reports findings with fixes and edits nothing; improve prunes no-ops, swaps explanation for leading words, and folds recurring corrections from session history in as one-sentence fixes; create mines session history for repeated corrections, checks overlap and default behavior before writing, and drafts a minimal skill. Subcommands: critique, improve, create.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/betterskills",
+      "category": "development"
     }
   ]
 }

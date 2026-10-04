@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `31 plugins` and `122 skills` for Claude Code.
+A collection of `34 plugins` and `131 skills` for Claude Code.
 
 ## Quickstart
 
@@ -15,6 +15,7 @@ claude plugin install agent-guardrails
 claude plugin install appsec
 claude plugin install arc42
 claude plugin install archibald
+claude plugin install betterskills
 claude plugin install beyond-solid-principles
 claude plugin install cache-money
 claude plugin install changelog
@@ -59,6 +60,7 @@ claude plugin marketplace update florianbuetow-plugins
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [arc42](#arc42) | Generate arc42 architecture documentation from a codebase - evidence-grounded, Mermaid diagrams, GAP flags |
 | [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
+| [betterskills](#betterskills) | Critique, improve, and create skills — a skill is a correction you got tired of making; prune no-ops, use leading words, grow from observed corrections |
 | [beyond-solid-principles](#beyond-solid-principles) | System-level architecture principles analysis |
 | [cache-money](#cache-money) | Keep the Anthropic prompt cache warm during peak hours - adapts ping interval to your cache TTL (5-min or 1-hour) |
 | [changelog](#changelog) | Generate and maintain CHANGELOG.md from git history - Keep a Changelog format with Semantic Versioning |
@@ -117,7 +119,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `resume`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `betterskills`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `resume`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
 
 ### Updating
 
@@ -1214,6 +1216,24 @@ A résumé must survive three readers — the parser, the recruiter, and the eng
 It never emits or accepts an ATS-style score, never invents a metric, and never treats a weak résumé as a weak engineer.
 
 **Trigger** — Ask Claude to "review my résumé", "judge this CV for a platform role", "is my resume ready to send", "build my résumé", "turn my experience into bullets", or "start a win log".
+
+---
+
+## betterskills
+
+Critique, improve, and create Claude Code skills against one standard: a skill is a correction you got tired of making.
+
+`4 skills` · `Five rules, cited checks` · `Evidence from session history`
+
+Most skills fail in the same few ways: they describe a task Claude already does well, explain at length what one established term would say, run on their own when the user should decide, accumulate instructions for problems nobody saw, and keep sentences that change nothing. The standard in `references/standard.md` turns five rules into citable checks (R1.a … R5.c): target the step that fails, use leading words, keep it small and user-invoked, grow it from observed corrections, and delete instructions that do no work. `references/corrections.jq` mines `~/.claude/projects` session logs for the corrections you actually made, so new skills and revisions start from evidence.
+
+| Command | What it does |
+|---------|-------------|
+| `/betterskills:critique` | Judges one skill, or `all`, against every check; quotes each offending sentence with its fix and a verdict (Keep, Revise, Merge, Delete); edits nothing |
+| `/betterskills:improve` | Rewrites a skill: deletes no-ops, swaps explanation for leading words, restates prohibitions positively, folds recurring corrections in as one-sentence fixes; `precise` mode verifies each change with before/after subagent runs |
+| `/betterskills:create` | Clusters repeated corrections from session history, checks overlap and default behavior before writing anything, then drafts a minimal user-invoked skill aimed at the failing step |
+
+**Trigger** — Ask Claude to "critique my skill", "improve this skill", "prune this SKILL.md", "turn this correction into a skill", or "which of my corrections should become skills".
 
 ---
 
