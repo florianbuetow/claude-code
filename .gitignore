@@ -3,6 +3,7 @@
 .claude/
 scratch/
 .beads/
+.beads.gate.lock
 .omx/
 .gitattributes
 AGENTS.md
