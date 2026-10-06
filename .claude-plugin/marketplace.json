@@ -382,6 +382,17 @@
       },
       "source": "./plugins/betterskills",
       "category": "development"
+    },
+    {
+      "name": "animation",
+      "description": "Make motion-graphics videos with Claude and plain JavaScript, no video generator: every frame is a pure function of time, Playwright renders it in headless Chromium, FFmpeg stitches the frames into an MP4, and a contact-sheet check loop catches defects before delivery. setup builds the engine and proves it with a 2-second test render; make runs intake, story beats and one storyboard still per beat for approval before writing the full scene code, then checks and renders. Subcommands: setup, make.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Florian Buetow",
+        "email": "2320560+florianbuetow@users.noreply.github.com"
+      },
+      "source": "./plugins/animation",
+      "category": "productivity"
     }
   ]
 }

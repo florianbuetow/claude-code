@@ -2,7 +2,7 @@
 
 ![Made with AI](https://img.shields.io/badge/Made%20with-AI-333333?labelColor=f00) ![Verified by Humans](https://img.shields.io/badge/Verified%20by-Humans-333333?labelColor=brightgreen)
 
-A collection of `34 plugins` and `131 skills` for Claude Code.
+A collection of `35 plugins` and `133 skills` for Claude Code.
 
 ## Quickstart
 
@@ -12,6 +12,7 @@ claude plugin marketplace add florianbuetow/claude-code
 
 # 2. Install plugins (pick what you need)
 claude plugin install agent-guardrails
+claude plugin install animation
 claude plugin install appsec
 claude plugin install arc42
 claude plugin install archibald
@@ -57,6 +58,7 @@ claude plugin marketplace update florianbuetow-plugins
 | Skill | Description |
 |-------|-------------|
 | [agent-guardrails](#agent-guardrails) | Agent behavioral guardrails — 9 rules via Stop hook with intent-aligned feedback |
+| [animation](#animation) | Motion-graphics videos from plain JavaScript — every frame a function of time, Playwright + FFmpeg render, storyboard stills before code, contact-sheet self-check |
 | [appsec](#appsec) | Comprehensive application security toolbox - 62 skills, 8 frameworks, red team simulation |
 | [arc42](#arc42) | Generate arc42 architecture documentation from a codebase - evidence-grounded, Mermaid diagrams, GAP flags |
 | [archibald](#archibald) | Software architecture quality assessment - smells, metrics, antipatterns, dependencies, risks, debt |
@@ -119,7 +121,7 @@ claude plugin marketplace add florianbuetow/claude-code
 claude plugin install <plugin-name>
 ```
 
-Restart Claude Code after installing. Available plugins: `agent-guardrails`, `appsec`, `arc42`, `archibald`, `betterskills`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `resume`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
+Restart Claude Code after installing. Available plugins: `agent-guardrails`, `animation`, `appsec`, `arc42`, `archibald`, `betterskills`, `beyond-solid-principles`, `cache-money`, `changelog`, `claudeignore`, `codebasescout`, `communicator`, `context-research`, `diagrams`, `explain-system-tradeoffs`, `fixclaude`, `guard`, `handoff`, `iso27001-sdlc`, `kiss`, `logbook`, `onboarding`, `orchestrator`, `progressive-disclosure`, `resume`, `retrospective`, `sessionlog`, `solid-principles`, `spec-dd`, `spec-writer`, `terminator`, `tokeneconomics`.
 
 ### Updating
 
@@ -1234,6 +1236,23 @@ Most skills fail in the same few ways: they describe a task Claude already does 
 | `/betterskills:create` | Clusters repeated corrections from session history, checks overlap and default behavior before writing anything, then drafts a minimal user-invoked skill aimed at the failing step |
 
 **Trigger** — Ask Claude to "critique my skill", "improve this skill", "prune this SKILL.md", "turn this correction into a skill", or "which of my corrections should become skills".
+
+---
+
+## animation
+
+Make motion-graphics videos with Claude and plain JavaScript: no video generator, no Remotion, no After Effects.
+
+`2 skills` · `Frame = f(t)` · `Storyboard before code`
+
+A video is a function of time: `draw(ctx, t)` returns one frame, and the same t always gives the same picture, so any frame can be redrawn or checked on its own. `render.mjs` seeks t frame by frame in headless Chromium with Playwright, and FFmpeg stitches the frames into an MP4 with the soundtrack muxed in. Claude cannot watch the result, so before delivery it reads a contact sheet of the whole duration and full-size stills at every beat boundary and audio cue, fixes the scene code, and re-renders until a pass finds nothing. `references/engine.md` is the shared contract (file layout, scene API, CLI, and the proof `setup` must pass). Written with `/betterskills:create`: the check loop, audio sync, and style steps live inside `make` and `references/` because no-skill baseline runs showed Claude already does the rest unprompted.
+
+| Command | What it does |
+|---------|-------------|
+| `/animation:setup` | Checks Node, FFmpeg and Playwright's Chromium (and reports faster-whisper and an ElevenLabs MCP server), builds the engine, and proves it: a 2-second test render ffprobe confirms with and without a muxed soundtrack, the same still for the same t, and a labelled contact sheet |
+| `/animation:make` | Intake (subject, type, length, aspect ratio, one of seven styles or a reference, audio, a recurring original hero), audio first when there is a track, a beat sheet, one storyboard still per beat for approval, then the full scene code, the check loop, and the final render |
+
+**Trigger** — Run `/animation:setup` once per project, then `/animation:make` with what the video is about.
 
 ---
 
